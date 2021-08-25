@@ -2,6 +2,7 @@
 import Button from 'components/shared/Button/Button';
 import ServiceResult from 'components/shared/ServiceResult/ServiceResult';
 import AutoComplete from 'components/shared/AutoComplete/AutoComplete';
+import Dropdown from 'components/shared/Dropdown/Dropdown';
 
 const results = [
   {
@@ -32,6 +33,7 @@ const App = () => {
               <p className="wmnds-h4 wmnds-m-t-none">Enter a service number</p>
               <AutoComplete placeholder="Search" />
             </div>
+            <Dropdown label="Filter by bus company" options={[]} />
           </div>
         </div>
         <div className="wmnds-col-1 wmnds-col-md-2-3">
