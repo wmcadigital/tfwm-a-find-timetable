@@ -1,0 +1,16 @@
+@import '~assets/wmnds/vars';
+@import '~assets/wmnds/mixins';
+
+.serviceResult {
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    outline: 1px solid get-color(text);
+  }
+}
+
+.serviceResultHeader {
+  flex-wrap: nowrap;
+}
