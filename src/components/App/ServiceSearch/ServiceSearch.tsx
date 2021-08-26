@@ -1,7 +1,7 @@
-import Button from 'components/shared/Button/Button';
-import ServiceResult from 'components/shared/ServiceResult/ServiceResult';
 import AutoComplete from 'components/shared/AutoComplete/AutoComplete';
+import Button from 'components/shared/Button/Button';
 import Dropdown from 'components/shared/Dropdown/Dropdown';
+import ServiceResult from './ServiceResult/ServiceResult';
 
 const results = [
   {
