@@ -1,6 +1,6 @@
 import Button from 'components/shared/Button/Button';
 import DisruptionIndicator from 'components/shared/DisruptionIndicator/DisruptionIndicatorMedium';
-
+import Route from 'components/shared/Route/Route';
 import FileDownload from 'components/shared/FileDownload/FileDownload';
 import WarningText from 'components/shared/WarningText/WarningText';
 
@@ -51,7 +51,7 @@ const TimetableView = () => {
           />
         </div>
       </div>
-      <div className="wmnds-p-lg wmnds-bg-white">Route</div>
+      <Route />
     </div>
   );
 };
