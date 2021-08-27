@@ -3,21 +3,27 @@ import React from 'react';
 import ContextProvider from 'globalState/ContextProvider';
 import { useFormContext } from 'globalState';
 // Components
+import Breadcrumbs from 'components/shared/Breadcrumbs/Breadcrumbs';
 import ServiceSearchView from './ServiceSearchView/ServiceSearchView';
 import TimetableView from './TimetableView/TimetableView';
 
 const ViewToShow = () => {
   const [{ selectedService }] = useFormContext();
   return (
-    <div className="wmnds-container wmnds-p-t-lg wmnds-p-b-lg">
-      {selectedService ? (
-        <div className="wmnds-col-2-3">
-          <TimetableView />
-        </div>
-      ) : (
-        <ServiceSearchView />
-      )}
-    </div>
+    <>
+      <div className="wmnds-container">
+        <Breadcrumbs />
+      </div>
+      <div className="wmnds-container wmnds-p-t-lg wmnds-p-b-lg">
+        {selectedService ? (
+          <div className="wmnds-col-2-3">
+            <TimetableView />
+          </div>
+        ) : (
+          <ServiceSearchView />
+        )}
+      </div>
+    </>
   );
 };
 
