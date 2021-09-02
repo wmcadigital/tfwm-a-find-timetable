@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 // Import context
 import { useFormContext } from 'globalState';
 // Import components
@@ -14,6 +15,26 @@ import useServiceSearchAPI from './customHooks/useServiceSearchAPI';
 const ServiceSearch = () => {
   const [{ selectedMode, busQuery }] = useFormContext();
   const { loading, results, errorInfo, getAPIResults } = useServiceSearchAPI();
+  const [searchResults, setSearchResults] = useState(results);
+
+  const getBusCompanyOptions = () => {
+    const allCompanies = results.map((result) => result.Service.OperatorName);
+    const uniqueCompanies: string[] = [];
+    allCompanies.forEach((company) => {
+      if (!uniqueCompanies.includes(company)) {
+        uniqueCompanies.push(company);
+      }
+    });
+    return uniqueCompanies.map((company) => ({ text: company, value: company }));
+  };
+
+  useEffect(() => {
+    setSearchResults(results);
+  }, [results]);
+
+  const handleFilterResults = (e: any) => {
+    setSearchResults(results.filter((result) => result.Service.OperatorName === e.target.value));
+  };
 
   const errorMessage = (
     <Message
@@ -41,9 +62,17 @@ const ServiceSearch = () => {
                   <p className="wmnds-h4 wmnds-m-t-none">Enter a service number</p>
                   <BusAutoComplete id="busAutoComplete" name="busAutoComplete" />
                 </div>
-                <div className="wmnds-m-t-lg">
-                  <Dropdown label="Filter by bus company" name="filter" error={null} options={[]} />
-                </div>
+                {getBusCompanyOptions().length > 1 && (
+                  <div className="wmnds-m-t-lg">
+                    <Dropdown
+                      label="Filter by bus company"
+                      name="filter"
+                      error={null}
+                      onChange={handleFilterResults}
+                      options={getBusCompanyOptions()}
+                    />
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -55,15 +84,17 @@ const ServiceSearch = () => {
                 <Loader />
               ) : (
                 <>
-                  {results ? (
+                  {searchResults ? (
                     <>
                       <div className="wmnds-h3 wmnds-m-t-none wmnds-m-b-lg">
-                        {results.length} result{results.length !== 1 && 's'}
+                        {searchResults.length} result{searchResults.length !== 1 && 's'}
                       </div>
                       <div className="wmnds-grid wmnds-grid--spacing-md-2-lg">
-                        {results.map((result) => (
+                        {searchResults.map((result) => (
                           <div
-                            key={result.Service.DestinationId}
+                            key={`${result.Service.OperatorCode}_${
+                              result.Service.DestinationId
+                            }_${result.Service.Stateless.replace(':', '_')}`}
                             className="wmnds-col-1 wmnds-col-md-1-2 wmnds-m-b-lg"
                           >
                             <ServiceResult result={result} />

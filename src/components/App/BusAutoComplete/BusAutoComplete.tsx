@@ -10,10 +10,6 @@ const BusAutoComplete = ({ id, label, name }: { id: string; label?: string; name
   const onUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
     formDispatch({ type: 'UPDATE_BUS_QUERY', payload: e.target.value });
   };
-  // action when autocomplete is cleared
-  const onClear = () => {
-    console.log('clear autocomplete');
-  };
 
   return (
     <AutoComplete
@@ -22,7 +18,6 @@ const BusAutoComplete = ({ id, label, name }: { id: string; label?: string; name
       name={name}
       placeholder="Search"
       onUpdate={onUpdate}
-      onClear={onClear}
       initialQuery={busQuery || ''}
     />
   );
