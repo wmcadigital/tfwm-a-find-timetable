@@ -11,22 +11,22 @@ import s from './ServiceResult.module.scss';
 const ServiceResult = ({ result }: { result: IServiceResult }) => {
   const [, formDispatch] = useFormContext();
 
-  const updateSelecedService = () => {
+  const updateSelectedService = () => {
     formDispatch({ type: 'UPDATE_SELECTED_SERVICE', payload: result });
   };
 
   return (
     <button
-      onClick={updateSelecedService}
+      onClick={updateSelectedService}
       className={`wmnds-p-md wmnds-bg-white ${s.serviceResult}`}
       type="button"
     >
       <div className={`wmnds-grid wmnds-grid--spacing-2-md wmnds-m-b-md ${s.serviceResultHeader}`}>
         <div className="wmnds-col-auto">
-          <DisruptionIndicatorMedium text={result.serviceNumber} />
+          <DisruptionIndicatorMedium text={result.Service.ServiceNumber} />
         </div>
-        <div className="wmnds-col-auto">
-          <strong>{result.routes[0].routeName}</strong>
+        <div className={`wmnds-col-auto ${s.routeName}`}>
+          <strong>{result.Service.RouteDescription}</strong>
         </div>
       </div>
 
@@ -36,7 +36,7 @@ const ServiceResult = ({ result }: { result: IServiceResult }) => {
         </WarningText>
       )}
       <div>
-        <span className="wmnds-link">{result.routes[0].operatorName}</span> runs this service
+        <span className="wmnds-link">{result.Service.OperatorName}</span> runs this service
       </div>
     </button>
   );

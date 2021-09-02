@@ -1,16 +1,23 @@
 export interface IServiceResult {
-  id: string;
-  mode: string;
-  serviceNumber: string;
-  hasDisruptions: boolean;
-  disruptionSeverity: string;
-  routes: RoutesEntity[];
+  Service: Service;
+  Versions?: any[] | null;
 }
-export interface RoutesEntity {
-  direction: string;
-  operatorCode: string;
-  operatorName: string;
-  routeName: string;
-  hasDisruption: boolean;
-  disruptionSeverity: string;
+export interface Service {
+  ServiceNumber: string;
+  OperatorName: string;
+  OperatorCode: string;
+  RouteDescription: string;
+  Direction: string;
+  ValidityStart: string;
+  ValidityEnd: string;
+  TransportMode: number;
+  Stateless: string;
+  DestinationId: string;
+  Version: number;
+  DivaParams: DivaParams;
+  ItoLineId: string;
+  ValidityString: string;
+}
+export interface DivaParams {
+  Direction: number;
 }

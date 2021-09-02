@@ -1,26 +1,26 @@
 import { IServiceResult } from '../types/IServiceResult';
 
 export type State = {
-  selectedMode: 'bus' | 'rail' | 'metro' | null;
+  selectedMode: string | null;
   selectedService: IServiceResult | null;
+  busQuery: string;
 };
 
 export type StateAction =
   | {
       type: 'UPDATE_SELECTED_MODE';
-      payload: 'bus' | 'rail' | 'metro' | null;
+      payload: 'bus' | 'rail' | 'metro';
     }
   | {
       type: 'UPDATE_SELECTED_SERVICE';
       payload: IServiceResult | null;
     }
   | {
-      type: 'SHOW_RESULT';
-      payload: boolean;
+      type: 'UPDATE_BUS_QUERY';
+      payload: string;
     }
   | {
-      type: 'CHANGE_VIEW';
-      payload: boolean;
+      type: 'CLEAR_SEARCH';
     };
 
 export type Context = [State, React.Dispatch<StateAction>];
