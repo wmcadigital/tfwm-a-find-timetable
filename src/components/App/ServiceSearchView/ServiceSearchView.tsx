@@ -18,13 +18,15 @@ const ServiceSearch = () => {
   const [searchResults, setSearchResults] = useState(results);
 
   const getBusCompanyOptions = () => {
-    const allCompanies = results.map((result) => result.Service.OperatorName);
     const uniqueCompanies: string[] = [];
-    allCompanies.forEach((company) => {
-      if (!uniqueCompanies.includes(company)) {
-        uniqueCompanies.push(company);
-      }
-    });
+    if (selectedMode === 'bus' && results.length) {
+      const allCompanies = results.map((result) => result.Service?.OperatorName);
+      allCompanies.forEach((company) => {
+        if (!uniqueCompanies.includes(company)) {
+          uniqueCompanies.push(company);
+        }
+      });
+    }
     return uniqueCompanies.map((company) => ({ text: company, value: company }));
   };
 
@@ -62,7 +64,7 @@ const ServiceSearch = () => {
                   <p className="wmnds-h4 wmnds-m-t-none">Enter a service number</p>
                   <BusAutoComplete id="busAutoComplete" name="busAutoComplete" />
                 </div>
-                {getBusCompanyOptions().length > 1 && (
+                {searchResults && getBusCompanyOptions().length > 1 && (
                   <div className="wmnds-m-t-lg">
                     <Dropdown
                       label="Filter by bus company"
@@ -78,7 +80,7 @@ const ServiceSearch = () => {
           </div>
         </div>
         <div className="wmnds-col-1 wmnds-col-md-2-3">
-          {selectedMode && busQuery && (
+          {selectedMode === 'bus' && busQuery && (
             <>
               {loading ? (
                 <Loader />
@@ -108,6 +110,12 @@ const ServiceSearch = () => {
                 </>
               )}
             </>
+          )}
+          {selectedMode === 'rail' && (
+            <p>
+              You can find train timetables on the train company’s website. To find which train
+              company runs your service, enter the stations you’ll travel between.
+            </p>
           )}
         </div>
       </div>

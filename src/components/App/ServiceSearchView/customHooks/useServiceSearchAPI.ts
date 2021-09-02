@@ -85,22 +85,21 @@ const useServiceSearchAPI = () => {
       if (selectedMode === 'rail') {
         apiObj.apiPath = 'rail'; // INSERT RAIL API URL HERE
       }
-      if (selectedMode === 'metro') {
-        apiObj.apiPath =
-          'https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/GetStopsOnRoute/cen_18016_T_H_y11_15/15/Inbound/0';
-      }
       return apiObj;
     };
 
-    console.log(apiOptions());
     const { apiPath, post, body } = apiOptions();
 
     if (post) {
-      axios
-        .post(apiPath, body, options)
-        .then((res) => mounted.current && handleApiResponse(res))
-        .catch(handleApiError);
-    } else {
+      if (busQuery.length) {
+        axios
+          .post(apiPath, body, options)
+          .then((res) => mounted.current && handleApiResponse(res))
+          .catch(handleApiError);
+      } else {
+        setResults([]);
+      }
+    } else if (apiPath.length) {
       axios
         .get(apiPath, options)
         .then((res) => mounted.current && handleApiResponse(res))
