@@ -2,7 +2,7 @@ import { useState } from 'react';
 // Import context
 import { useFormContext } from 'globalState';
 // Import API hook
-import useServiceAPI from 'globalState/customHooks/useServiceAPI';
+import useTimetableAPI from 'globalState/customHooks/useTimetableAPI';
 // Import components
 import Button from 'components/shared/Button/Button';
 import DisruptionIndicator from 'components/shared/DisruptionIndicator/DisruptionIndicatorMedium';
@@ -16,11 +16,15 @@ import s from './TimetableView.module.scss';
 
 const TimetableView = () => {
   const [mapView, setMapView] = useState(false);
+  const [showInbound, setShowInbound] = useState(true);
   const [{ selectedService }] = useFormContext();
-  const apiPath = `https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/GetStopsOnRoute/${encodeURI(
-    selectedService!.Service.Stateless.replaceAll(':', '_')
-  )}/${selectedService!.Service.Version}/Outbound/0`;
-  const { loading, results } = useServiceAPI(apiPath);
+  const { loading, results } = useTimetableAPI();
+  const { inbound, outbound } = results;
+
+  const reversedDescription = selectedService?.Service.RouteDescription.split(' - ')
+    .reverse()
+    .join(' - ');
+
   return (
     <>
       {loading ? (
@@ -36,11 +40,12 @@ const TimetableView = () => {
               </div>
               <div className={`wmnds-col-auto ${s.routeDescription}`}>
                 <h1 className="wmnds-h3 wmnds-m-none">
-                  {selectedService?.Service.RouteDescription}
+                  {showInbound ? selectedService?.Service.RouteDescription : reversedDescription}
                 </h1>
               </div>
               <div className="wmnds-col-auto">
                 <Button
+                  onClick={() => setShowInbound(!showInbound)}
                   btnClass="wmnds-btn--secondary"
                   text="Change direction"
                   iconRight="general-swap"
@@ -84,7 +89,7 @@ const TimetableView = () => {
                 />
               </div>
             </div>
-            {mapView ? <Map /> : <Route route={results} />}
+            {mapView ? <Map /> : <Route route={showInbound ? inbound : outbound} />}
           </div>
         </>
       )}

@@ -8,9 +8,12 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useServiceAPI = () => {
-  const [{ selectedMode, busQuery }] = useFormContext();
-  const [results, setResults] = useState<any[]>([]);
+const useTimetableAPI = () => {
+  const [{ selectedService }] = useFormContext();
+  const [results, setResults] = useState<any>({
+    inbound: [],
+    outbound: [],
+  });
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
 
@@ -31,33 +34,35 @@ const useServiceAPI = () => {
 
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
-  const handleApiResponse = useCallback((response) => {
-    if (response?.data.length > 0) {
-      setResults(response.data);
-    } else {
-      setErrorInfo({
-        // Update error message
-        title: 'Please try another location',
-        message: 'No west midlands bus stops were found near to your search area',
+  const handleApiResponse = useCallback((responses) => {
+    const inbound = responses[0];
+    const outbound = responses[1];
+
+    if (responses.some((res: any) => res?.data.length > 0)) {
+      setResults({
+        inbound: inbound.data,
+        outbound: outbound.data,
       });
     }
     clearApiTimeout();
     setLoading(false);
   }, []);
 
-  const handleApiError = (error: any) => {
-    setLoading(false); // Set loading state to false after data is received
-    setErrorInfo({
-      // Update error message
-      title: 'Please try again',
-      message: 'Apologies, we are having technical difficulties.',
-      isTimeoutError: axios.isCancel(error),
+  const handleApiError = (errors: any[]) => {
+    errors.forEach((error) => {
+      setLoading(false); // Set loading state to false after data is received
+      setErrorInfo({
+        // Update error message
+        title: 'Please try again',
+        message: 'Apologies, we are having technical difficulties.',
+        isTimeoutError: axios.isCancel(error),
+      });
+      setResults([]); // Reset the results
+      if (!axios.isCancel(error)) {
+        // eslint-disable-next-line no-console
+        console.log({ error });
+      }
     });
-    setResults([]); // Reset the results
-    if (!axios.isCancel(error)) {
-      // eslint-disable-next-line no-console
-      console.log({ error });
-    }
   };
 
   // Take main function out of useEffect, so it can be called elsewhere to retry the search
@@ -70,27 +75,21 @@ const useServiceAPI = () => {
       cancelToken: source.current.token, // Set token with API call, so we can cancel this call on unmount
     };
 
-    const apiOptions = {
-      path: 'https://journeyplanner.tfwm.org.uk/api/TimetableStopApi/Search/serviceQuery',
-      query: {
-        SearchString: selectedMode === 'bus' ? busQuery : 'mm1',
-        Modes: [`${selectedMode?.charAt(0).toUpperCase}${selectedMode?.slice(1)}`],
-      },
-    };
+    const inboundPath = `https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/GetStopsOnRoute/${encodeURI(
+      selectedService!.Service.Stateless.replaceAll(':', '_')
+    )}/${selectedService!.Service.Version}/Inbound/0`;
+    const outboundPath = `https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/GetStopsOnRoute/${encodeURI(
+      selectedService!.Service.Stateless.replaceAll(':', '_')
+    )}/${selectedService!.Service.Version}/Outbound/0`;
 
-    const { path, query } = apiOptions;
+    const inboundReq = axios.get(inboundPath, options);
+    const outboundReq = axios.get(outboundPath, options);
 
-    if (selectedMode !== 'rail') {
-      if (busQuery.length || selectedMode === 'metro') {
-        axios
-          .post(path, query, options)
-          .then((res) => mounted.current && handleApiResponse(res))
-          .catch(handleApiError);
-      } else {
-        setResults([]);
-      }
-    }
-  }, [handleApiResponse, startApiTimeout, selectedMode, busQuery]);
+    axios
+      .all([outboundReq, inboundReq])
+      .then(axios.spread((...responses) => mounted.current && handleApiResponse(responses)))
+      .catch(handleApiError);
+  }, [handleApiResponse, startApiTimeout, selectedService]);
 
   useEffect(() => {
     getAPIResults();
@@ -105,4 +104,4 @@ const useServiceAPI = () => {
   return { loading, errorInfo, results, getAPIResults };
 };
 
-export default useServiceAPI;
+export default useTimetableAPI;
