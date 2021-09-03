@@ -6,11 +6,11 @@ import './Map.scss';
 // Import custom hooks for map functionality
 import useCreateMapView from './customHooks/useCreateMapView';
 
-const Map = () => {
+const Map = ({ results }: { results: any }) => {
   // MAP SETUP
   const mapContainerRef = useRef<any>();
   const [mapState, mapDispatch] = useMapContext();
-  const view = useCreateMapView(mapContainerRef);
+  const view = useCreateMapView(mapContainerRef, results);
 
   useEffect(() => {
     if (view) {

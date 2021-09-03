@@ -19,7 +19,7 @@ const TimetableView = () => {
   const [showInbound, setShowInbound] = useState(true);
   const [{ selectedService }] = useFormContext();
   const { loading, results } = useTimetableAPI();
-  const { inbound, outbound } = results;
+  const { inbound, outbound, routeMap } = results;
 
   const reversedDescription = selectedService?.Service.RouteDescription.split(' - ')
     .reverse()
@@ -89,7 +89,11 @@ const TimetableView = () => {
                 />
               </div>
             </div>
-            {mapView ? <Map /> : <Route route={showInbound ? inbound : outbound} />}
+            {mapView ? (
+              <Map results={routeMap} />
+            ) : (
+              <Route route={showInbound ? inbound : outbound} />
+            )}
           </div>
         </>
       )}

@@ -37,11 +37,13 @@ const useTimetableAPI = () => {
   const handleApiResponse = useCallback((responses) => {
     const inbound = responses[0];
     const outbound = responses[1];
+    const routeMap = responses[2];
 
     if (responses.some((res: any) => res?.data.length > 0)) {
       setResults({
         inbound: inbound.data,
         outbound: outbound.data,
+        routeMap: routeMap.data,
       });
     }
     clearApiTimeout();
@@ -81,12 +83,16 @@ const useTimetableAPI = () => {
     const outboundPath = `https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/GetStopsOnRoute/${encodeURI(
       selectedService!.Service.Stateless.replaceAll(':', '_')
     )}/${selectedService!.Service.Version}/Outbound/0`;
+    const routeMapPath = `https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/getRouteMap/${encodeURI(
+      selectedService!.Service.Stateless.replaceAll(':', '_')
+    )}/${selectedService!.Service.Version}/Inbound/0`;
 
     const inboundReq = axios.get(inboundPath, options);
     const outboundReq = axios.get(outboundPath, options);
+    const routeMapReq = axios.get(routeMapPath, options);
 
     axios
-      .all([outboundReq, inboundReq])
+      .all([outboundReq, inboundReq, routeMapReq])
       .then(axios.spread((...responses) => mounted.current && handleApiResponse(responses)))
       .catch(handleApiError);
   }, [handleApiResponse, startApiTimeout, selectedService]);

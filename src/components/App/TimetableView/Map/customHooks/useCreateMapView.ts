@@ -1,19 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { useEffect, useState, useCallback, useRef } from 'react';
-// eslint-disable-next-line import/no-unresolved
+import { useEffect, useState, useCallback } from 'react';
 import { loadModules, setDefaultOptions } from 'esri-loader';
-// eslint-disable-next-line import/no-unresolved
 import locateCircle from 'assets/svgs/map/locate-circle.svg';
+import mapMarker from 'assets/svgs/map/map-marker.svg';
 
-const useCreateMapView = (mapContainerRef: any) => {
+const useCreateMapView = (mapContainerRef: any, results: any) => {
   const [viewState, setViewState] = useState<any>();
   const [isCreated, setIsCreated] = useState(false);
 
   const createMapView = useCallback(async () => {
     try {
       setDefaultOptions({ css: true }); // Load esri css by default
-      const [Map, MapView, Basemap, VectorTileLayer, Graphic, Locate, GraphicsLayer, Polygon] =
+      const [Map, MapView, Basemap, VectorTileLayer, Graphic, Locate, GraphicsLayer] =
         await loadModules([
           'esri/Map',
           'esri/views/MapView',
@@ -22,7 +20,6 @@ const useCreateMapView = (mapContainerRef: any) => {
           'esri/Graphic',
           'esri/widgets/Locate',
           'esri/layers/GraphicsLayer',
-          'esri/geometry/Polygon',
         ]);
 
       const basemap = new Basemap({
@@ -63,10 +60,48 @@ const useCreateMapView = (mapContainerRef: any) => {
         }),
       });
 
+      const stopGraphics = results.Bounds.map((result: any) => {
+        return new Graphic({
+          geometry: {
+            type: 'point',
+            longitude: result.lng,
+            latitude: result.lat,
+            spatialreference: {
+              wkid: 4326,
+            },
+          },
+          symbol: {
+            type: 'picture-marker',
+            url: mapMarker,
+            width: 24,
+            height: 24,
+          },
+        });
+      });
+
+      const polylineGraphic = new Graphic({
+        geometry: {
+          type: 'polyline',
+          paths: results.Coordinates[0].map((coords: any) => [coords.lng, coords.lat]),
+        },
+        symbol: {
+          type: 'simple-line',
+          width: 2,
+          color: '#9D5BAF',
+        },
+      });
+
+      const stopsLayer = new GraphicsLayer({
+        graphics: [polylineGraphic, ...stopGraphics],
+      });
+
+      view.map.add(stopsLayer);
+
       // Move ui elements into the right position
       view.ui.move(['zoom'], 'top-right');
       view.ui.move(['attribution'], 'bottom');
       view.ui.add(locateBtn, { position: 'top-right' });
+      view.goTo(polylineGraphic);
 
       setViewState(view);
       setIsCreated(true);
