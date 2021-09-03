@@ -81,8 +81,10 @@ const useServiceAPI = (apiPath?: string) => {
         apiObj.post = true;
         apiObj.body = { SearchString: busQuery, Modes: ['Bus'] };
       }
-      if (selectedMode === 'rail') {
-        apiObj.path = ''; // INSERT RAIL API URL HERE
+      if (selectedMode === 'metro') {
+        apiObj.path = 'https://journeyplanner.tfwm.org.uk/api/TimetableStopApi/Search/serviceQuery';
+        apiObj.post = true;
+        apiObj.body = { SearchString: 'mm1', Modes: ['Metro'] };
       }
       return apiObj;
     };
@@ -90,7 +92,7 @@ const useServiceAPI = (apiPath?: string) => {
     const { path, post, body } = apiOptions();
 
     if (post && !apiPath) {
-      if (busQuery.length) {
+      if (busQuery.length || selectedMode === 'metro') {
         axios
           .post(path, body, options)
           .then((res) => mounted.current && handleApiResponse(res))

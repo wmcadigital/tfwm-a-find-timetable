@@ -13,7 +13,7 @@ import BusAutoComplete from '../BusAutoComplete/BusAutoComplete';
 import ModeSelect from './ModeSelect/ModeSelect';
 
 const ServiceSearch = () => {
-  const [{ selectedMode, busQuery }] = useFormContext();
+  const [{ selectedMode, busQuery }, formDispatch] = useFormContext();
   const { loading, results, errorInfo, getAPIResults } = useServiceAPI();
   const [searchResults, setSearchResults] = useState(results);
 
@@ -32,7 +32,10 @@ const ServiceSearch = () => {
 
   useEffect(() => {
     setSearchResults(results);
-  }, [results]);
+    if (selectedMode === 'metro' && results.length === 1) {
+      formDispatch({ type: 'UPDATE_SELECTED_SERVICE', payload: results[0] });
+    }
+  }, [results, formDispatch, selectedMode]);
 
   const handleFilterResults = (e: any) => {
     setSearchResults(results.filter((result) => result.Service.OperatorName === e.target.value));
