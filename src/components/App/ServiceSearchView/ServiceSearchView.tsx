@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 // Import context
 import { useFormContext } from 'globalState';
+// Import API hook
+import useServiceAPI from 'globalState/customHooks/useServiceAPI';
 // Import components
 import Button from 'components/shared/Button/Button';
 import Dropdown from 'components/shared/Dropdown/Dropdown';
@@ -9,12 +11,10 @@ import Message from 'components/shared/Message/Message';
 import ServiceResult from './ServiceResult/ServiceResult';
 import BusAutoComplete from '../BusAutoComplete/BusAutoComplete';
 import ModeSelect from './ModeSelect/ModeSelect';
-// Import hooks
-import useServiceSearchAPI from './customHooks/useServiceSearchAPI';
 
 const ServiceSearch = () => {
   const [{ selectedMode, busQuery }] = useFormContext();
-  const { loading, results, errorInfo, getAPIResults } = useServiceSearchAPI();
+  const { loading, results, errorInfo, getAPIResults } = useServiceAPI();
   const [searchResults, setSearchResults] = useState(results);
 
   const getBusCompanyOptions = () => {

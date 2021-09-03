@@ -8,7 +8,7 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useServiceSearchAPI = () => {
+const useServiceAPI = (apiPath?: string) => {
   const [{ selectedMode, busQuery }] = useFormContext();
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
@@ -72,40 +72,39 @@ const useServiceSearchAPI = () => {
 
     const apiOptions = () => {
       const apiObj = {
-        apiPath: '',
+        path: '',
         post: false,
         body: {},
       };
       if (selectedMode === 'bus') {
-        apiObj.apiPath =
-          'https://journeyplanner.tfwm.org.uk/api/TimetableStopApi/Search/serviceQuery';
+        apiObj.path = 'https://journeyplanner.tfwm.org.uk/api/TimetableStopApi/Search/serviceQuery';
         apiObj.post = true;
         apiObj.body = { SearchString: busQuery, Modes: ['Bus'] };
       }
       if (selectedMode === 'rail') {
-        apiObj.apiPath = 'rail'; // INSERT RAIL API URL HERE
+        apiObj.path = ''; // INSERT RAIL API URL HERE
       }
       return apiObj;
     };
 
-    const { apiPath, post, body } = apiOptions();
+    const { path, post, body } = apiOptions();
 
-    if (post) {
+    if (post && !apiPath) {
       if (busQuery.length) {
         axios
-          .post(apiPath, body, options)
+          .post(path, body, options)
           .then((res) => mounted.current && handleApiResponse(res))
           .catch(handleApiError);
       } else {
         setResults([]);
       }
-    } else if (apiPath.length) {
+    } else if (apiPath || path.length) {
       axios
-        .get(apiPath, options)
+        .get(apiPath || path, options)
         .then((res) => mounted.current && handleApiResponse(res))
         .catch(handleApiError);
     }
-  }, [handleApiResponse, startApiTimeout, selectedMode, busQuery]);
+  }, [handleApiResponse, startApiTimeout, selectedMode, busQuery, apiPath]);
 
   useEffect(() => {
     getAPIResults();
@@ -120,4 +119,4 @@ const useServiceSearchAPI = () => {
   return { loading, errorInfo, results, getAPIResults };
 };
 
-export default useServiceSearchAPI;
+export default useServiceAPI;

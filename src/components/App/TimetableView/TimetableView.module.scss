@@ -9,5 +9,10 @@
     button {
       white-space: nowrap;
     }
+
+    .routeDescription {
+      align-self: center;
+      flex-grow: 1;
+    }
   }
 }
