@@ -15,13 +15,7 @@ const ViewToShow = () => {
         <Breadcrumbs />
       </div>
       <div className="wmnds-container wmnds-p-t-lg wmnds-p-b-lg">
-        {selectedService ? (
-          <div className="wmnds-col-2-3">
-            <TimetableView />
-          </div>
-        ) : (
-          <ServiceSearchView />
-        )}
+        {selectedService ? <TimetableView /> : <ServiceSearchView />}
       </div>
     </>
   );
