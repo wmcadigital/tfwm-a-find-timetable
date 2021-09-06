@@ -95,16 +95,27 @@ const ServiceSearch = () => {
                         {searchResults.length} result{searchResults.length !== 1 && 's'}
                       </div>
                       <div className="wmnds-grid wmnds-grid--spacing-md-2-lg">
-                        {searchResults.map((result) => (
-                          <div
-                            key={`${result.Service.OperatorCode}_${
-                              result.Service.DestinationId
-                            }_${result.Service.Stateless.replace(':', '_')}`}
-                            className="wmnds-col-1 wmnds-col-md-1-2 wmnds-m-b-lg"
-                          >
-                            <ServiceResult result={result} />
-                          </div>
-                        ))}
+                        {searchResults
+                          .sort((a, b) =>
+                            a.Service.ServiceNumber.localeCompare(
+                              b.Service.ServiceNumber,
+                              navigator.languages[0] || navigator.language,
+                              {
+                                numeric: true,
+                                ignorePunctuation: true,
+                              }
+                            )
+                          )
+                          .map((result) => (
+                            <div
+                              key={`${result.Service.OperatorCode}_${
+                                result.Service.DestinationId
+                              }_${result.Service.Stateless.replace(':', '_')}`}
+                              className="wmnds-col-1 wmnds-col-md-1-2 wmnds-m-b-lg"
+                            >
+                              <ServiceResult result={result} />
+                            </div>
+                          ))}
                       </div>
                     </>
                   ) : (
