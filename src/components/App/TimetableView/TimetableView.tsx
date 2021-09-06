@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useFormContext } from 'globalState';
 // Import API hook
 import useTimetableAPI from 'globalState/customHooks/useTimetableAPI';
+import formatDate from 'globalState/helpers/formatDate';
 // Import components
 import Button from 'components/shared/Button/Button';
 import DisruptionIndicator from 'components/shared/DisruptionIndicator/DisruptionIndicatorMedium';
@@ -39,8 +40,7 @@ const TimetableView = () => {
   }, [inbound, outbound]);
 
   const d = new Date(selectedService!.Service.ValidityStart);
-  const month = d.toLocaleString('default', { month: 'long' });
-  const startDate = `${d.getDate()} ${month} ${d.getFullYear()}`;
+  const startDate = formatDate(d);
 
   return (
     <>

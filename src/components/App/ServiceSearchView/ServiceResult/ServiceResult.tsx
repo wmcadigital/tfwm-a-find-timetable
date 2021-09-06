@@ -1,5 +1,6 @@
 // Import context
 import { useFormContext } from 'globalState';
+import formatDate from 'globalState/helpers/formatDate';
 // Import types
 import { IServiceResult } from 'globalState/types/IServiceResult';
 // Import components
@@ -14,6 +15,11 @@ const ServiceResult = ({ result }: { result: IServiceResult }) => {
   const updateSelectedService = () => {
     formDispatch({ type: 'UPDATE_SELECTED_SERVICE', payload: result });
   };
+
+  const d = new Date(result.Service.ValidityStart);
+  const now = new Date();
+  const notYetValid = now < d;
+  const startDate = formatDate(d);
 
   return (
     <button
@@ -30,9 +36,9 @@ const ServiceResult = ({ result }: { result: IServiceResult }) => {
         </div>
       </div>
 
-      {!result && (
+      {notYetValid && (
         <WarningText iconClasses="wmnds-p-t-none">
-          This service will start <div>2 September 2021</div>
+          This service will start <div>{startDate}</div>
         </WarningText>
       )}
       <div>
