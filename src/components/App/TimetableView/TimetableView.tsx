@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // Import context
 import { useFormContext } from 'globalState';
 // Import API hook
@@ -17,6 +17,7 @@ import s from './TimetableView.module.scss';
 const TimetableView = () => {
   const [mapView, setMapView] = useState(false);
   const [showInbound, setShowInbound] = useState(true);
+  const [oneDirection, setOneDirection] = useState(false);
   const [{ selectedService }] = useFormContext();
   const { loading, results } = useTimetableAPI();
   const { inbound, outbound, routeMap } = results;
@@ -24,6 +25,22 @@ const TimetableView = () => {
   const reversedDescription = selectedService?.Service.RouteDescription.split(' - ')
     .reverse()
     .join(' - ');
+
+  useEffect(() => {
+    if (!inbound.length) {
+      setOneDirection(true);
+      setShowInbound(false);
+    } else if (!outbound.length) {
+      setOneDirection(true);
+      setShowInbound(false);
+    } else {
+      setOneDirection(false);
+    }
+  }, [inbound, outbound]);
+
+  const d = new Date(selectedService!.Service.ValidityStart);
+  const month = d.toLocaleString('default', { month: 'long' });
+  const startDate = `${d.getDate()} ${month} ${d.getFullYear()}`;
 
   return (
     <>
@@ -43,19 +60,21 @@ const TimetableView = () => {
                   {showInbound ? selectedService?.Service.RouteDescription : reversedDescription}
                 </h1>
               </div>
-              <div className="wmnds-col-auto">
-                <Button
-                  onClick={() => setShowInbound(!showInbound)}
-                  btnClass="wmnds-btn--secondary"
-                  text="Change direction"
-                  iconRight="general-swap"
-                />
-              </div>
+              {!oneDirection && (
+                <div className="wmnds-col-auto">
+                  <Button
+                    onClick={() => setShowInbound(!showInbound)}
+                    btnClass="wmnds-btn--secondary"
+                    text="Change direction"
+                    iconRight="general-swap"
+                  />
+                </div>
+              )}
             </div>
             <p>
               <a href="#0">{selectedService?.Service.OperatorName}</a> runs this service
             </p>
-            <WarningText>This is the latest timetable (last updated 2 July 2021)</WarningText>
+            <WarningText>This is the latest timetable (last updated {startDate})</WarningText>
             <FileDownload
               text="Download ‘Full Timetable’ (PDF)"
               fileName="timetable.pdf"

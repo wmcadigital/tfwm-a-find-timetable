@@ -13,6 +13,7 @@ const useTimetableAPI = () => {
   const [results, setResults] = useState<any>({
     inbound: [],
     outbound: [],
+    routeMap: [],
   });
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
@@ -85,14 +86,14 @@ const useTimetableAPI = () => {
     )}/${selectedService!.Service.Version}/Outbound/0`;
     const routeMapPath = `https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/getRouteMap/${encodeURI(
       selectedService!.Service.Stateless.replaceAll(':', '_')
-    )}/${selectedService!.Service.Version}/Inbound/0`;
+    )}/${selectedService!.Service.Version}/Outbound/0`;
 
     const inboundReq = axios.get(inboundPath, options);
     const outboundReq = axios.get(outboundPath, options);
     const routeMapReq = axios.get(routeMapPath, options);
 
     axios
-      .all([outboundReq, inboundReq, routeMapReq])
+      .all([inboundReq, outboundReq, routeMapReq])
       .then(axios.spread((...responses) => mounted.current && handleApiResponse(responses)))
       .catch(handleApiError);
   }, [handleApiResponse, startApiTimeout, selectedService]);
