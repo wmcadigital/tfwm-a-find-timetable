@@ -1,6 +1,7 @@
 import {
   getSearchParam,
   setSearchParam,
+  setRailParams,
   delSearchParam,
   getAllSearchParams,
 } from 'globalState/helpers/URLSearchParams';
@@ -12,6 +13,10 @@ export const initialState = (() => {
     selectedService: null,
     selectedMode: getSearchParam('mode') || null,
     busQuery: getSearchParam('q') || '',
+    trainQuery: {
+      from: getSearchParam('from') || '',
+      to: getSearchParam('to') || '',
+    },
   };
 
   return state;
@@ -27,6 +32,10 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
     case 'UPDATE_BUS_QUERY':
       setSearchParam('q', action.payload);
       return { ...state, busQuery: action.payload };
+    case 'UPDATE_RAIL_QUERY':
+      setRailParams('from', action.payload.from);
+      setRailParams('to', action.payload.to);
+      return { ...state, trainQuery: action.payload };
     case 'CLEAR_SEARCH':
       getAllSearchParams().forEach((param) => {
         delSearchParam(param);

@@ -4,6 +4,10 @@ export type State = {
   selectedMode: string | null;
   selectedService: IServiceResult | null;
   busQuery: string;
+  trainQuery: {
+    from: string;
+    to: string;
+  };
 };
 
 export type StateAction =
@@ -18,6 +22,13 @@ export type StateAction =
   | {
       type: 'UPDATE_BUS_QUERY';
       payload: string;
+    }
+  | {
+      type: 'UPDATE_RAIL_QUERY';
+      payload: {
+        from: string;
+        to: string;
+      };
     }
   | {
       type: 'CLEAR_SEARCH';

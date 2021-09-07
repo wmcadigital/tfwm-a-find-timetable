@@ -9,7 +9,8 @@ import Dropdown from 'components/shared/Dropdown/Dropdown';
 import Loader from 'components/shared/Loader/Loader';
 import Message from 'components/shared/Message/Message';
 import ServiceResult from './ServiceResult/ServiceResult';
-import BusAutoComplete from '../BusAutoComplete/BusAutoComplete';
+import BusAutoComplete from './BusAutoComplete/BusAutoComplete';
+import TrainAutoComplete from './TrainAutoComplete/TrainAutoComplete';
 import ModeSelect from './ModeSelect/ModeSelect';
 
 const ServiceSearch = () => {
@@ -79,6 +80,11 @@ const ServiceSearch = () => {
                   </div>
                 )}
               </>
+            )}
+            {selectedMode === 'rail' && (
+              <div className="wmnds-m-t-lg">
+                <TrainAutoComplete />
+              </div>
             )}
           </div>
         </div>

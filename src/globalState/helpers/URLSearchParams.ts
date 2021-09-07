@@ -42,4 +42,12 @@ const delSearchParam = (name: string) => {
   window.history.pushState({}, '', url.href); // Then push the updated search params back to the URL
 };
 
-export { getAllSearchParams, getSearchParam, setSearchParam, delSearchParam }; // Return functions, so they can be called independently
+const setRailParams = (name: 'from' | 'to', payload: string) => {
+  if (payload && payload?.length > 0) {
+    setSearchParam(name, payload);
+  } else {
+    delSearchParam(name);
+  }
+};
+
+export { getAllSearchParams, getSearchParam, setSearchParam, delSearchParam, setRailParams }; // Return functions, so they can be called independently
