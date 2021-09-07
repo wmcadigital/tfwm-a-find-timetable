@@ -77,16 +77,12 @@ const useTimetableAPI = () => {
     const options = {
       cancelToken: source.current.token, // Set token with API call, so we can cancel this call on unmount
     };
-
-    const inboundPath = `https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/GetStopsOnRoute/${encodeURI(
-      selectedService!.Service.Stateless.replaceAll(':', '_')
-    )}/${selectedService!.Service.Version}/Inbound/0`;
-    const outboundPath = `https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/GetStopsOnRoute/${encodeURI(
-      selectedService!.Service.Stateless.replaceAll(':', '_')
-    )}/${selectedService!.Service.Version}/Outbound/0`;
-    const routeMapPath = `https://journeyplanner.networkwestmidlands.com/api/TimetableStopApi/getRouteMap/${encodeURI(
-      selectedService!.Service.Stateless.replaceAll(':', '_')
-    )}/${selectedService!.Service.Version}/Outbound/0`;
+    const apiPath = 'https://journeyplanner.networkwestmidlands.com/api';
+    const stateless = encodeURI(selectedService!.Service.Stateless.replaceAll(':', '_'));
+    const version = selectedService!.Service.Version;
+    const inboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Inbound/0`;
+    const outboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Outbound/0`;
+    const routeMapPath = `${apiPath}/TimetableStopApi/getRouteMap/${stateless}/${version}/Outbound/0`;
 
     const inboundReq = axios.get(inboundPath, options);
     const outboundReq = axios.get(outboundPath, options);

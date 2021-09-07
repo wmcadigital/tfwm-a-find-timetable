@@ -78,7 +78,11 @@ const TimetableView = () => {
             <FileDownload
               text="Download ‘Full Timetable’ (PDF)"
               fileName="timetable.pdf"
-              href="#0"
+              href={`https://journeyplanner.networkwestmidlands.com/Timetables/Download/${encodeURI(
+                selectedService!.Service.Stateless.replaceAll(':', '_')
+              )}/${selectedService!.Service.Version}/${encodeURI(
+                selectedService!.Service.OperatorName
+              )}_${selectedService!.Service.ServiceNumber}/False`}
             />
             <h2 className="wmnds-h3 wmnds-m-b-md">When</h2>
             <div>
