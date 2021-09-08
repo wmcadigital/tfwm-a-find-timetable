@@ -11,10 +11,11 @@ import Message from 'components/shared/Message/Message';
 import ServiceResult from './ServiceResult/ServiceResult';
 import BusAutoComplete from './BusAutoComplete/BusAutoComplete';
 import TrainAutoComplete from './TrainAutoComplete/TrainAutoComplete';
+import TrainResult from './TrainResult/TrainResult';
 import ModeSelect from './ModeSelect/ModeSelect';
 
 const ServiceSearch = () => {
-  const [{ selectedMode, busQuery }, formDispatch] = useFormContext();
+  const [{ selectedMode, busQuery, stations }, formDispatch] = useFormContext();
   const { loading, results, errorInfo, getAPIResults } = useServiceAPI();
   const [searchResults, setSearchResults] = useState(results);
 
@@ -136,10 +137,13 @@ const ServiceSearch = () => {
             </>
           )}
           {selectedMode === 'rail' && (
-            <p>
-              You can find train timetables on the train company’s website. To find which train
-              company runs your service, enter the stations you’ll travel between.
-            </p>
+            <>
+              <p>
+                You can find train timetables on the train company’s website. To find which train
+                company runs your service, enter the stations you’ll travel between.
+              </p>
+              {stations.from?.name && stations.to?.name && <TrainResult />}
+            </>
           )}
         </div>
       </div>
