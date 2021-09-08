@@ -14,8 +14,12 @@ export const initialState = (() => {
     selectedMode: getSearchParam('mode') || null,
     busQuery: getSearchParam('q') || '',
     trainQuery: {
-      from: getSearchParam('from') || '',
-      to: getSearchParam('to') || '',
+      from: getSearchParam('qf') || '',
+      to: getSearchParam('qt') || '',
+    },
+    stations: {
+      from: { id: getSearchParam('from') || null },
+      to: { id: getSearchParam('to') || null },
     },
   };
 
@@ -33,9 +37,13 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
       setSearchParam('q', action.payload);
       return { ...state, busQuery: action.payload };
     case 'UPDATE_RAIL_QUERY':
-      setRailParams('from', action.payload.from);
-      setRailParams('to', action.payload.to);
+      setRailParams('qf', action.payload.from);
+      setRailParams('qt', action.payload.to);
       return { ...state, trainQuery: action.payload };
+    case 'UPDATE_RAIL_STATIONS':
+      setRailParams('from', action.payload.from?.id || '');
+      setRailParams('to', action.payload.to?.id || '');
+      return { ...state, stations: action.payload };
     case 'CLEAR_SEARCH':
       getAllSearchParams().forEach((param) => {
         delSearchParam(param);

@@ -1,4 +1,5 @@
 import { IServiceResult } from '../types/IServiceResult';
+import { IStation } from '../types/IStation';
 
 export type State = {
   selectedMode: string | null;
@@ -7,6 +8,10 @@ export type State = {
   trainQuery: {
     from: string;
     to: string;
+  };
+  stations: {
+    from: Partial<IStation> | null;
+    to: Partial<IStation> | null;
   };
 };
 
@@ -28,6 +33,13 @@ export type StateAction =
       payload: {
         from: string;
         to: string;
+      };
+    }
+  | {
+      type: 'UPDATE_RAIL_STATIONS';
+      payload: {
+        from: Partial<IStation> | null;
+        to: Partial<IStation> | null;
       };
     }
   | {

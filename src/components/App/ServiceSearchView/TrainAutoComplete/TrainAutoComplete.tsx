@@ -1,19 +1,65 @@
+import { useEffect } from 'react';
 // Import context
 import { useFormContext } from 'globalState';
 // Import components
 import AutoComplete from 'components/shared/AutoComplete/AutoComplete';
+import useTrainServiceAPI from './customHooks/useTrainServiceAPI';
 
-const TrainAutoComplete = () => {
-  const [{ trainQuery }, formDispatch] = useFormContext();
+const TrainAutoComplete = ({ name }: { name: 'from' | 'to' }) => {
+  const [{ trainQuery, stations }, formDispatch] = useFormContext();
+  const { loading, results } = useTrainServiceAPI(trainQuery[name]);
 
   // set query state on input change
-  const onUpdate = (e: React.ChangeEvent<HTMLInputElement>, direction: 'from' | 'to') => {
+  const onUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
     formDispatch({
       type: 'UPDATE_RAIL_QUERY',
-      payload: { ...trainQuery, [direction]: e.target.value },
+      payload: { ...trainQuery, [name]: e.target.value },
     });
   };
 
+  const onSelect = (result: any) => {
+    formDispatch({
+      type: 'UPDATE_RAIL_STATIONS',
+      payload: { ...stations, [name]: result },
+    });
+  };
+
+  const onClear = () => {
+    formDispatch({
+      type: 'UPDATE_RAIL_STATIONS',
+      payload: { ...stations, [name]: null },
+    });
+  };
+
+  useEffect(() => {
+    if (results.length && stations[name]?.id && !stations[name]?.name) {
+      const selectedItem = results.find((stn) => stn.id === stations[name]!.id);
+      if (selectedItem) {
+        formDispatch({
+          type: 'UPDATE_RAIL_STATIONS',
+          payload: { ...stations, [name]: selectedItem },
+        });
+      }
+    }
+  }, [stations, results, formDispatch, name]);
+
+  return (
+    <AutoComplete
+      id={`trainSearch${name}`}
+      name="trainSearch"
+      loading={loading}
+      placeholder="Search"
+      onUpdate={(e) => onUpdate(e)}
+      results={results}
+      initialQuery={trainQuery[name] || ''}
+      selectedItem={stations[name]?.name ? stations[name] : null}
+      onSelectResult={onSelect}
+      onClear={onClear}
+    />
+  );
+};
+
+const TrainAutoCompleteFields = () => {
   return (
     <div>
       <div className="wmnds-m-b-sm">
@@ -21,27 +67,15 @@ const TrainAutoComplete = () => {
           From
         </label>
       </div>
-      <AutoComplete
-        id="trainSearchFrom"
-        name="trainSearch"
-        placeholder="Search"
-        onUpdate={(e) => onUpdate(e, 'from')}
-        initialQuery={trainQuery?.from || ''}
-      />
+      <TrainAutoComplete name="from" />
       <div className="wmnds-m-t-md wmnds-m-b-sm">
         <label className="wmnds-h4" htmlFor="trainSearchTo">
           To
         </label>
       </div>
-      <AutoComplete
-        id="trainSearchTo"
-        name="trainSearch"
-        placeholder="Search"
-        onUpdate={(e) => onUpdate(e, 'to')}
-        initialQuery={trainQuery?.to || ''}
-      />
+      <TrainAutoComplete name="to" />
     </div>
   );
 };
 
-export default TrainAutoComplete;
+export default TrainAutoCompleteFields;

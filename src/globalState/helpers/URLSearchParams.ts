@@ -42,7 +42,7 @@ const delSearchParam = (name: string) => {
   window.history.pushState({}, '', url.href); // Then push the updated search params back to the URL
 };
 
-const setRailParams = (name: 'from' | 'to', payload: string) => {
+const setRailParams = (name: 'qf' | 'qt' | 'from' | 'to', payload: string) => {
   if (payload && payload?.length > 0) {
     setSearchParam(name, payload);
   } else {
