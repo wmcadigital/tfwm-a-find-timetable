@@ -60,23 +60,35 @@ const useCreateMapView = (mapContainerRef: any, results: any) => {
         }),
       });
 
-      const stopGraphics = results.Bounds.map((result: any) => {
-        return new Graphic({
-          geometry: {
-            type: 'point',
-            longitude: result.lng,
-            latitude: result.lat,
-            spatialreference: {
-              wkid: 4326,
-            },
+      const stopMarker = {
+        type: 'picture-marker',
+        url: mapMarker,
+        width: 24,
+        height: 24,
+      };
+
+      const stopA = new Graphic({
+        geometry: {
+          type: 'point',
+          longitude: results.Coordinates[0][0].lng,
+          latitude: results.Coordinates[0][0].lat,
+          spatialreference: {
+            wkid: 4326,
           },
-          symbol: {
-            type: 'picture-marker',
-            url: mapMarker,
-            width: 24,
-            height: 24,
+        },
+        symbol: stopMarker,
+      });
+
+      const stopB = new Graphic({
+        geometry: {
+          type: 'point',
+          longitude: results.Coordinates[0][results.Coordinates[0].length - 1].lng,
+          latitude: results.Coordinates[0][results.Coordinates[0].length - 1].lat,
+          spatialreference: {
+            wkid: 4326,
           },
-        });
+        },
+        symbol: stopMarker,
       });
 
       const polylineGraphic = new Graphic({
@@ -92,7 +104,7 @@ const useCreateMapView = (mapContainerRef: any, results: any) => {
       });
 
       const stopsLayer = new GraphicsLayer({
-        graphics: [polylineGraphic, ...stopGraphics],
+        graphics: [polylineGraphic, stopA, stopB],
       });
 
       view.map.add(stopsLayer);
@@ -109,7 +121,7 @@ const useCreateMapView = (mapContainerRef: any, results: any) => {
       // eslint-disable-next-line no-console
       console.log(e);
     }
-  }, [mapContainerRef]);
+  }, [mapContainerRef, results]);
 
   useEffect(() => {
     if (!isCreated) {
