@@ -46,7 +46,7 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
       return { ...state, stations: action.payload };
     case 'CLEAR_SEARCH':
       getAllSearchParams().forEach((param) => {
-        delSearchParam(param);
+        delSearchParam(param.name);
       });
       return initialState;
     // Default should return initial state if error

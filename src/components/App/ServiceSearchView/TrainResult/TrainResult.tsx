@@ -45,8 +45,8 @@ const TrainResult = () => {
         <div className="wmnds-inset-text">
           {results.length > 0 && (
             <p>
-              {operatorArray} run trains from {from?.name} and {to?.name}. Visit their website to
-              view timetables.
+              {operatorArray} run trains from or between {from?.name} and {to?.name}. Visit their
+              website to view timetables.
             </p>
           )}
           <p>
