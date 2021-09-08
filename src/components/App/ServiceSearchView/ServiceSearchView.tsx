@@ -31,6 +31,10 @@ const ServiceSearch = () => {
     return uniqueCompanies.map((company) => ({ text: company, value: company }));
   };
 
+  const resetForm = () => {
+    formDispatch({ type: 'CLEAR_SEARCH' });
+  };
+
   useEffect(() => {
     setSearchResults(results);
     if (selectedMode === 'metro' && results.length === 1) {
@@ -59,7 +63,7 @@ const ServiceSearch = () => {
         <div className="wmnds-col-1 wmnds-col-md-1-3">
           <div className="wmnds-p-md wmnds-bg-white">
             <div className="wmnds-m-b-md wmnds-text-align-right">
-              <Button text="Clear search" btnClass="wmnds-btn--link" />
+              <Button text="Clear search" onClick={resetForm} btnClass="wmnds-btn--link" />
             </div>
             <ModeSelect />
             {selectedMode === 'bus' && (
