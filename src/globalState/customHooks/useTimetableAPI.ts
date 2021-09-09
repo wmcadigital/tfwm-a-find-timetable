@@ -8,7 +8,7 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useTimetableAPI = () => {
+const useTimetableAPI = (when: string, isInbound?: boolean) => {
   const [{ selectedService }] = useFormContext();
   const [results, setResults] = useState<any>({
     inbound: [],
@@ -80,9 +80,11 @@ const useTimetableAPI = () => {
     const apiPath = 'https://journeyplanner.networkwestmidlands.com/api';
     const stateless = encodeURI(selectedService!.Service.Stateless.replaceAll(':', '_'));
     const version = selectedService!.Service.Version;
-    const inboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Inbound/0`;
-    const outboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Outbound/0`;
-    const routeMapPath = `${apiPath}/TimetableStopApi/getRouteMap/${stateless}/${version}/Outbound/0`;
+    const inboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Inbound/${when}`;
+    const outboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Outbound/${when}`;
+    const routeMapPath = `${apiPath}/TimetableStopApi/getRouteMap/${stateless}/${version}/${
+      isInbound ? 'Inbound' : 'Outbound'
+    }/${when}`;
 
     const inboundReq = axios.get(inboundPath, options);
     const outboundReq = axios.get(outboundPath, options);
@@ -92,7 +94,7 @@ const useTimetableAPI = () => {
       .all([inboundReq, outboundReq, routeMapReq])
       .then(axios.spread((...responses) => mounted.current && handleApiResponse(responses)))
       .catch(handleApiError);
-  }, [handleApiResponse, startApiTimeout, selectedService]);
+  }, [handleApiResponse, startApiTimeout, selectedService, isInbound, when]);
 
   useEffect(() => {
     getAPIResults();
