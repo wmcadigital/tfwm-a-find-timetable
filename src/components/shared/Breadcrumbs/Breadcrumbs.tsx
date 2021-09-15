@@ -4,7 +4,7 @@ const { REACT_APP_TITLE } = process.env;
 
 function Breadcrumbs() {
   return (
-    <nav aria-label="Breadcrumb" className="wmnds-breadcrumb">
+    <nav aria-label="Breadcrumb" className="wmnds-breadcrumb wmnds-p-t-none">
       <ol className="wmnds-breadcrumb__list">
         <li className="wmnds-breadcrumb__list-item">
           <a href="//wmnetwork.co.uk" className="wmnds-breadcrumb__link">
