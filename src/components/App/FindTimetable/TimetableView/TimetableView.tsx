@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 // Import context
 import { useFormContext } from 'globalState';
 // Import API hook
-import useTimetableHeaderAPI from 'globalState/customHooks/useTimetableHeaderAPI';
-import useTimetableAPI from 'globalState/customHooks/useTimetableAPI';
+import useTimetableHeaderAPI from 'components/App/FindTimetable/customHooks/useTimetableHeaderAPI';
+import useTimetableAPI from 'components/App/FindTimetable/customHooks/useTimetableAPI';
 import formatDate from 'globalState/helpers/formatDate';
 // Import components
 import Button from 'components/shared/Button/Button';
