@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useFormContext } from 'globalState';
 import axios from 'axios';
@@ -8,7 +9,7 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useTimetableAPI = (when: string, isInbound?: boolean) => {
+const useTimetableAPI = (when: string, isInbound?: boolean, serviceId?: string) => {
   const [{ selectedService }] = useFormContext();
   const [results, setResults] = useState<any>({
     inbound: [],
@@ -36,15 +37,38 @@ const useTimetableAPI = (when: string, isInbound?: boolean) => {
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
   const handleApiResponse = useCallback((responses) => {
+    const serializeStopData = (data: any) => {
+      let matchedStopIndex = 0;
+      const fixedBody = data
+        .split('"NaptanIds"')
+        .map((fragment: any) => {
+          let index = 0;
+          return fragment.replace(/(string)/g, (match: any) => {
+            return `${match}_${(index++).toString().padStart(3, '0')}`;
+          });
+        })
+        .join('"NaptanIds"')
+        .replace(/(MatchedStop)/g, (match: any) => {
+          return `${match}_${(matchedStopIndex++).toString().padStart(3, '0')}`;
+        });
+      return JSON.parse(fixedBody);
+    };
+
     const inbound = responses[0];
     const outbound = responses[1];
     const routeMap = responses[2];
+    const rawStopData = serializeStopData(responses[3].data);
+
+    const stopData: any = Object.keys(rawStopData.RouteSequence.Stations).map(
+      (stop) => rawStopData.RouteSequence.Stations[stop]
+    );
 
     if (responses.some((res: any) => res?.data.length > 0)) {
       setResults({
         inbound: inbound.data,
         outbound: outbound.data,
         routeMap: routeMap.data,
+        stopData,
       });
     }
     clearApiTimeout();
@@ -52,56 +76,71 @@ const useTimetableAPI = (when: string, isInbound?: boolean) => {
   }, []);
 
   const handleApiError = (errors: any[]) => {
-    errors.forEach((error) => {
-      setLoading(false); // Set loading state to false after data is received
-      setErrorInfo({
-        // Update error message
-        title: 'Please try again',
-        message: 'Apologies, we are having technical difficulties.',
-        isTimeoutError: axios.isCancel(error),
-      });
-      setResults([]); // Reset the results
-      if (!axios.isCancel(error)) {
-        // eslint-disable-next-line no-console
-        console.log({ error });
-      }
+    setLoading(false); // Set loading state to false after data is received
+    setErrorInfo({
+      // Update error message
+      title: 'Please try again',
+      message: 'Apologies, we are having technical difficulties.',
+      isTimeoutError: axios.isCancel(errors),
     });
+    setResults([]); // Reset the results
+    if (!axios.isCancel(errors)) {
+      // eslint-disable-next-line no-console
+      console.log({ errors });
+    }
   };
 
   // Take main function out of useEffect, so it can be called elsewhere to retry the search
   const getAPIResults = useCallback(() => {
     source.current = axios.CancelToken.source();
     mounted.current = true; // Set mounted to true (used later to make sure we don't do events as component is unmounting)
+    const { REACT_APP_API_HOST, REACT_APP_API_KEY } = process.env; // Destructure env vars
     setLoading(true); // Update loading state to true as we are hitting API
     startApiTimeout();
     const options = {
       cancelToken: source.current.token, // Set token with API call, so we can cancel this call on unmount
     };
+    const headers = {
+      'Ocp-Apim-Subscription-Key': REACT_APP_API_KEY,
+      'Content-Type': 'text/plain',
+    };
+    const lineId = serviceId || selectedService!.Service.ItoLineId;
+    console.log(serviceId, selectedService!.Service.ItoLineId);
+    const direction = isInbound ? 'Inbound' : 'Outbound';
     const apiPath = 'https://journeyplanner.networkwestmidlands.com/api';
     const stateless = encodeURI(selectedService!.Service.Stateless.replaceAll(':', '_'));
     const version = selectedService!.Service.Version;
     const inboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Inbound/${when}`;
     const outboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Outbound/${when}`;
-    const routeMapPath = `${apiPath}/TimetableStopApi/getRouteMap/${stateless}/${version}/${
-      isInbound ? 'Inbound' : 'Outbound'
-    }/${when}`;
+    const routeMapPath = `${apiPath}/TimetableStopApi/getRouteMap/${stateless}/${version}/${direction}/${when}`;
+    const mapPath = `${REACT_APP_API_HOST}/Tfwm-Api/Line/${lineId}/Route/sequence/${direction}`;
 
     const inboundReq = axios.get(inboundPath, options);
     const outboundReq = axios.get(outboundPath, options);
     const routeMapReq = axios.get(routeMapPath, options);
+    const mapReq = axios({
+      method: 'get',
+      url: mapPath,
+      headers,
+      transformResponse: [
+        (data) => {
+          return data;
+        },
+      ], // forces data to return raw text as data needs to be serialized properly
+    });
 
     axios
-      .all([inboundReq, outboundReq, routeMapReq])
+      .all([inboundReq, outboundReq, routeMapReq, mapReq])
       .then(axios.spread((...responses) => mounted.current && handleApiResponse(responses)))
       .catch(handleApiError);
-  }, [handleApiResponse, startApiTimeout, selectedService, isInbound, when]);
+  }, [handleApiResponse, startApiTimeout, selectedService, isInbound, when, serviceId]);
 
   useEffect(() => {
     getAPIResults();
     // Unmount / cleanup
     return () => {
       mounted.current = false; // Set mounted back to false on unmount
-      cancelRequest(); // cancel the request
+      // cancelRequest(); // cancel the request
       clearApiTimeout(); // clear timeout
     };
   }, [getAPIResults]);

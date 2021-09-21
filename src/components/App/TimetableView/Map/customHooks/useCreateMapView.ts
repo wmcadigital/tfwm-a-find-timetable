@@ -10,14 +10,16 @@ const useCreateMapView = (mapContainerRef: any, results: any) => {
   const createMapView = useCallback(async () => {
     try {
       setDefaultOptions({ css: true }); // Load esri css by default
-      const [Map, MapView, Basemap, VectorTileLayer, Graphic, GraphicsLayer] = await loadModules([
-        'esri/Map',
-        'esri/views/MapView',
-        'esri/Basemap',
-        'esri/layers/VectorTileLayer',
-        'esri/Graphic',
-        'esri/layers/GraphicsLayer',
-      ]);
+      const [Map, MapView, Basemap, VectorTileLayer, Graphic, GraphicsLayer, FeatureLayer] =
+        await loadModules([
+          'esri/Map',
+          'esri/views/MapView',
+          'esri/Basemap',
+          'esri/layers/VectorTileLayer',
+          'esri/Graphic',
+          'esri/layers/GraphicsLayer',
+          'esri/layers/FeatureLayer',
+        ]);
 
       const basemap = new Basemap({
         baseLayers: [
@@ -40,41 +42,26 @@ const useCreateMapView = (mapContainerRef: any, results: any) => {
         },
       });
 
-      const stopMarker = {
-        type: 'picture-marker',
-        url: mapMarker,
-        width: 24,
-        height: 24,
-      };
-
-      const stopA = new Graphic({
-        geometry: {
-          type: 'point',
-          longitude: results.Coordinates[0][0].lng,
-          latitude: results.Coordinates[0][0].lat,
-          spatialreference: {
-            wkid: 4326,
+      const stopGraphics = results.stopData.map((stop: any) => {
+        return new Graphic({
+          attributes: {
+            name: stop.Name,
           },
-        },
-        symbol: stopMarker,
-      });
-
-      const stopB = new Graphic({
-        geometry: {
-          type: 'point',
-          longitude: results.Coordinates[0][results.Coordinates[0].length - 1].lng,
-          latitude: results.Coordinates[0][results.Coordinates[0].length - 1].lat,
-          spatialreference: {
-            wkid: 4326,
+          geometry: {
+            type: 'point',
+            longitude: stop.Lon,
+            latitude: stop.Lat,
+            spatialreference: {
+              wkid: 4326,
+            },
           },
-        },
-        symbol: stopMarker,
+        });
       });
 
       const polylineGraphic = new Graphic({
         geometry: {
           type: 'polyline',
-          paths: results.Coordinates[0].map((coords: any) => [coords.lng, coords.lat]),
+          paths: results.routeMap.Coordinates[0].map((coords: any) => [coords.lng, coords.lat]),
         },
         symbol: {
           type: 'simple-line',
@@ -83,11 +70,60 @@ const useCreateMapView = (mapContainerRef: any, results: any) => {
         },
       });
 
-      const stopsLayer = new GraphicsLayer({
-        graphics: [polylineGraphic, stopA, stopB],
+      const routeLayer = new GraphicsLayer({
+        graphics: [polylineGraphic],
       });
 
+      const stopsLayer = new FeatureLayer({
+        id: 'serviceStopsMapView',
+        title: 'Stops on this route',
+        source: stopGraphics,
+        objectIdField: 'oid',
+        fields: [
+          {
+            name: 'oid',
+            alias: 'ObjectID',
+            type: 'oid',
+          },
+          {
+            name: 'name',
+            alias: 'name',
+            type: 'string',
+          },
+        ],
+        renderer: {
+          type: 'simple',
+          symbol: {
+            type: 'picture-marker',
+            url: mapMarker,
+            width: 24,
+            height: 24,
+          },
+        },
+      });
+
+      const popup = {
+        featureCount: 0,
+        actions: [
+          {
+            title: '{name}',
+            id: 'add-stop',
+            image: mapMarker,
+            className: 'esri-add-stop',
+          },
+        ],
+      };
+      stopsLayer.popupTemplate = popup;
+
+      view.map.add(routeLayer);
       view.map.add(stopsLayer);
+
+      view.popup.visibleElements = {
+        featureNavigation: false,
+      };
+      view.popup.dockEnabled = false;
+      view.popup.highlightEnabled = true;
+      // view.popup.dockOptions = { buttonEnabled: false };
 
       // Move ui elements into the right position
       view.ui.move(['zoom'], 'top-right');
