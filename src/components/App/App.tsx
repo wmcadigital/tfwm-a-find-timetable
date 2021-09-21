@@ -11,10 +11,10 @@ const ViewToShow = () => {
   const [{ selectedService }] = useFormContext();
   return (
     <>
-      <div className="wmnds-container">
+      <div className="wmnds-m-b-md">
         <Breadcrumbs />
       </div>
-      <div className="wmnds-container wmnds-p-t-lg wmnds-p-b-lg">
+      <div className="wmnds-p-b-lg">
         {selectedService ? <TimetableView /> : <ServiceSearchView />}
       </div>
     </>
