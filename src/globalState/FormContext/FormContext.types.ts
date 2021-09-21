@@ -1,5 +1,5 @@
-import { IServiceResult } from '../types/IServiceResult';
-import { IStation } from '../types/IStation';
+import { IServiceResult } from '../../components/App/FindTimetable/types/IServiceResult';
+import { IStation } from '../../components/App/FindTimetable/types/IStation';
 
 export type State = {
   selectedMode: string | null;

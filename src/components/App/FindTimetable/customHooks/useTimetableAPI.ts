@@ -105,7 +105,6 @@ const useTimetableAPI = (when: string, isInbound?: boolean, serviceId?: string) 
       'Content-Type': 'text/plain',
     };
     const lineId = serviceId || selectedService!.Service.ItoLineId;
-    console.log(serviceId, selectedService!.Service.ItoLineId);
     const direction = isInbound ? 'Inbound' : 'Outbound';
     const apiPath = 'https://journeyplanner.networkwestmidlands.com/api';
     const stateless = encodeURI(selectedService!.Service.Stateless.replaceAll(':', '_'));

@@ -7,14 +7,12 @@ import TimetableView from './TimetableView/TimetableView';
 const FindTimetable = () => {
   const [{ selectedService }] = useFormContext();
   return (
-    <>
+    <div className="wmnds-container wmnds-p-b-lg">
       <div className="wmnds-m-b-md">
         <Breadcrumbs />
       </div>
-      <div className="wmnds-p-b-lg">
-        {selectedService ? <TimetableView /> : <ServiceSearchView />}
-      </div>
-    </>
+      {selectedService ? <TimetableView /> : <ServiceSearchView />}
+    </div>
   );
 };
 
