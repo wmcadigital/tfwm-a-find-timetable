@@ -1,6 +1,8 @@
 import { useStopStationContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
 import ModeSelect from 'components/shared/ModeSelect/ModeSelect';
+import LocationSearch from './LocationSearch';
+import RadiusSearch from './RadiusSearch/RadiusSearch';
 
 const StopStationSearch = () => {
   const [, stopStationDispatch] = useStopStationContext();
@@ -22,6 +24,8 @@ const StopStationSearch = () => {
         handleSelect={handleSelect}
         classes="wmnds-grid--spacing-3-md"
       />
+      <LocationSearch />
+      <RadiusSearch />
     </div>
   );
 };
