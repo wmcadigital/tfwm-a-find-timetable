@@ -9,7 +9,13 @@ const ServiceModeSelect = () => {
     timetableDispatch({ type: 'UPDATE_SELECTED_MODE', payload: mode });
   };
 
-  return <ModeSelect selectedMode={selectedMode} handleSelect={handleSelect} />;
+  return (
+    <ModeSelect
+      selectedMode={selectedMode}
+      handleSelect={handleSelect}
+      classes="wmnds-grid--justify-between"
+    />
+  );
 };
 
 export default ServiceModeSelect;
