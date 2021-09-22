@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useFormContext } from 'globalState';
+import { useTimetableContext } from 'globalState';
 import axios from 'axios';
 
 interface IError {
@@ -10,7 +10,7 @@ interface IError {
 }
 
 const useTimetableAPI = (when: string, isInbound?: boolean, serviceId?: string) => {
-  const [{ selectedService }] = useFormContext();
+  const [{ selectedService }] = useTimetableContext();
   const [results, setResults] = useState<any>({
     inbound: [],
     outbound: [],

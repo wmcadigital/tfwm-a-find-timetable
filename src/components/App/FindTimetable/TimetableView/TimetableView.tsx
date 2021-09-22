@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 // Import context
-import { useFormContext } from 'globalState';
+import { useTimetableContext } from 'globalState';
 // Import API hook
 import useTimetableHeaderAPI from 'components/App/FindTimetable/customHooks/useTimetableHeaderAPI';
 import useTimetableAPI from 'components/App/FindTimetable/customHooks/useTimetableAPI';
@@ -29,7 +29,7 @@ const TimetableHeader = ({
   toggleDirection: () => void;
   handleWhen: (w: string) => void;
 }) => {
-  const [{ selectedService }] = useFormContext();
+  const [{ selectedService }] = useTimetableContext();
   const [timetableData, setTimetableData] = useState<any>(null);
   const d = new Date(timetableHeader.BaseRoute.ValidFrom);
   const startDate = formatDate(d);

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useFormContext } from 'globalState';
+import { useTimetableContext } from 'globalState';
 import axios from 'axios';
 
 interface IError {
@@ -9,7 +9,7 @@ interface IError {
 }
 
 const useTimetableAPI = () => {
-  const [{ stations }] = useFormContext();
+  const [{ stations }] = useTimetableContext();
   const [results, setResults] = useState<any>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging

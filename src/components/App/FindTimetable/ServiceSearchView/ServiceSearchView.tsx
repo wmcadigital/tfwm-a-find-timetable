@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // Import context
-import { useFormContext } from 'globalState';
+import { useTimetableContext } from 'globalState';
 // Import API hook
 import useServiceAPI from 'components/App/FindTimetable/customHooks/useServiceAPI';
 // Import components
@@ -15,7 +15,7 @@ import TrainResult from './TrainResult/TrainResult';
 import ModeSelect from './ModeSelect/ModeSelect';
 
 const ServiceSearch = () => {
-  const [{ selectedMode, busQuery, stations }, formDispatch] = useFormContext();
+  const [{ selectedMode, busQuery, stations }, timetableDispatch] = useTimetableContext();
   const { loading, results, errorInfo, getAPIResults } = useServiceAPI();
   const [searchResults, setSearchResults] = useState(results);
 
@@ -33,15 +33,15 @@ const ServiceSearch = () => {
   };
 
   const resetForm = () => {
-    formDispatch({ type: 'CLEAR_SEARCH' });
+    timetableDispatch({ type: 'CLEAR_SEARCH' });
   };
 
   useEffect(() => {
     setSearchResults(results);
     if (selectedMode === 'metro' && results.length === 1) {
-      formDispatch({ type: 'UPDATE_SELECTED_SERVICE', payload: results[0] });
+      timetableDispatch({ type: 'UPDATE_SELECTED_SERVICE', payload: results[0] });
     }
-  }, [results, formDispatch, selectedMode]);
+  }, [results, timetableDispatch, selectedMode]);
 
   const handleFilterResults = (e: any) => {
     setSearchResults(results.filter((result) => result.Service.OperatorName === e.target.value));

@@ -1,5 +1,5 @@
 // Import context
-import { useFormContext } from 'globalState';
+import { useTimetableContext } from 'globalState';
 import formatDate from 'globalState/helpers/formatDate';
 // Import types
 import { IServiceResult } from 'components/App/FindTimetable/types/IServiceResult';
@@ -10,10 +10,10 @@ import WarningText from 'components/shared/WarningText/WarningText';
 import s from './ServiceResult.module.scss';
 
 const ServiceResult = ({ result }: { result: IServiceResult }) => {
-  const [, formDispatch] = useFormContext();
+  const [, timetableDispatch] = useTimetableContext();
 
   const updateSelectedService = () => {
-    formDispatch({ type: 'UPDATE_SELECTED_SERVICE', payload: result });
+    timetableDispatch({ type: 'UPDATE_SELECTED_SERVICE', payload: result });
   };
 
   const d = new Date(result.Service.ValidityStart);

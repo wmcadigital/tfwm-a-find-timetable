@@ -5,11 +5,11 @@ import {
   delSearchParam,
   getAllSearchParams,
 } from 'globalState/helpers/URLSearchParams';
-import * as TForm from './FormContext.types';
+import * as TTimetable from './TimetableContext.types';
 
 // Use an IIFE to define the initial state as we need to check session storage and query params
 export const initialState = (() => {
-  const state: TForm.State = {
+  const state: TTimetable.State = {
     selectedService: null,
     selectedMode: getSearchParam('mode') || null,
     busQuery: getSearchParam('q') || '',
@@ -26,7 +26,7 @@ export const initialState = (() => {
   return state;
 })();
 
-export const reducer = (state = initialState, action: TForm.StateAction): TForm.State => {
+export const reducer = (state = initialState, action: TTimetable.StateAction): TTimetable.State => {
   switch (action.type) {
     case 'UPDATE_SELECTED_MODE':
       setSearchParam('mode', action.payload);

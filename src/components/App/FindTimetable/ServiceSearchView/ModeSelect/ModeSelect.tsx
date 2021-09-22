@@ -1,12 +1,12 @@
 // Import context
-import { useFormContext } from 'globalState';
+import { useTimetableContext } from 'globalState';
 // Import components
 import Button from 'components/shared/Button/Button';
 
 const ModeSelect = () => {
-  const [{ selectedMode }, formDispatch] = useFormContext();
+  const [{ selectedMode }, timetableDispatch] = useTimetableContext();
   const selectMode = (mode: 'bus' | 'rail' | 'metro') => {
-    formDispatch({ type: 'UPDATE_SELECTED_MODE', payload: mode });
+    timetableDispatch({ type: 'UPDATE_SELECTED_MODE', payload: mode });
   };
 
   return (

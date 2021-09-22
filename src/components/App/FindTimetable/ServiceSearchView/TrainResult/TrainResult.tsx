@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useFormContext } from 'globalState';
+import { useTimetableContext } from 'globalState';
 import Loader from 'components/shared/Loader/Loader';
 import useTrainOperatorAPI from './customHooks/useTrainOperatorAPI';
 
@@ -23,7 +23,7 @@ const Operator = ({ name }: { name: string }) => {
 };
 
 const TrainResult = () => {
-  const [{ stations }] = useFormContext();
+  const [{ stations }] = useTimetableContext();
   const { from, to } = stations;
   const { loading, results } = useTrainOperatorAPI();
   const operatorArray = results.map((result: any, i: number) => {

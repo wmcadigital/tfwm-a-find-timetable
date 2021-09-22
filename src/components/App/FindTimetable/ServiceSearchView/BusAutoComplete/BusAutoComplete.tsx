@@ -1,14 +1,14 @@
 // Import context
-import { useFormContext } from 'globalState';
+import { useTimetableContext } from 'globalState';
 // Import components
 import AutoComplete from 'components/shared/AutoComplete/AutoComplete';
 
 const BusAutoComplete = ({ id, label, name }: { id: string; label?: string; name: string }) => {
-  const [{ busQuery }, formDispatch] = useFormContext();
+  const [{ busQuery }, timetableDispatch] = useTimetableContext();
 
   // set query state on input change
   const onUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formDispatch({ type: 'UPDATE_BUS_QUERY', payload: e.target.value });
+    timetableDispatch({ type: 'UPDATE_BUS_QUERY', payload: e.target.value });
   };
 
   return (
