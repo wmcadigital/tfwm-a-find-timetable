@@ -20,7 +20,7 @@ const ContextProvider = (props) => {
   const { children } = props || {};
   return (
     <ProviderComposer
-      contexts={[<GlobalProvider />, <TimetableProvider />, <StopStationProvider />]}
+      contexts={[<GlobalProvider />, <StopStationProvider />, <TimetableProvider />]}
     >
       {children}
     </ProviderComposer>

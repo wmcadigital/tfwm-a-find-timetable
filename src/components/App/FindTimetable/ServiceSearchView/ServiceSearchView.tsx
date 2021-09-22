@@ -12,7 +12,7 @@ import ServiceResult from './ServiceResult/ServiceResult';
 import BusAutoComplete from './BusAutoComplete/BusAutoComplete';
 import TrainAutoComplete from './TrainAutoComplete/TrainAutoComplete';
 import TrainResult from './TrainResult/TrainResult';
-import ModeSelect from './ModeSelect/ModeSelect';
+import ModeSelect from './ServiceModeSelect/ServiceModeSelect';
 
 const ServiceSearch = () => {
   const [{ selectedMode, busQuery, stations }, timetableDispatch] = useTimetableContext();
