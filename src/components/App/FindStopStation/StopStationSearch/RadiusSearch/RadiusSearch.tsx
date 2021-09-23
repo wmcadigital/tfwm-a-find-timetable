@@ -6,6 +6,7 @@ import s from './RadiusSearch.module.scss';
 function RadiusSearch() {
   const [radius, setRadius] = useState<number>(1);
   const [error, setError] = useState<string | null>();
+
   const handleMinus = () => {
     setRadius(radius - 1);
   };
@@ -24,7 +25,7 @@ function RadiusSearch() {
   return (
     <div>
       <p className="wmnds-h4 wmnds-m-b-md">Enter search radius (miles)</p>
-      <div className="wmnds-grid wmnds-grid--spacing-3-lg">
+      <div className={`wmnds-grid wmnds-grid--spacing-3-lg ${s.container}`}>
         <div className="wmmds-col-auto">
           <button
             type="button"
@@ -40,7 +41,6 @@ function RadiusSearch() {
             className={`wmnds-fe-input ${s.searchInput}`}
             type="number"
             name="searchRadius"
-            defaultValue={radius}
             value={radius}
             onChange={(e) => setRadius(Number(e.target.value))}
           />

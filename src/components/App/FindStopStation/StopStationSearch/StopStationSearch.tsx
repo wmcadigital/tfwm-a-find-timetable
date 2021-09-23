@@ -15,14 +15,14 @@ const StopStationSearch = () => {
   };
 
   return (
-    <div className="bg-white wmnds-p-md">
+    <div>
       <div className="wmnds-m-b-md wmnds-text-align-right">
         <Button text="Clear search" onClick={resetForm} btnClass="wmnds-btn--link" />
       </div>
       <ModeSelect
         selectedMode={selectedMode}
         handleSelect={handleSelect}
-        classes="wmnds-grid--spacing-3-md"
+        classes="wmnds-grid--spacing-3-sm"
       />
       <LocationSearch />
       <RadiusSearch />
