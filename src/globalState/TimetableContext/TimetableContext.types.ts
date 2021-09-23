@@ -3,7 +3,7 @@ import { IStation } from 'globalState/TimetableContext/types/IStation';
 import { Mode } from 'globalState/GlobalContext/GlobalContext.types';
 
 export type State = {
-  selectedMode: string | null;
+  selectedMode: Mode | null;
   selectedService: IServiceResult | null;
   busQuery: string;
   trainQuery: {

@@ -4,12 +4,12 @@ import Button from 'components/shared/Button/Button';
 
 const ModeSelect = ({
   label = 'Select mode of transport',
-  selectedMode,
+  selectedModes,
   handleSelect,
   classes,
 }: {
   label?: string;
-  selectedMode: string | null;
+  selectedModes: Mode[] | null;
   handleSelect: (mode: Mode) => void;
   classes?: string;
 }) => {
@@ -23,7 +23,7 @@ const ModeSelect = ({
             text="Bus"
             btnClass="wmnds-btn--mode wmnds-col-1"
             iconLeft="modes-isolated-bus"
-            isActive={selectedMode === 'bus'}
+            isActive={selectedModes?.includes('bus')}
           />
         </div>
         <div className="wmnds-col-auto">
@@ -32,7 +32,7 @@ const ModeSelect = ({
             text="Train"
             btnClass="wmnds-btn--mode wmnds-col-1"
             iconLeft="modes-isolated-rail"
-            isActive={selectedMode === 'rail'}
+            isActive={selectedModes?.includes('rail')}
           />
         </div>
         <div className="wmnds-col-auto">
@@ -41,7 +41,7 @@ const ModeSelect = ({
             text="Tram"
             btnClass="wmnds-btn--mode wmnds-col-1"
             iconLeft="modes-isolated-metro"
-            isActive={selectedMode === 'metro'}
+            isActive={selectedModes?.includes('metro')}
           />
         </div>
       </div>

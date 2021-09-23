@@ -6,11 +6,17 @@ import LocationSearch from './LocationSearch';
 import RadiusSearch from './RadiusSearch/RadiusSearch';
 
 const StopStationSearch = () => {
-  const [, stopStationDispatch] = useStopStationContext();
-  const selectedMode = null;
+  const [{ selectedModes }, stopStationDispatch] = useStopStationContext();
   const handleSelect = (mode: Mode) => {
-    stopStationDispatch({ type: 'UPDATE_SELECTED_MODE', payload: mode });
+    let payload: Mode[] = [];
+    if (selectedModes.includes(mode)) {
+      payload = selectedModes.filter((m) => m !== mode);
+    } else {
+      payload = [...selectedModes, mode];
+    }
+    stopStationDispatch({ type: 'UPDATE_SELECTED_MODES', payload });
   };
+
   const resetForm = () => {
     console.log('reset');
   };
@@ -21,7 +27,7 @@ const StopStationSearch = () => {
         <Button text="Clear search" onClick={resetForm} btnClass="wmnds-btn--link" />
       </div>
       <ModeSelect
-        selectedMode={selectedMode}
+        selectedModes={selectedModes}
         handleSelect={handleSelect}
         classes="wmnds-grid--spacing-3-sm"
       />

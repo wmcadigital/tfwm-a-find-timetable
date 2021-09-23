@@ -5,13 +5,14 @@ import {
   delSearchParam,
   getAllSearchParams,
 } from 'globalState/helpers/URLSearchParams';
+import { Mode } from 'globalState/GlobalContext/GlobalContext.types';
 import * as TTimetable from './TimetableContext.types';
 
 // Use an IIFE to define the initial state as we need to check session storage and query params
 export const initialState = (() => {
   const state: TTimetable.State = {
     selectedService: null,
-    selectedMode: getSearchParam('mode') || null,
+    selectedMode: (getSearchParam('mode') as Mode) || null,
     busQuery: getSearchParam('q') || '',
     trainQuery: {
       from: getSearchParam('qf') || '',

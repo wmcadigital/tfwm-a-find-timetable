@@ -1,6 +1,7 @@
 import StopStationSearch from '../StopStationSearch/StopStationSearch';
 import SearchResults from '../StopStationSearch/SearchResults/SearchResults';
 import s from './MapView.module.scss';
+import Map from './Map/Map';
 
 const MapView = () => {
   return (
@@ -12,7 +13,9 @@ const MapView = () => {
             <SearchResults classes={s.results} />
           </div>
         </div>
-        <div className="wmnds-col-1-1 wmnds-col-md-1-2 wmnds-col-lg-2-3">Map</div>
+        <div className="wmnds-col-1-1 wmnds-col-md-1-2 wmnds-col-lg-2-3">
+          <Map />
+        </div>
       </div>
     </div>
   );

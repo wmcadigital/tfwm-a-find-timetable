@@ -12,7 +12,7 @@ const ServiceModeSelect = () => {
 
   return (
     <ModeSelect
-      selectedMode={selectedMode}
+      selectedModes={selectedMode && [selectedMode]}
       handleSelect={handleSelect}
       classes="wmnds-grid--justify-between"
     />

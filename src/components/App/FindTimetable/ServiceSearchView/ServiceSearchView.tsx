@@ -12,7 +12,7 @@ import ServiceResult from './ServiceResult/ServiceResult';
 import BusAutoComplete from './BusAutoComplete/BusAutoComplete';
 import TrainAutoComplete from './TrainAutoComplete/TrainAutoComplete';
 import TrainResult from './TrainResult/TrainResult';
-import ModeSelect from './ServiceModeSelect/ServiceModeSelect';
+import ServiceModeSelect from './ServiceModeSelect/ServiceModeSelect';
 
 const ServiceSearch = () => {
   const [{ selectedMode, busQuery, stations }, timetableDispatch] = useTimetableContext();
@@ -66,7 +66,7 @@ const ServiceSearch = () => {
             <div className="wmnds-m-b-md wmnds-text-align-right">
               <Button text="Clear search" onClick={resetForm} btnClass="wmnds-btn--link" />
             </div>
-            <ModeSelect />
+            <ServiceModeSelect />
             {selectedMode === 'bus' && (
               <>
                 <div className="wmnds-m-t-lg">
