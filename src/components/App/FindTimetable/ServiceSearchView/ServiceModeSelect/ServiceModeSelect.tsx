@@ -1,11 +1,12 @@
 // Import context
 import { useTimetableContext } from 'globalState';
+import { Mode } from 'globalState/GlobalContext/GlobalContext.types';
 // Import components
 import ModeSelect from 'components/shared/ModeSelect/ModeSelect';
 
 const ServiceModeSelect = () => {
   const [{ selectedMode }, timetableDispatch] = useTimetableContext();
-  const handleSelect = (mode: 'bus' | 'rail' | 'metro') => {
+  const handleSelect = (mode: Mode) => {
     timetableDispatch({ type: 'UPDATE_SELECTED_MODE', payload: mode });
   };
 

@@ -2,7 +2,7 @@
 import { useTimetableContext } from 'globalState';
 import formatDate from 'globalState/helpers/formatDate';
 // Import types
-import { IServiceResult } from 'components/App/FindTimetable/types/IServiceResult';
+import { IServiceResult } from 'globalState/TimetableContext/types/IServiceResult';
 // Import components
 import DisruptionIndicatorMedium from 'components/shared/DisruptionIndicator/DisruptionIndicatorMedium';
 import WarningText from 'components/shared/WarningText/WarningText';

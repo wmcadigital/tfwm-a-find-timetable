@@ -1,13 +1,14 @@
 import { useStopStationContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
 import ModeSelect from 'components/shared/ModeSelect/ModeSelect';
+import { Mode } from 'globalState/GlobalContext/GlobalContext.types';
 import LocationSearch from './LocationSearch';
 import RadiusSearch from './RadiusSearch/RadiusSearch';
 
 const StopStationSearch = () => {
   const [, stopStationDispatch] = useStopStationContext();
   const selectedMode = null;
-  const handleSelect = (mode: 'bus' | 'rail' | 'metro') => {
+  const handleSelect = (mode: Mode) => {
     stopStationDispatch({ type: 'UPDATE_SELECTED_MODE', payload: mode });
   };
   const resetForm = () => {

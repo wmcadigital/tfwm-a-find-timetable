@@ -1,3 +1,4 @@
+import { Mode } from 'globalState/GlobalContext/GlobalContext.types';
 // Import components
 import Button from 'components/shared/Button/Button';
 
@@ -9,7 +10,7 @@ const ModeSelect = ({
 }: {
   label?: string;
   selectedMode: string | null;
-  handleSelect: (mode: 'bus' | 'rail' | 'metro') => void;
+  handleSelect: (mode: Mode) => void;
   classes?: string;
 }) => {
   return (

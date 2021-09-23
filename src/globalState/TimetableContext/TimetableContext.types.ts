@@ -1,5 +1,6 @@
-import { IServiceResult } from 'components/App/FindTimetable/types/IServiceResult';
-import { IStation } from 'components/App/FindTimetable/types/IStation';
+import { IServiceResult } from 'globalState/TimetableContext/types/IServiceResult';
+import { IStation } from 'globalState/TimetableContext/types/IStation';
+import { Mode } from 'globalState/GlobalContext/GlobalContext.types';
 
 export type State = {
   selectedMode: string | null;
@@ -18,7 +19,7 @@ export type State = {
 export type StateAction =
   | {
       type: 'UPDATE_SELECTED_MODE';
-      payload: 'bus' | 'rail' | 'metro';
+      payload: Mode;
     }
   | {
       type: 'UPDATE_SELECTED_SERVICE';
