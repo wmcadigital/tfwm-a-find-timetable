@@ -15,7 +15,7 @@ function RadiusSearch() {
   };
 
   useEffect(() => {
-    if (radius > 100 || radius < 1) {
+    if (radius > 100 || radius < 0) {
       setError('Please enter a number between 1 and 100');
     } else {
       setError(null);

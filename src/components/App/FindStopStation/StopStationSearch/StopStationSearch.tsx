@@ -7,6 +7,7 @@ import RadiusSearch from './RadiusSearch/RadiusSearch';
 
 const StopStationSearch = () => {
   const [{ selectedModes }, stopStationDispatch] = useStopStationContext();
+
   const handleSelect = (mode: Mode) => {
     let payload: Mode[] = [];
     if (selectedModes.includes(mode)) {
