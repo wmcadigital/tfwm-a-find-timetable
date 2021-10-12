@@ -12,7 +12,9 @@ const ListView = () => {
           </div>
         </div>
         <div className="wmnds-col-1-1 wmnds-col-md-1-2 wmnds-col-lg-3-5">
-          <SearchResults classes="wmnds-bg-white wmnds-p-l-md wmnds-p-t-xsm wmnds-p-b-xsm wmnds-m-b-md" />
+          <SearchResults
+            classes={`${s.result} wmnds-bg-white wmnds-p-l-md wmnds-p-r-md wmnds-p-t-xsm wmnds-p-b-xsm wmnds-m-b-md`}
+          />
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ const LocationSearch = () => {
   const [query, setQuery] = useState<string>('');
   const [selectedItem, setSelectedItem] = useState<ILocation | null>(null);
   const { loading, results } = useLocationAPI(query);
-  const stops = useGetStopsAPI(selectedItem, 5);
+  const stops = useGetStopsAPI(selectedItem, 0.5);
 
   console.log(
     stops.results

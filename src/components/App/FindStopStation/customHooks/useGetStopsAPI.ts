@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
+import { IStop } from 'globalState/StopStationContext/types/IStop';
 import { ILocation } from 'globalState/StopStationContext/types/ILocation';
+import { useStopStationContext } from 'globalState';
 
 interface IError {
   title: string;
@@ -8,8 +10,9 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useLocationAPI = (location: ILocation | null, radius: number) => {
+const useGetStopsAPI = (location: ILocation | null, radius: number) => {
   const [results, setResults] = useState<any[]>([]);
+  const [, stopStationDispatch] = useStopStationContext();
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
 
@@ -30,19 +33,25 @@ const useLocationAPI = (location: ILocation | null, radius: number) => {
 
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
-  const handleApiResponse = useCallback((response) => {
-    if (response?.data) {
-      setResults(response.data.features);
-    } else {
-      setErrorInfo({
-        // Update error message
-        title: 'Please try another location',
-        message: 'No west midlands stops or stations were found near to your search area',
-      });
-    }
-    clearApiTimeout();
-    setLoading(false);
-  }, []);
+  const handleApiResponse = useCallback(
+    (response) => {
+      if (response?.data) {
+        const payload = response.data.features.filter(
+          (stop: IStop) => stop.properties.type !== 'car-park'
+        );
+        stopStationDispatch({ type: 'UPDATE_STOPS', payload });
+      } else {
+        setErrorInfo({
+          // Update error message
+          title: 'Please try another location',
+          message: 'No west midlands stops or stations were found near to your search area',
+        });
+      }
+      clearApiTimeout();
+      setLoading(false);
+    },
+    [stopStationDispatch]
+  );
 
   const handleApiError = (error: any) => {
     setLoading(false); // Set loading state to false after data is received
@@ -96,4 +105,4 @@ const useLocationAPI = (location: ILocation | null, radius: number) => {
   return { loading, errorInfo, results, getAPIResults };
 };
 
-export default useLocationAPI;
+export default useGetStopsAPI;

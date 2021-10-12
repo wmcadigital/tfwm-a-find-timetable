@@ -4,6 +4,8 @@ import * as TStopStation from './StopStationContext.types';
 export const initialState = (() => {
   const state: TStopStation.State = {
     selectedModes: [],
+    location: null,
+    stops: [],
   };
 
   return state;
@@ -16,6 +18,10 @@ export const reducer = (
   switch (action.type) {
     case 'UPDATE_SELECTED_MODES':
       return { ...state, selectedModes: action.payload };
+    case 'UPDATE_LOCATION':
+      return { ...state, location: action.payload };
+    case 'UPDATE_STOPS':
+      return { ...state, stops: action.payload };
     // Default should return initial state if error
     default:
       return initialState;
