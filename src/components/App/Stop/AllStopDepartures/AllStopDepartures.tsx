@@ -1,6 +1,8 @@
-import React from 'react';
+import useStopAPI from '../customHooks/useStopAPI';
 
-function AllDepartures() {
+const AllStopDepartures = ({ atcoCode }: { atcoCode: string }) => {
+  const { results } = useStopAPI(`/Stop/v2/Departures/${atcoCode}`);
+  console.log(results);
   return (
     <div className="wmnds-m-b-lg">
       <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--justify-between wmnds-m-b-md">
@@ -109,6 +111,6 @@ function AllDepartures() {
       </div>
     </div>
   );
-}
+};
 
-export default AllDepartures;
+export default AllStopDepartures;

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ContextProvider from 'globalState/ContextProvider';
 import FindTimetable from './FindTimetable';
 import FindStopStation from './FindStopStation';
-import StopStation from './StopStation';
+import Stop from './Stop';
 
 const App = () => {
   return (
@@ -15,8 +15,8 @@ const App = () => {
             <Route path="/find-a-timetable">
               <FindTimetable />
             </Route>
-            <Route path="/stop">
-              <StopStation />
+            <Route path="/stop/:atcoCode">
+              <Stop />
             </Route>
             <Route path="/">
               <FindStopStation />
