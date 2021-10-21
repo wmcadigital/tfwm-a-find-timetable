@@ -87,7 +87,7 @@ const TimetableTime = ({
 const ServiceTimetable = () => {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   return (
-    <div>
+    <div className="wmnds-m-b-lg">
       <h3>Timetable</h3>
       <div className="wmnds-p-lg wmnds-bg-white">
         <p className="wmnds-h4 wmnds-m-b-md wmnds-m-t-none">

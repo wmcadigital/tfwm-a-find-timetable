@@ -2,7 +2,7 @@ import Button from 'components/shared/Button/Button';
 
 const ServiceDepartures = () => {
   return (
-    <div>
+    <div className="wmnds-m-b-lg">
       <div className="wmnds-live-departures wmnds-live-departures--service">
         <div className="wmnds-live-departures__service-details wmnds-m-b-md">
           <div className="wmnds-live-departures__service-name">16</div>

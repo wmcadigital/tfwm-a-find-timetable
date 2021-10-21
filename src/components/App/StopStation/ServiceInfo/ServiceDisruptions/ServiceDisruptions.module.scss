@@ -1,0 +1,20 @@
+@import '~assets/wmnds/vars';
+@import '~assets/wmnds/mixins';
+
+[class*='wmnds-'] {
+  &.summary {
+    display: flex;
+    align-items: center;
+  }
+
+  &.disruptionIndicator {
+    display: inline-flex;
+    margin-right: $size-md;
+    align-items: center;
+
+    strong {
+      display: inline-block;
+      margin: 0 $size-sm;
+    }
+  }
+}

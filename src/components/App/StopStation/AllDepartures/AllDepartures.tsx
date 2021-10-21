@@ -2,7 +2,7 @@ import React from 'react';
 
 function AllDepartures() {
   return (
-    <div>
+    <div className="wmnds-m-b-lg">
       <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--justify-between wmnds-m-b-md">
         <div className="wmnds-col-2-3">
           <h3>Real time departures</h3>

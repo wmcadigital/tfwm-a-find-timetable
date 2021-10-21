@@ -1,11 +1,12 @@
 import ServiceDepartures from './ServiceDepartures/ServiceDepartures';
+import ServiceDisruptions from './ServiceDisruptions/ServiceDisruptions';
 import ServiceTimetable from './ServiceTimetable/ServiceTimetable';
 
 const ServiceInfo = () => {
   return (
     <div>
       <ServiceDepartures />
-      <h3>Disruptions to this service</h3>
+      <ServiceDisruptions />
       <ServiceTimetable />
     </div>
   );

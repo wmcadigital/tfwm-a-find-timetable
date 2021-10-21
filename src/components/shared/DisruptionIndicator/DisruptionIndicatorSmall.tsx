@@ -3,13 +3,15 @@ import Icon from 'components/shared/Icon/Icon';
 type DisruptionIndicatorSmallProps = {
   className?: string;
   iconLeft: string;
-  severity?: string;
+  severity?: 'high' | 'veryHigh' | 'Major';
+  text?: string;
 };
 
 const DisruptionIndicatorSmall = ({
   className,
   iconLeft,
   severity,
+  text,
 }: DisruptionIndicatorSmallProps) => {
   let iconRightName;
   let disruptedClass;
@@ -45,6 +47,7 @@ const DisruptionIndicatorSmall = ({
       } ${className}`}
     >
       <Icon iconName={iconLeft} className="wmnds-disruption-indicator-small__icon" />
+      {text && <strong>{text}</strong>}
       <Icon
         iconName={`general-${iconRightName}`}
         className="wmnds-disruption-indicator-small__icon"
