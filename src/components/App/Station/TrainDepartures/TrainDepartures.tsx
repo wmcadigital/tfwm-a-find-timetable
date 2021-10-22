@@ -2,7 +2,7 @@ import AutoComplete from 'components/shared/AutoComplete/AutoComplete';
 
 const TrainDepartures = () => {
   return (
-    <div className="wmnds-live-departures-train">
+    <div className="wmnds-live-departures-train wmnds-m-b-lg">
       <div className="wmnds-live-departures-tabs">
         <input
           className="wmnds-live-departures-tabs__input wmnds-screenreaders-only"
