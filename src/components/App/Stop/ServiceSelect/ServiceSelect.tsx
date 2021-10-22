@@ -1,15 +1,14 @@
-import React from 'react';
+import { useStopContext } from 'globalState';
 import s from './ServiceSelect.module.scss';
 
 type Line = { id: string; name: string; operator: string };
 
-const ServiceSelect = ({
-  services,
-  handleChange,
-}: {
-  services: Line[];
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
+const ServiceSelect = () => {
+  const [{ stopPointData }, stopDispatch] = useStopContext();
+  const services = stopPointData.stopPoint.lines;
+  const handleChange = (value: Line | null) => {
+    stopDispatch({ type: 'UPDATE_SELECTED_LINE', payload: value });
+  };
   return (
     <div className={s.serviceContainer}>
       <div className={s.serviceGrid}>
@@ -20,13 +19,13 @@ const ServiceSelect = ({
             id="allServices"
             name="serviceSelect"
             value=""
-            onChange={handleChange}
+            onChange={() => handleChange(null)}
           />
           <label className={`${s.isChecked} wmnds-btn wmnds-btn--primary`} htmlFor="allServices">
             All
           </label>
         </div>
-        {services.map((service) => (
+        {services.map((service: any) => (
           <div key={service.id} className={s.serviceBtn}>
             <input
               className="wmnds-screenreaders-only"
@@ -34,7 +33,7 @@ const ServiceSelect = ({
               id={service.id}
               name="serviceSelect"
               value={service.name}
-              onChange={handleChange}
+              onChange={() => handleChange(service)}
             />
             <label className={`${s.isChecked} wmnds-btn wmnds-btn--primary`} htmlFor={service.id}>
               {service.name}

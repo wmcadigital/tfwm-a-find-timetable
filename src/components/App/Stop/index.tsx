@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useStopContext } from 'globalState';
 
 // Components
 import Breadcrumbs from 'components/shared/Breadcrumbs/Breadcrumbs';
@@ -7,14 +8,15 @@ import Button from 'components/shared/Button/Button';
 import Loader from 'components/shared/Loader/Loader';
 import Icon from 'components/shared/Icon/Icon';
 import s from './Stop.module.scss';
-import AllDepartures from './AllStopDepartures/AllStopDepartures';
+import AllStopDepartures from './AllStopDepartures/AllStopDepartures';
 import ServiceInfo from './ServiceInfo/ServiceInfo';
 import ServiceSelect from './ServiceSelect/ServiceSelect';
 import useStopAPI from './customHooks/useStopAPI';
 
 const StopInfo = ({ stopPoint }: { stopPoint: any }) => {
-  const [selected, setSelected] = useState('');
+  const [{ selectedLine }] = useStopContext();
   const { atcoCode } = useParams<{ atcoCode: string }>();
+  const departures = useStopAPI(`/Stop/v2/Departures/${atcoCode}`, 'UPDATE_STOP_DEPARTURES');
 
   let mode = 'bus';
   if (stopPoint.busStopType === 'NaptanMetroPlatform') {
@@ -45,21 +47,27 @@ const StopInfo = ({ stopPoint }: { stopPoint: any }) => {
             Bus services with the same number are run by different bus companies.
           </p>
           <div className={s.services}>
-            <ServiceSelect
-              services={stopPoint.lines}
-              handleChange={(e) => setSelected(e.target.value)}
-            />
+            <ServiceSelect />
           </div>
         </>
       )}
-      {selected === '' ? <AllDepartures atcoCode={atcoCode} /> : <ServiceInfo />}
+      {selectedLine === '' ? (
+        <AllStopDepartures lines={stopPoint.lines} departures={departures} />
+      ) : (
+        <ServiceInfo departures={departures} />
+      )}
     </div>
   );
 };
 
 const Stop = () => {
   const { atcoCode } = useParams<{ atcoCode: string }>();
-  const { results, loading } = useStopAPI(`/Stop/v2/Point/${atcoCode}`);
+  const { results, loading } = useStopAPI(`/Stop/v2/Point/${atcoCode}`, 'UPDATE_STOP_POINT');
+  const [, stopDispatch] = useStopContext();
+
+  useEffect(() => {
+    stopDispatch({ type: 'UPDATE_ATCOCODE', payload: atcoCode });
+  }, [stopDispatch, atcoCode]);
 
   return (
     <div className="wmnds-container wmnds-p-b-lg">

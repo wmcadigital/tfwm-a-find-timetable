@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { useStopContext } from 'globalState';
 import axios from 'axios';
 
 interface IError {
@@ -7,8 +8,10 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useStopAPI = (apiPath: string) => {
+const useStopAPI = (apiPath: string, type?: any) => {
   const [results, setResults] = useState<any>();
+  const [, stopDispatch] = useStopContext();
+  const [updatedAt, setUpdatedAt] = useState<any>();
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
 
@@ -29,19 +32,35 @@ const useStopAPI = (apiPath: string) => {
 
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
-  const handleApiResponse = useCallback((response) => {
-    if (response?.data) {
-      setResults(response.data);
-    } else {
-      setErrorInfo({
-        // Update error message
-        title: 'Please try another location',
-        message: 'No west midlands stops or stations were found near to your search area',
-      });
-    }
-    clearApiTimeout();
-    setLoading(false);
-  }, []);
+  const handleApiResponse = useCallback(
+    (response) => {
+      if (response?.data) {
+        setResults(response.data);
+        if (type) {
+          stopDispatch({ type, payload: response.data });
+        }
+        const pad = (num: number, size: number) => {
+          let n = num.toString();
+          while (n.length < size) n = `0${n}`;
+          return n;
+        };
+        const date = new Date();
+        const now = `${date.getHours()}:${pad(date.getMinutes(), 2)}${
+          date.getHours() < 12 ? 'am' : 'pm'
+        }`;
+        setUpdatedAt(now);
+      } else {
+        setErrorInfo({
+          // Update error message
+          title: 'Please try another location',
+          message: 'No west midlands stops or stations were found near to your search area',
+        });
+      }
+      clearApiTimeout();
+      setLoading(false);
+    },
+    [type, stopDispatch]
+  );
 
   const handleApiError = (error: any) => {
     setLoading(false); // Set loading state to false after data is received
@@ -88,7 +107,7 @@ const useStopAPI = (apiPath: string) => {
     };
   }, [getAPIResults]);
 
-  return { loading, errorInfo, results, getAPIResults };
+  return { loading, errorInfo, results, updatedAt, getAPIResults };
 };
 
 export default useStopAPI;

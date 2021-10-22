@@ -1,6 +1,8 @@
 import Button from 'components/shared/Button/Button';
 
-const ServiceDepartures = () => {
+const ServiceDepartures = ({ departures }: { departures: any }) => {
+  const { results } = departures;
+  console.log(results);
   return (
     <div className="wmnds-m-b-lg">
       <div className="wmnds-live-departures wmnds-live-departures--service">
