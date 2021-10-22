@@ -4,7 +4,7 @@ export const initialState = (() => {
   const state: TStop.State = {
     stopPointData: null,
     stopAtcoCode: '',
-    stopDepartures: [],
+    stopDepartures: null,
   };
 
   return state;
@@ -20,6 +20,8 @@ export const reducer = (state = initialState, action: TStop.StateAction): TStop.
       return { ...state, stopDepartures: action.payload };
     case 'UPDATE_SELECTED_LINE':
       return { ...state, selectedLine: action.payload };
+    case 'UPDATE_SELECTED_ROUTE':
+      return { ...state, selectedRoute: action.payload };
     // Default should return initial state if error
     default:
       return initialState;

@@ -1,8 +1,9 @@
 export type State = {
   stopPointData: any;
   stopAtcoCode: string;
-  stopDepartures: any[];
+  stopDepartures: any;
   selectedLine?: any;
+  selectedRoute?: any;
 };
 
 export type StateAction =
@@ -16,6 +17,10 @@ export type StateAction =
     }
   | {
       type: 'UPDATE_SELECTED_LINE';
+      payload: any;
+    }
+  | {
+      type: 'UPDATE_SELECTED_ROUTE';
       payload: any;
     }
   | {

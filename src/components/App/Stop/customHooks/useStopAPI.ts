@@ -36,9 +36,6 @@ const useStopAPI = (apiPath: string, type?: any) => {
     (response) => {
       if (response?.data) {
         setResults(response.data);
-        if (type) {
-          stopDispatch({ type, payload: response.data });
-        }
         const pad = (num: number, size: number) => {
           let n = num.toString();
           while (n.length < size) n = `0${n}`;
@@ -49,6 +46,9 @@ const useStopAPI = (apiPath: string, type?: any) => {
           date.getHours() < 12 ? 'am' : 'pm'
         }`;
         setUpdatedAt(now);
+        if (type) {
+          stopDispatch({ type, payload: { ...response.data, updatedAt: now } });
+        }
       } else {
         setErrorInfo({
           // Update error message

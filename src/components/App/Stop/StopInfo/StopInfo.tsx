@@ -52,7 +52,7 @@ const StopInfo = () => {
       {!selectedLine ? (
         <AllStopDepartures lines={stopPoint.lines} departures={departures} />
       ) : (
-        <ServiceInfo departures={departures} />
+        <ServiceInfo />
       )}
     </div>
   );
