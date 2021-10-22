@@ -5,6 +5,7 @@ import ContextProvider from 'globalState/ContextProvider';
 import FindTimetable from './FindTimetable';
 import FindStopStation from './FindStopStation';
 import Stop from './Stop';
+import Station from './Station';
 
 const App = () => {
   return (
@@ -14,6 +15,9 @@ const App = () => {
           <Switch>
             <Route path="/find-a-timetable">
               <FindTimetable />
+            </Route>
+            <Route path="/station">
+              <Station />
             </Route>
             <Route path="/stop/:atcoCode">
               <Stop />
