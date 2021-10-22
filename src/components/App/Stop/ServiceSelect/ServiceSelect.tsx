@@ -4,7 +4,7 @@ import s from './ServiceSelect.module.scss';
 type Line = { id: string; name: string; operator: string };
 
 const ServiceSelect = () => {
-  const [{ stopPointData }, stopDispatch] = useStopContext();
+  const [{ stopPointData, selectedLine }, stopDispatch] = useStopContext();
   const services = stopPointData.stopPoint.lines;
   const handleChange = (value: Line | null) => {
     stopDispatch({ type: 'UPDATE_SELECTED_LINE', payload: value });
@@ -19,6 +19,7 @@ const ServiceSelect = () => {
             id="allServices"
             name="serviceSelect"
             value=""
+            defaultChecked={!selectedLine}
             onChange={() => handleChange(null)}
           />
           <label className={`${s.isChecked} wmnds-btn wmnds-btn--primary`} htmlFor="allServices">

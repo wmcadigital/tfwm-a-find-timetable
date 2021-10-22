@@ -2,7 +2,7 @@ import * as TStop from './StopContext.types';
 // Use an IIFE to define the initial state as we need to check session storage and query params
 export const initialState = (() => {
   const state: TStop.State = {
-    stopPointData: [],
+    stopPointData: null,
     stopAtcoCode: '',
     stopDepartures: [],
   };
