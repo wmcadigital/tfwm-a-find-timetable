@@ -1,5 +1,4 @@
-import Loader from 'components/shared/Loader/Loader';
-import Message from 'components/shared/Message/Message';
+import { useStopContext } from 'globalState';
 
 const StopServices = ({ lines, departures }: { lines: any; departures: any }) => {
   const mappedLines = lines.map((line: any) => {
@@ -52,45 +51,20 @@ const StopServices = ({ lines, departures }: { lines: any; departures: any }) =>
   );
 };
 
-const AllStopDepartures = ({ departures, lines }: { departures: any; lines: any }) => {
-  const { loading, results, updatedAt, errorInfo, getAPIResults } = departures;
+const AllStopDepartures = () => {
+  const [{ stopPointData, stopDepartures }] = useStopContext();
+  const { stopPoint, updatedAt } = stopPointData;
+  const { departures } = stopDepartures;
+  const { lines } = stopPoint;
   return (
     <div className="wmnds-m-b-lg">
       <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--justify-between wmnds-m-b-md">
         <div className="wmnds-col-2-3">
           <h3>Real time departures</h3>
         </div>
-        {!loading && results && <div className="wmnds-col-auto">Last updated {updatedAt}</div>}
+        <div className="wmnds-col-auto">Last updated {updatedAt}</div>
       </div>
-      {loading ? (
-        <div className="wmnds-p-lg wmnds-bg-white">
-          <Loader />
-        </div>
-      ) : (
-        <>
-          {results?.departures ? (
-            <StopServices lines={lines} departures={results.departures} />
-          ) : (
-            <>
-              {errorInfo ? (
-                <Message
-                  type="error"
-                  title={errorInfo.title}
-                  message={errorInfo.message}
-                  showRetry
-                  retryCallback={getAPIResults}
-                />
-              ) : (
-                <Message
-                  type="error"
-                  title="Please try again later"
-                  message="Sorry, we are currently experiencing technical issues."
-                />
-              )}
-            </>
-          )}
-        </>
-      )}
+      <StopServices lines={lines} departures={departures} />
     </div>
   );
 };

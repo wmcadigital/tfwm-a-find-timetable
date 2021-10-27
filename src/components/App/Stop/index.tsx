@@ -11,7 +11,8 @@ import StopInfo from './StopInfo/StopInfo';
 
 const Stop = () => {
   const { atcoCode } = useParams<{ atcoCode: string }>();
-  const { loading } = useStopAPI(`/Stop/v2/Point/${atcoCode}`, 'UPDATE_STOP_POINT');
+  const stopPoint = useStopAPI(`/Stop/v2/Point/${atcoCode}`, 'UPDATE_STOP_POINT');
+  const departures = useStopAPI(`/Stop/v2/Departures/${atcoCode}`, 'UPDATE_STOP_DEPARTURES');
   useDisruptionsAPI(`/Disruption/v2`);
   const [{ stopPointData }, stopDispatch] = useStopContext();
 
@@ -24,7 +25,11 @@ const Stop = () => {
       <div className="wmnds-m-b-md">
         <Breadcrumbs />
       </div>
-      {loading ? <Loader /> : <>{stopPointData ? <StopInfo /> : 'Error'}</>}
+      {stopPoint.loading || departures.loading ? (
+        <Loader />
+      ) : (
+        <>{stopPointData ? <StopInfo /> : 'Error'}</>
+      )}
     </div>
   );
 };

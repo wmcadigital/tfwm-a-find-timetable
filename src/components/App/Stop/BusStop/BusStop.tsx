@@ -33,11 +33,7 @@ const BusStop = () => {
           <div className={s.services}>
             <ServiceSelect />
           </div>
-          {!selectedLine ? (
-            <AllStopDepartures lines={stopPoint.lines} departures={departures} />
-          ) : (
-            <>{serviceInfo ? <ServiceInfo /> : 'Error'}</>
-          )}
+          {!selectedLine ? <AllStopDepartures /> : <>{serviceInfo ? <ServiceInfo /> : 'Error'}</>}
         </>
       )}
     </div>

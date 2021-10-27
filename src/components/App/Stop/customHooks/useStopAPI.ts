@@ -48,7 +48,6 @@ const useStopAPI = (apiPath: string, type?: any) => {
         setUpdatedAt(now);
         if (type) {
           stopDispatch({ type, payload: { ...response.data, updatedAt: now } });
-          console.log('ran');
         }
       } else {
         setErrorInfo({
