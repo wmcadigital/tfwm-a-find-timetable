@@ -3,10 +3,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import { loadModules, setDefaultOptions } from 'esri-loader';
 import mapMarker from 'assets/svgs/map/map-marker.svg';
+import { useStopContext } from 'globalState';
 
 const useCreateMapView = (mapContainerRef: any) => {
   const [viewState, setViewState] = useState<any>();
   const [isCreated, setIsCreated] = useState(false);
+  const [{ stopPointData }] = useStopContext();
 
   const createMapView = useCallback(async () => {
     try {
@@ -37,18 +39,75 @@ const useCreateMapView = (mapContainerRef: any) => {
       const view = new MapView({
         container: mapContainerRef.current,
         map: new Map({ basemap }),
-        center: [-2.0047209, 52.4778132],
+        center: [stopPointData.stopPoint.longitude, stopPointData.stopPoint.latitude],
         constraints: {
           snapToZoom: true,
         },
       });
 
-      view.popup.visibleElements = {
-        featureNavigation: false,
+      const stops = [stopPointData.stopPoint];
+
+      const stopGraphics = stops.map((stop: any) => {
+        return new Graphic({
+          attributes: {
+            name: stop.commonName,
+          },
+          geometry: {
+            type: 'point',
+            longitude: stop.longitude,
+            latitude: stop.latitude,
+            spatialreference: {
+              wkid: 4326,
+            },
+          },
+        });
+      });
+
+      const stopsLayer = new FeatureLayer({
+        id: 'stopsMapView',
+        title: 'Stops nearby',
+        source: stopGraphics,
+        objectIdField: 'oid',
+        fields: [
+          {
+            name: 'oid',
+            alias: 'ObjectID',
+            type: 'oid',
+          },
+          {
+            name: 'name',
+            alias: 'name',
+            type: 'string',
+          },
+        ],
+        renderer: {
+          type: 'simple',
+          symbol: {
+            type: 'picture-marker',
+            url: mapMarker,
+            width: 24,
+            height: 24,
+          },
+        },
+      });
+
+      const popup = {
+        featureCount: 0,
+        actions: [
+          {
+            title: '{name}',
+            id: 'add-stop',
+            image: mapMarker,
+            className: 'esri-add-stop',
+          },
+        ],
       };
-      view.popup.dockEnabled = false;
-      view.popup.highlightEnabled = true;
-      // view.popup.dockOptions = { buttonEnabled: false };
+      stopsLayer.popupTemplate = popup;
+
+      view.goTo({
+        zoom: 15,
+      });
+      view.map.add(stopsLayer);
 
       // Move ui elements into the right position
       view.ui.move(['zoom'], 'top-right');
@@ -60,7 +119,7 @@ const useCreateMapView = (mapContainerRef: any) => {
       // eslint-disable-next-line no-console
       console.log(e);
     }
-  }, [mapContainerRef]);
+  }, [mapContainerRef, stopPointData]);
 
   useEffect(() => {
     if (!isCreated) {

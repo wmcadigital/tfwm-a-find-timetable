@@ -41,6 +41,7 @@ const ServiceSelect = () => {
               type="radio"
               id={service.id}
               name="serviceSelect"
+              defaultChecked={selectedLine?.id === service.id}
               value={service.name}
               onChange={() => handleChange(service)}
             />

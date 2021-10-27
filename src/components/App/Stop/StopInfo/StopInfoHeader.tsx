@@ -1,6 +1,14 @@
 import Button from 'components/shared/Button/Button';
 
-const StopInfoHeader = ({ children }: { children: React.ReactNode }) => {
+const StopInfoHeader = ({
+  children,
+  showMap,
+  mapToggle,
+}: {
+  children: React.ReactNode;
+  showMap: boolean;
+  mapToggle: () => void;
+}) => {
   return (
     <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--justify-between">
       <div className="wmnds-col-2-3">
@@ -9,8 +17,9 @@ const StopInfoHeader = ({ children }: { children: React.ReactNode }) => {
       <div className="wmnds-col-auto">
         <Button
           btnClass="wmnds-btn--secondary wmnds-col-1"
-          text="View map"
+          text={showMap ? 'Hide map' : 'View map'}
           iconRight="general-location-pin"
+          onClick={mapToggle}
         />
       </div>
     </div>

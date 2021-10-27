@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useStopContext } from 'globalState';
 
 // Components
@@ -12,6 +13,7 @@ import Map from '../Map/Map';
 import useStopAPI from '../customHooks/useStopAPI';
 
 const BusStop = () => {
+  const [showMap, setShowMap] = useState(false);
   const [{ stopPointData, selectedLine, stopDepartures }] = useStopContext();
   const { stopPoint } = stopPointData;
   const { departures } = stopDepartures;
@@ -24,12 +26,12 @@ const BusStop = () => {
       {departures && (
         <>
           <div className="wmnds-col-md-2-3">
-            <StopInfoHeader>
+            <StopInfoHeader showMap={showMap} mapToggle={() => setShowMap(!showMap)}>
               {stopPoint.locality}, {stopPoint.commonName} ({stopPoint.indicator}){' '}
               <Icon className={`${s.modeIcon} ${s.bus}`} iconName="modes-isolated-bus" />
             </StopInfoHeader>
           </div>
-          <Map />
+          {showMap && <Map />}
           <div className="wmnds-col-md-2-3">
             <p>
               Select a bus service to see real time information, timetable and travel updates.{' '}
