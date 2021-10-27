@@ -44,6 +44,7 @@ const useStopAPI = (apiPath: string, type?: any) => {
         const now = `${date.getHours()}:${pad(date.getMinutes(), 2)}${
           date.getHours() < 12 ? 'am' : 'pm'
         }`;
+        console.log(now);
         if (type) {
           stopDispatch({
             type,

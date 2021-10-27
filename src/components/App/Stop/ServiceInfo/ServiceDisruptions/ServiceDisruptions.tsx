@@ -19,33 +19,35 @@ const ServiceDisruptions = () => {
     }
   }, [serviceDisruptions, stopDisruptions, selectedLine.id]);
   return (
-    <div className="wmnds-m-b-lg">
+    <div className="wmnds-m-b-md wmnds-p-b-md">
       <h3>Disruptions to this service</h3>
       {serviceDisruptions ? (
         <>
           {serviceDisruptions.map((disruption: any) => (
-            <Accordion
-              key={disruption.id}
-              id={disruption.id}
-              summary={
-                <>
-                  <DisruptionIndicatorSmall
-                    iconLeft="modes-isolated-bus"
-                    className={s.disruptionIndicator}
-                    text={selectedLine.name}
-                  />
-                  <span>
-                    {disruption.title} at <strong>{disruption.subtitle}</strong>
-                  </span>
-                </>
-              }
-            >
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: sanitize(disruption.description),
-                }}
-              />
-            </Accordion>
+            <div className="wmnds-m-b-md">
+              <Accordion
+                key={disruption.id}
+                id={disruption.id}
+                summary={
+                  <>
+                    <DisruptionIndicatorSmall
+                      iconLeft="modes-isolated-bus"
+                      className={s.disruptionIndicator}
+                      text={selectedLine.name}
+                    />
+                    <span>
+                      {disruption.title} at <strong>{disruption.subtitle}</strong>
+                    </span>
+                  </>
+                }
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: sanitize(disruption.description),
+                  }}
+                />
+              </Accordion>
+            </div>
           ))}
         </>
       ) : (

@@ -1,14 +1,30 @@
+import { useStopContext } from 'globalState';
+import s from './StopServices.module.scss';
+
 const StopServices = ({ lines, departures }: { lines: any; departures: any }) => {
-  const mappedLines = lines.map((line: any) => {
+  const [{ stopLines }, stopDispatch] = useStopContext();
+  const linesWithDepartures = lines.map((line: any) => {
     return {
       ...line,
       departures: departures.filter((departure: any) => departure.line.id === line.id),
     };
   });
 
+  const handleSelect = (value: any) => {
+    let routeData: any = value ? { ...value } : null;
+    if (value) {
+      const routeInfo = stopLines?.services.find((service: any) => service.id === value.id);
+      if (routeInfo) {
+        const { hasDisruptions, disruptionSeverity, routes } = routeInfo;
+        routeData = { ...value, hasDisruptions, disruptionSeverity, routes };
+      }
+    }
+    stopDispatch({ type: 'UPDATE_SELECTED_LINE', payload: routeData });
+  };
+
   return (
     <div className="wmnds-live-departures wmnds-live-departures--bus">
-      {mappedLines
+      {linesWithDepartures
         .sort((a: any, b: any) => b.departures.length - a.departures.length)
         .map((line: any) => (
           <div
@@ -16,7 +32,11 @@ const StopServices = ({ lines, departures }: { lines: any; departures: any }) =>
             className="wmnds-live-departures__service wmnds-grid wmnds-grid--spacing-sm-2-md wmnds-grid--justify-between"
           >
             <div className="wmnds-col-1 wmnds-col-sm-1-2">
-              <div className="wmnds-live-departures__service-details">
+              <button
+                type="button"
+                onClick={() => handleSelect(line)}
+                className={`${s.serviceSelect} wmnds-live-departures__service-details`}
+              >
                 <div className="wmnds-live-departures__service-name">{line.name}</div>
                 {line.departures.length > 0 ? (
                   <div className="wmnds-live-departures__service-description">
@@ -28,7 +48,7 @@ const StopServices = ({ lines, departures }: { lines: any; departures: any }) =>
                     Currently there are no services
                   </div>
                 )}
-              </div>
+              </button>
             </div>
             <div className="wmnds-col-1 wmnds-col-sm-1-2">
               <div className="wmnds-live-departures__times">

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useStopContext } from 'globalState';
 
@@ -10,12 +10,24 @@ import useDisruptionsAPI from './customHooks/useDisruptionsAPI';
 import StopInfo from './StopInfo/StopInfo';
 
 const Stop = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [mounted, setMounted] = useState(false);
   const { atcoCode } = useParams<{ atcoCode: string }>();
   const stopPoint = useStopAPI(`/Stop/v2/Point/${atcoCode}`, 'UPDATE_STOP_POINT');
   const departures = useStopAPI(`/Stop/v2/Departures/${atcoCode}`, 'UPDATE_STOP_DEPARTURES');
-  const timetables = useStopAPI(`/Stop/v2/${atcoCode}/Timetable`, 'UPDATE_STOP_TIMETABLES');
   useDisruptionsAPI(`/Disruption/v2`);
-  const [{ stopPointData, stopDepartures, stopTimetables }, stopDispatch] = useStopContext();
+  const [{ stopPointData, stopDepartures }, stopDispatch] = useStopContext();
+
+  useEffect(() => {
+    const apiInterval = setInterval(departures.getAPIResults, 30000);
+    if (!mounted) {
+      setMounted(true);
+    }
+    return () => {
+      clearInterval(apiInterval);
+      // setMounted(false);
+    };
+  }, [mounted, departures.getAPIResults]);
 
   useEffect(() => {
     stopDispatch({ type: 'UPDATE_ATCOCODE', payload: atcoCode });
@@ -26,10 +38,10 @@ const Stop = () => {
       <div className="wmnds-m-b-md">
         <Breadcrumbs />
       </div>
-      {stopPoint.loading || departures.loading || timetables.loading ? (
+      {stopPoint.loading || (!departures.results && departures.loading) ? (
         <Loader />
       ) : (
-        <>{stopPointData && stopDepartures && stopTimetables ? <StopInfo /> : 'Error'}</>
+        <>{stopPointData && stopDepartures ? <StopInfo /> : 'Error'}</>
       )}
     </div>
   );

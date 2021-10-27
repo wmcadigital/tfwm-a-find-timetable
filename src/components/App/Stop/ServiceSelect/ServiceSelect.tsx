@@ -17,6 +17,7 @@ const ServiceSelect = () => {
     }
     stopDispatch({ type: 'UPDATE_SELECTED_LINE', payload: routeData });
   };
+
   return (
     <div className={s.serviceContainer}>
       <div className={s.serviceGrid}>
@@ -27,7 +28,7 @@ const ServiceSelect = () => {
             id="allServices"
             name="serviceSelect"
             value=""
-            defaultChecked={!selectedLine}
+            checked={!selectedLine?.id}
             onChange={() => handleChange(null)}
           />
           <label className={`${s.isChecked} wmnds-btn wmnds-btn--primary`} htmlFor="allServices">
@@ -41,8 +42,8 @@ const ServiceSelect = () => {
               type="radio"
               id={service.id}
               name="serviceSelect"
-              defaultChecked={selectedLine?.id === service.id}
               value={service.name}
+              checked={selectedLine?.id === service.id}
               onChange={() => handleChange(service)}
             />
             <label className={`${s.isChecked} wmnds-btn wmnds-btn--primary`} htmlFor={service.id}>

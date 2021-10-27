@@ -3,8 +3,8 @@ import StopServices from './StopServices';
 
 const AllStopDepartures = () => {
   const [{ stopPointData, stopDepartures }] = useStopContext();
-  const { stopPoint, updatedAt } = stopPointData;
-  const { departures } = stopDepartures;
+  const { stopPoint } = stopPointData;
+  const { departures, updatedAt } = stopDepartures;
   const { lines } = stopPoint;
   return (
     <div className="wmnds-m-b-lg">
