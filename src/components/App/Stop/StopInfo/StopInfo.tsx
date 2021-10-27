@@ -2,6 +2,7 @@ import { useStopContext } from 'globalState';
 
 // Components
 import BusStop from '../BusStop/BusStop';
+import TramStop from '../TramStop/TramStop';
 
 const StopInfo = () => {
   const [{ stopPointData, stopDepartures }] = useStopContext();
@@ -13,13 +14,7 @@ const StopInfo = () => {
   }
 
   return (
-    <>
-      {stopDepartures ? (
-        <div className="wmnds-col-md-2-3">{mode === 'bus' ? <BusStop /> : 'tram'}</div>
-      ) : (
-        'No results'
-      )}
-    </>
+    <>{stopDepartures ? <div>{mode === 'bus' ? <BusStop /> : <TramStop />}</div> : 'No results'}</>
   );
 };
 

@@ -13,8 +13,9 @@ const Stop = () => {
   const { atcoCode } = useParams<{ atcoCode: string }>();
   const stopPoint = useStopAPI(`/Stop/v2/Point/${atcoCode}`, 'UPDATE_STOP_POINT');
   const departures = useStopAPI(`/Stop/v2/Departures/${atcoCode}`, 'UPDATE_STOP_DEPARTURES');
+  const timetables = useStopAPI(`/Stop/v2/${atcoCode}/Timetable`, 'UPDATE_STOP_TIMETABLES');
   useDisruptionsAPI(`/Disruption/v2`);
-  const [{ stopPointData }, stopDispatch] = useStopContext();
+  const [{ stopPointData, stopDepartures, stopTimetables }, stopDispatch] = useStopContext();
 
   useEffect(() => {
     stopDispatch({ type: 'UPDATE_ATCOCODE', payload: atcoCode });
@@ -25,10 +26,10 @@ const Stop = () => {
       <div className="wmnds-m-b-md">
         <Breadcrumbs />
       </div>
-      {stopPoint.loading || departures.loading ? (
+      {stopPoint.loading || departures.loading || timetables.loading ? (
         <Loader />
       ) : (
-        <>{stopPointData ? <StopInfo /> : 'Error'}</>
+        <>{stopPointData && stopDepartures && stopTimetables ? <StopInfo /> : 'Error'}</>
       )}
     </div>
   );

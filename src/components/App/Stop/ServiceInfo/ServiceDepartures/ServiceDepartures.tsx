@@ -2,15 +2,15 @@ import { useStopContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
 
 const ServiceDepartures = ({ departures }: { departures: any[] }) => {
-  const [{ selectedLine, stopDepartures, stopLines }] = useStopContext();
-  const route = stopLines?.services.find((line: any) => line.id === selectedLine.id);
+  const [{ selectedLine, stopDepartures }] = useStopContext();
+
   return (
     <div className="wmnds-m-b-lg">
       <div className="wmnds-live-departures wmnds-live-departures--service">
         <div className="wmnds-live-departures__service-details wmnds-m-b-md">
           <div className="wmnds-live-departures__service-name">{selectedLine.name}</div>
           <div className="wmnds-live-departures__service-description">
-            <div className="wmnds-h3 wmnds-m-none">{route.routes[0].routeName}</div>
+            <div className="wmnds-h3 wmnds-m-none">{selectedLine.routes[0].routeName}</div>
           </div>
         </div>
         <p>

@@ -2,11 +2,6 @@
 @import '~assets/wmnds/mixins';
 
 [class*='wmnds-'] {
-  &.summary {
-    display: flex;
-    align-items: center;
-  }
-
   &.disruptionIndicator {
     display: inline-flex;
     margin-right: $size-md;

@@ -1,98 +1,39 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useStopContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
+import Loader from 'components/shared/Loader/Loader';
 import Icon from 'components/shared/Icon/Icon';
-
-const TimetableTime = ({
-  time,
-  // stops,
-  isOpen,
-  handleOpen,
-  handleClose,
-}: {
-  time: string;
-  // stops: any[];
-  isOpen?: boolean;
-  handleOpen: () => void;
-  handleClose: () => void;
-}) => {
-  const [contentHeight, setContentHeight] = useState(0);
-  const contentRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      const setHeight = () => {
-        setContentHeight(contentRef.current.offsetHeight);
-      };
-      setHeight();
-      window.addEventListener('resize', setHeight);
-    }
-  }, [contentRef]);
-
-  return (
-    <div className="wmnds-timetable__time">
-      <Button
-        text={time}
-        btnClass="wmnds-btn--secondary wmnds-timetable__time-toggle"
-        isActive={isOpen}
-        onClick={handleOpen}
-      />
-      <div className="wmnds-timetable__time-details" style={{ height: `${contentHeight}px` }}>
-        <div ref={contentRef} className="wmnds-timetable__time-details-content">
-          <Button
-            text="Close"
-            btnClass="wmnds-btn--link wmnds-timetable__time-close wmnds-is--active"
-            iconRight="general-cross"
-            onClick={handleClose}
-          />
-          <ul className="wmnds-timetable__route">
-            <li className="wmnds-timetable__route-item">
-              <strong className="wmnds-timetable__route-item-time">1010</strong>
-              <a href="#0">Stop 1</a>
-            </li>
-            <li className="wmnds-timetable__route-item">
-              <strong className="wmnds-timetable__route-item-time">1013</strong>
-              <a href="#0">Stop 2</a>
-            </li>
-            <li className="wmnds-timetable__route-item">
-              <strong className="wmnds-timetable__route-item-time">1016</strong>
-              <a href="#0">Stop 3</a>
-            </li>
-            <li className="wmnds-timetable__route-item">
-              <strong className="wmnds-timetable__route-item-time">1019</strong>
-              <a href="#0">Stop 4</a>
-            </li>
-            <li className="wmnds-timetable__route-item">
-              <strong className="wmnds-timetable__route-item-time">1022</strong>
-              <a href="#0">Stop 5</a>
-            </li>
-            <li className="wmnds-timetable__route-item">
-              <strong className="wmnds-timetable__route-item-time">1025</strong>
-              <a href="#0">Stop 6</a>
-            </li>
-            <li className="wmnds-timetable__route-item">
-              <strong className="wmnds-timetable__route-item-time">1028</strong>
-              <a href="#0">Stop 7</a>
-            </li>
-            <li className="wmnds-timetable__route-item">
-              <strong className="wmnds-timetable__route-item-time">1031</strong>
-              <a href="#0">Stop 8</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-};
+import TimetableTime from './TimetableTime';
+import useStopAPI from '../../customHooks/useStopAPI';
+import useDepartureRouteAPI from '../../customHooks/useDepartureRouteAPI';
 
 const ServiceTimetable = () => {
+  const [dayCode, setDayCode] = useState(0);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [timeMustUpdate, setTimeMustUpdate] = useState(false);
+  const [{ selectedLine, stopAtcoCode }] = useStopContext();
+  const { loading, results } = useStopAPI(
+    `/Stop/v2/LineTimetable/${stopAtcoCode}/${selectedLine.id}/${selectedLine.routes[0].operatorCode}/${dayCode}`
+  );
+  const departureRoute = useDepartureRouteAPI();
+
+  useEffect(() => {
+    if (timeMustUpdate && departureRoute.results) {
+      setSelectedTime(departureRoute.fetchTime);
+      setTimeMustUpdate(false);
+    }
+  }, [timeMustUpdate, departureRoute]);
+
+  const handleOpen = (time: string) => {
+    departureRoute.getAPIResults(time, dayCode);
+    setTimeMustUpdate(true);
+  };
+
   return (
     <div className="wmnds-m-b-lg">
       <h3>Timetable</h3>
       <div className="wmnds-p-lg wmnds-bg-white">
-        <p className="wmnds-h4 wmnds-m-b-md wmnds-m-t-none">
-          Stourbridge - Wolverhampton via Kingswinford
-        </p>
+        <p className="wmnds-h4 wmnds-m-b-md wmnds-m-t-none">{selectedLine.routes[0].routeName}</p>
         <div className="wmnds-warning-text ">
           <Icon iconName="general-info" className="wmnds-warning-text__icon" />
           This is the latest timetable (last updated 2 July 2021)
@@ -104,19 +45,24 @@ const ServiceTimetable = () => {
               <Button
                 text="Monday to Friday"
                 btnClass="wmnds-btn--secondary wmnds-col-1 wmnds-col-sm-auto wmnds-m-b-xsm"
-                isActive
+                onClick={() => setDayCode(0)}
+                isActive={dayCode === 0}
               />
             </div>
             <div className="wmnds-col-1 wmnds-col-sm-auto">
               <Button
                 text="Saturday"
                 btnClass="wmnds-btn--secondary wmnds-col-1 wmnds-col-sm-auto wmnds-m-b-xsm"
+                onClick={() => setDayCode(2)}
+                isActive={dayCode === 2}
               />
             </div>
             <div className="wmnds-col-1 wmnds-col-sm-auto">
               <Button
                 text="Sunday"
                 btnClass="wmnds-btn--secondary wmnds-col-1 wmnds-col-sm-auto wmnds-m-b-xsm"
+                onClick={() => setDayCode(3)}
+                isActive={dayCode === 3}
               />
             </div>
           </div>
@@ -124,18 +70,33 @@ const ServiceTimetable = () => {
         <h4>Select a departure time</h4>
         <p>Show the route from this stop at the departure time</p>
         <div className="wmnds-timetable">
-          <TimetableTime
-            time="1010"
-            isOpen={selectedTime === '1010'}
-            handleOpen={() => setSelectedTime('1010')}
-            handleClose={() => setSelectedTime(null)}
-          />
-          <TimetableTime
-            time="1020"
-            isOpen={selectedTime === '1020'}
-            handleOpen={() => setSelectedTime('1020')}
-            handleClose={() => setSelectedTime(null)}
-          />
+          {loading ? (
+            <div className="wmnds-p-lg wmnds-col-1">
+              <Loader />
+            </div>
+          ) : (
+            <>
+              {results?.departures && results?.departures.length ? (
+                <>
+                  {results?.departures.map((time: any) => (
+                    <TimetableTime
+                      key={time.departureTime}
+                      time={time.departureTime}
+                      isOpen={selectedTime === time.departureTime}
+                      handleOpen={() => handleOpen(time.departureTime)}
+                      handleClose={() => setSelectedTime(null)}
+                      isFetching={
+                        departureRoute.loading && departureRoute.fetchTime === time.departureTime
+                      }
+                      stops={departureRoute?.results?.Stop}
+                    />
+                  ))}
+                </>
+              ) : (
+                'None to show'
+              )}
+            </>
+          )}
         </div>
         <div className="wmnds-grid wmnds-grid--justify-between wmnds-m-t-md">
           <div className="wmnds-col-1 wmnds-col-sm-2-3 wmnds-m-b-md">

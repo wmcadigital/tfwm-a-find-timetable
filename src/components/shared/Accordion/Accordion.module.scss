@@ -1,0 +1,9 @@
+@import '~assets/wmnds/vars';
+@import '~assets/wmnds/mixins';
+
+[class*='wmnds-'] {
+  &.summary {
+    display: flex;
+    align-items: center;
+  }
+}

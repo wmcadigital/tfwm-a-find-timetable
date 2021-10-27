@@ -4,10 +4,18 @@ import s from './ServiceSelect.module.scss';
 type Line = { id: string; name: string; operator: string };
 
 const ServiceSelect = () => {
-  const [{ stopPointData, selectedLine }, stopDispatch] = useStopContext();
+  const [{ stopPointData, stopLines, selectedLine }, stopDispatch] = useStopContext();
   const services = stopPointData.stopPoint.lines;
   const handleChange = (value: Line | null) => {
-    stopDispatch({ type: 'UPDATE_SELECTED_LINE', payload: value });
+    let routeData: any = value ? { ...value } : null;
+    if (value) {
+      const routeInfo = stopLines?.services.find((service: any) => service.id === value.id);
+      if (routeInfo) {
+        const { hasDisruptions, disruptionSeverity, routes } = routeInfo;
+        routeData = { ...value, hasDisruptions, disruptionSeverity, routes };
+      }
+    }
+    stopDispatch({ type: 'UPDATE_SELECTED_LINE', payload: routeData });
   };
   return (
     <div className={s.serviceContainer}>

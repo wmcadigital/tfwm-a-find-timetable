@@ -7,6 +7,7 @@ import AllStopDepartures from '../AllStopDepartures/AllStopDepartures';
 import ServiceInfo from '../ServiceInfo/ServiceInfo';
 import ServiceSelect from '../ServiceSelect/ServiceSelect';
 import StopInfoHeader from '../StopInfo/StopInfoHeader';
+import Map from '../Map/Map';
 
 import useStopAPI from '../customHooks/useStopAPI';
 
@@ -22,18 +23,24 @@ const BusStop = () => {
     <div>
       {departures && (
         <>
-          <StopInfoHeader>
-            {stopPoint.locality}, {stopPoint.commonName} ({stopPoint.indicator}){' '}
-            <Icon className={`${s.modeIcon} ${s.bus}`} iconName="modes-isolated-bus" />
-          </StopInfoHeader>
-          <p>
-            Select a bus service to see real time information, timetable and travel updates. <br />
-            Bus services with the same number are run by different bus companies.
-          </p>
-          <div className={s.services}>
-            <ServiceSelect />
+          <div className="wmnds-col-md-2-3">
+            <StopInfoHeader>
+              {stopPoint.locality}, {stopPoint.commonName} ({stopPoint.indicator}){' '}
+              <Icon className={`${s.modeIcon} ${s.bus}`} iconName="modes-isolated-bus" />
+            </StopInfoHeader>
           </div>
-          {!selectedLine ? <AllStopDepartures /> : <>{serviceInfo ? <ServiceInfo /> : 'Error'}</>}
+          <Map />
+          <div className="wmnds-col-md-2-3">
+            <p>
+              Select a bus service to see real time information, timetable and travel updates.{' '}
+              <br />
+              Bus services with the same number are run by different bus companies.
+            </p>
+            <div className={s.services}>
+              <ServiceSelect />
+            </div>
+            {!selectedLine ? <AllStopDepartures /> : <>{serviceInfo ? <ServiceInfo /> : 'Error'}</>}
+          </div>
         </>
       )}
     </div>
