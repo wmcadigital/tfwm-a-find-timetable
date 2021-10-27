@@ -4,6 +4,8 @@ export type State = {
   stopDepartures: any;
   selectedLine?: any;
   selectedRoute?: any;
+  stopLines: any;
+  disruptions: any;
 };
 
 export type StateAction =
@@ -16,11 +18,19 @@ export type StateAction =
       payload: any;
     }
   | {
+      type: 'UPDATE_STOP_LINES';
+      payload: any;
+    }
+  | {
       type: 'UPDATE_SELECTED_LINE';
       payload: any;
     }
   | {
       type: 'UPDATE_SELECTED_ROUTE';
+      payload: any;
+    }
+  | {
+      type: 'UPDATE_DISRUPTIONS';
       payload: any;
     }
   | {

@@ -1,29 +1,20 @@
 import { useStopContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
-import useStopAPI from '../../customHooks/useStopAPI';
 
 const ServiceDepartures = ({ departures }: { departures: any[] }) => {
-  const [{ selectedLine, selectedRoute, stopDepartures }] = useStopContext();
-  const { loading } = useStopAPI(
-    `/Tfwm-Api/Line/${selectedLine.id}/Route`,
-    'UPDATE_SELECTED_ROUTE'
-  );
-  console.log(loading, selectedRoute);
+  const [{ selectedLine, stopDepartures, stopLines }] = useStopContext();
+  const route = stopLines?.services.find((line: any) => line.id === selectedLine.id);
   return (
     <div className="wmnds-m-b-lg">
       <div className="wmnds-live-departures wmnds-live-departures--service">
         <div className="wmnds-live-departures__service-details wmnds-m-b-md">
           <div className="wmnds-live-departures__service-name">{selectedLine.name}</div>
           <div className="wmnds-live-departures__service-description">
-            {!loading && (
-              <div className="wmnds-h3 wmnds-m-none">
-                {selectedRoute.ArrayOfLine.Line[0].RouteSections.MatchedRoute[0].Name}
-              </div>
-            )}
+            <div className="wmnds-h3 wmnds-m-none">{route.routes[0].routeName}</div>
           </div>
         </div>
         <p>
-          <a href="#0">{selectedLine.operator}</a> runs this service
+          <strong>{selectedLine.operator}</strong> runs this service
         </p>
         <Button
           iconLeft="general-star-empty"

@@ -6,11 +6,13 @@ import { useStopContext } from 'globalState';
 import Breadcrumbs from 'components/shared/Breadcrumbs/Breadcrumbs';
 import Loader from 'components/shared/Loader/Loader';
 import useStopAPI from './customHooks/useStopAPI';
+import useDisruptionsAPI from './customHooks/useDisruptionsAPI';
 import StopInfo from './StopInfo/StopInfo';
 
 const Stop = () => {
   const { atcoCode } = useParams<{ atcoCode: string }>();
   const { loading } = useStopAPI(`/Stop/v2/Point/${atcoCode}`, 'UPDATE_STOP_POINT');
+  useDisruptionsAPI(`/Disruption/v2`);
   const [{ stopPointData }, stopDispatch] = useStopContext();
 
   useEffect(() => {

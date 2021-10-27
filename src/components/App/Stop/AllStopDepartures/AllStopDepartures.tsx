@@ -1,4 +1,5 @@
 import Loader from 'components/shared/Loader/Loader';
+import Message from 'components/shared/Message/Message';
 
 const StopServices = ({ lines, departures }: { lines: any; departures: any }) => {
   const mappedLines = lines.map((line: any) => {
@@ -52,7 +53,7 @@ const StopServices = ({ lines, departures }: { lines: any; departures: any }) =>
 };
 
 const AllStopDepartures = ({ departures, lines }: { departures: any; lines: any }) => {
-  const { loading, results, updatedAt } = departures;
+  const { loading, results, updatedAt, errorInfo, getAPIResults } = departures;
   return (
     <div className="wmnds-m-b-lg">
       <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--justify-between wmnds-m-b-md">
@@ -70,7 +71,23 @@ const AllStopDepartures = ({ departures, lines }: { departures: any; lines: any 
           {results?.departures ? (
             <StopServices lines={lines} departures={results.departures} />
           ) : (
-            'error'
+            <>
+              {errorInfo ? (
+                <Message
+                  type="error"
+                  title={errorInfo.title}
+                  message={errorInfo.message}
+                  showRetry
+                  retryCallback={getAPIResults}
+                />
+              ) : (
+                <Message
+                  type="error"
+                  title="Please try again later"
+                  message="Sorry, we are currently experiencing technical issues."
+                />
+              )}
+            </>
           )}
         </>
       )}

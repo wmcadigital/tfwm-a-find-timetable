@@ -5,8 +5,9 @@ import ServiceDisruptions from './ServiceDisruptions/ServiceDisruptions';
 import ServiceTimetable from './ServiceTimetable/ServiceTimetable';
 
 const ServiceInfo = () => {
-  const [{ selectedLine, stopDepartures }] = useStopContext();
+  const [{ selectedLine, stopDepartures, stopLines }] = useStopContext();
   const [lineDepartures, setLineDepartures] = useState<any>([]);
+  const thisLine = stopLines?.services.find((service: any) => service.id === selectedLine.id);
   useEffect(() => {
     setLineDepartures(
       stopDepartures.departures.filter((dep: any) => dep.line.id === selectedLine.id).slice(0, 5)
@@ -16,7 +17,7 @@ const ServiceInfo = () => {
   return (
     <>
       <ServiceDepartures departures={lineDepartures} />
-      <ServiceDisruptions />
+      {thisLine.hasDisruptions && <ServiceDisruptions />}
       <ServiceTimetable />
     </>
   );

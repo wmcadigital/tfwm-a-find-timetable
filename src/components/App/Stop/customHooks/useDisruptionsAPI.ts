@@ -8,10 +8,9 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useStopAPI = (apiPath: string, type?: any) => {
+const useDisruptionsAPI = (apiPath: string) => {
   const [results, setResults] = useState<any>();
   const [, stopDispatch] = useStopContext();
-  const [updatedAt, setUpdatedAt] = useState<any>();
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
 
@@ -35,21 +34,8 @@ const useStopAPI = (apiPath: string, type?: any) => {
   const handleApiResponse = useCallback(
     (response) => {
       if (response?.data) {
-        setResults(response.data);
-        const pad = (num: number, size: number) => {
-          let n = num.toString();
-          while (n.length < size) n = `0${n}`;
-          return n;
-        };
-        const date = new Date();
-        const now = `${date.getHours()}:${pad(date.getMinutes(), 2)}${
-          date.getHours() < 12 ? 'am' : 'pm'
-        }`;
-        setUpdatedAt(now);
-        if (type) {
-          stopDispatch({ type, payload: { ...response.data, updatedAt: now } });
-          console.log('ran');
-        }
+        setResults(response.data.disruptions);
+        stopDispatch({ type: 'UPDATE_DISRUPTIONS', payload: response.data.disruptions });
       } else {
         setErrorInfo({
           // Update error message
@@ -60,7 +46,7 @@ const useStopAPI = (apiPath: string, type?: any) => {
       clearApiTimeout();
       setLoading(false);
     },
-    [type, stopDispatch]
+    [stopDispatch]
   );
 
   const handleApiError = (error: any) => {
@@ -71,7 +57,7 @@ const useStopAPI = (apiPath: string, type?: any) => {
       message: 'Apologies, we are having technical difficulties.',
       isTimeoutError: axios.isCancel(error),
     });
-    setResults([]); // Reset the results
+    setResults(null); // Reset the results
     if (!axios.isCancel(error)) {
       // eslint-disable-next-line no-console
       console.log({ error });
@@ -108,7 +94,7 @@ const useStopAPI = (apiPath: string, type?: any) => {
     };
   }, [getAPIResults]);
 
-  return { loading, errorInfo, results, updatedAt, getAPIResults };
+  return { loading, errorInfo, results, getAPIResults };
 };
 
-export default useStopAPI;
+export default useDisruptionsAPI;
