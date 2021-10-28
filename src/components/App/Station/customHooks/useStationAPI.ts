@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useStopContext } from 'globalState';
+import { useStationContext } from 'globalState';
 import axios from 'axios';
 
 interface IError {
@@ -8,10 +8,9 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useStopAPI = (apiPath: string, type?: any) => {
+const useStationAPI = (apiPath: string, type?: any) => {
   const [results, setResults] = useState<any>();
-  const [, stopDispatch] = useStopContext();
-  const [updatedAt, setUpdatedAt] = useState<any>();
+  const [, stationDispatch] = useStationContext();
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
 
@@ -45,9 +44,13 @@ const useStopAPI = (apiPath: string, type?: any) => {
         const now = `${date.getHours()}:${pad(date.getMinutes(), 2)}${
           date.getHours() < 12 ? 'am' : 'pm'
         }`;
-        setUpdatedAt(now);
         if (type) {
-          stopDispatch({ type, payload: { ...response.data, updatedAt: now } });
+          stationDispatch({
+            type,
+            payload: Array.isArray(response.data)
+              ? { updatedAt: now, data: response.data }
+              : { ...response.data, updatedAt: now },
+          });
         }
       } else {
         setErrorInfo({
@@ -59,7 +62,7 @@ const useStopAPI = (apiPath: string, type?: any) => {
       clearApiTimeout();
       setLoading(false);
     },
-    [type, stopDispatch]
+    [type, stationDispatch]
   );
 
   const handleApiError = (error: any) => {
@@ -107,7 +110,7 @@ const useStopAPI = (apiPath: string, type?: any) => {
     };
   }, [getAPIResults]);
 
-  return { loading, errorInfo, results, updatedAt, getAPIResults };
+  return { loading, errorInfo, results, getAPIResults };
 };
 
-export default useStopAPI;
+export default useStationAPI;

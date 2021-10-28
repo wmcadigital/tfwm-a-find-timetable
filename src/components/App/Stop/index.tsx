@@ -10,7 +10,6 @@ import useDisruptionsAPI from './customHooks/useDisruptionsAPI';
 import StopInfo from './StopInfo/StopInfo';
 
 const Stop = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [mounted, setMounted] = useState(false);
   const { atcoCode } = useParams<{ atcoCode: string }>();
   const stopPoint = useStopAPI(`/Stop/v2/Point/${atcoCode}`, 'UPDATE_STOP_POINT');
@@ -25,7 +24,6 @@ const Stop = () => {
     }
     return () => {
       clearInterval(apiInterval);
-      // setMounted(false);
     };
   }, [mounted, departures.getAPIResults]);
 

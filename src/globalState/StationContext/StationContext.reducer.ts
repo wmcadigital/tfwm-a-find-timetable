@@ -2,8 +2,8 @@ import * as TStation from './StationContext.types';
 // Use an IIFE to define the initial state as we need to check session storage and query params
 export const initialState = (() => {
   const state: TStation.State = {
-    stationPointData: null,
-    stationAtcoCode: '',
+    stationPoint: null,
+    stationId: '',
     stationDepartures: null,
   };
 
@@ -12,10 +12,10 @@ export const initialState = (() => {
 
 export const reducer = (state = initialState, action: TStation.StateAction): TStation.State => {
   switch (action.type) {
-    case 'UPDATE_ATCOCODE':
-      return { ...state, stationAtcoCode: action.payload };
+    case 'UPDATE_STATION_ID':
+      return { ...state, stationId: action.payload };
     case 'UPDATE_STATION_POINT':
-      return { ...state, stationPointData: action.payload };
+      return { ...state, stationPoint: action.payload };
     case 'UPDATE_STATION_DEPARTURES':
       return { ...state, stationDepartures: action.payload };
     case 'UPDATE_SELECTED_LINE':

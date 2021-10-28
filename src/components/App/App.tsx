@@ -16,7 +16,7 @@ const App = () => {
             <Route path="/find-a-timetable">
               <FindTimetable />
             </Route>
-            <Route path="/station">
+            <Route path="/station/:id">
               <Station />
             </Route>
             <Route path="/stop/:atcoCode">

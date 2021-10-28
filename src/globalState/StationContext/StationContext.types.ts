@@ -1,6 +1,6 @@
 export type State = {
-  stationPointData: any;
-  stationAtcoCode: string;
+  stationPoint: any;
+  stationId: string;
   stationDepartures: any;
   selectedLine?: any;
   selectedRoute?: any;
@@ -8,7 +8,7 @@ export type State = {
 
 export type StateAction =
   | {
-      type: 'UPDATE_ATCOCODE';
+      type: 'UPDATE_STATION_ID';
       payload: string;
     }
   | {
