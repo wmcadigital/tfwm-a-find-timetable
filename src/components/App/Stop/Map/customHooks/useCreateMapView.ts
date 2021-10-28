@@ -8,21 +8,31 @@ import { useStopContext } from 'globalState';
 const useCreateMapView = (mapContainerRef: any) => {
   const [viewState, setViewState] = useState<any>();
   const [isCreated, setIsCreated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [{ stopPointData }] = useStopContext();
 
   const createMapView = useCallback(async () => {
     try {
       setDefaultOptions({ css: true }); // Load esri css by default
-      const [Map, MapView, Basemap, VectorTileLayer, Graphic, GraphicsLayer, FeatureLayer] =
-        await loadModules([
-          'esri/Map',
-          'esri/views/MapView',
-          'esri/Basemap',
-          'esri/layers/VectorTileLayer',
-          'esri/Graphic',
-          'esri/layers/GraphicsLayer',
-          'esri/layers/FeatureLayer',
-        ]);
+      const [
+        Map,
+        MapView,
+        Basemap,
+        VectorTileLayer,
+        Graphic,
+        GraphicsLayer,
+        FeatureLayer,
+        watchUtils,
+      ] = await loadModules([
+        'esri/Map',
+        'esri/views/MapView',
+        'esri/Basemap',
+        'esri/layers/VectorTileLayer',
+        'esri/Graphic',
+        'esri/layers/GraphicsLayer',
+        'esri/layers/FeatureLayer',
+        'esri/core/watchUtils',
+      ]);
 
       const basemap = new Basemap({
         baseLayers: [
@@ -112,7 +122,11 @@ const useCreateMapView = (mapContainerRef: any) => {
       // Move ui elements into the right position
       view.ui.move(['zoom'], 'top-right');
       view.ui.move(['attribution'], 'bottom');
-
+      view.whenLayerView(stopsLayer).then((layerView: any) => {
+        watchUtils.whenFalse(layerView, 'updating', () => {
+          setIsLoading(false);
+        });
+      });
       setViewState(view);
       setIsCreated(true);
     } catch (e) {
@@ -132,7 +146,7 @@ const useCreateMapView = (mapContainerRef: any) => {
     };
   }, [createMapView, isCreated, viewState]);
 
-  return viewState;
+  return { viewState, isLoading };
 };
 
 export default useCreateMapView;
