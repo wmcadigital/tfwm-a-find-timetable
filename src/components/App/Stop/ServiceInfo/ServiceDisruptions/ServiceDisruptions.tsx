@@ -9,15 +9,18 @@ import s from './ServiceDisruptions.module.scss';
 const ServiceDisruptions = () => {
   const [{ selectedLine, stopDisruptions }] = useStopContext();
   const [serviceDisruptions, setServiceDisruptions] = useState<any>(null);
+  const lineId = selectedLine.id;
+  const lineName = selectedLine.name;
 
   useEffect(() => {
     if (!serviceDisruptions && stopDisruptions?.length) {
       const thisLineDisruptions = stopDisruptions.filter((disruption: any) =>
-        disruption.servicesAffected?.find((service: any) => service.id === selectedLine.id)
+        disruption.servicesAffected?.find((service: any) => service.id === lineId)
       );
       setServiceDisruptions(thisLineDisruptions);
     }
-  }, [serviceDisruptions, stopDisruptions, selectedLine.id]);
+  }, [serviceDisruptions, stopDisruptions, lineId]);
+
   return (
     <div className="wmnds-m-b-md wmnds-p-b-md">
       <h3>Disruptions to this service</h3>
@@ -33,7 +36,8 @@ const ServiceDisruptions = () => {
                     <DisruptionIndicatorSmall
                       iconLeft="modes-isolated-bus"
                       className={s.disruptionIndicator}
-                      text={selectedLine.name}
+                      text={lineName}
+                      severity={disruption.disruptionSeverity}
                     />
                     <span>
                       {disruption.title} at <strong>{disruption.subtitle}</strong>

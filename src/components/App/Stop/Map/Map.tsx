@@ -21,7 +21,7 @@ const Map = () => {
       />
       {isLoading && (
         <div className={s.loader}>
-          <Loader />
+          <Loader size="small" />
         </div>
       )}
     </div>

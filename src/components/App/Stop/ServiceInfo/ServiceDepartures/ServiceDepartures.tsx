@@ -1,7 +1,7 @@
 import { useStopContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
 
-const ServiceDepartures = ({ departures }: { departures: any[] }) => {
+const ServiceDepartures = ({ departures, isTram }: { departures: any[]; isTram?: boolean }) => {
   const [{ selectedLine, stopDepartures }] = useStopContext();
 
   return (
@@ -26,7 +26,7 @@ const ServiceDepartures = ({ departures }: { departures: any[] }) => {
           <div className="wmnds-col-1 wmnds-col-md-auto">
             <div className="wmnds-h3 wmnds-m-t-none wmnds-m-b-md">Real time departures</div>
             <p className="wmnds-m-b-md">
-              See when the next {selectedLine.name} bus leaves this stop
+              See when the next {isTram ? 'tram' : `${selectedLine.name} bus`} leaves this stop
             </p>
           </div>
           <div className="wmnds-col-1 wmnds-col-md-auto">
