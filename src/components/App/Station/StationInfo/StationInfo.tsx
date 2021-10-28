@@ -1,4 +1,5 @@
 // Components
+import { useStationContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
 import Icon from 'components/shared/Icon/Icon';
 import s from '../Stop.module.scss';
@@ -57,12 +58,14 @@ const Facilities = () => {
 };
 
 const StopInfo = () => {
+  const [{ stationPoint }] = useStationContext();
+  const station = stationPoint.data[0];
   return (
     <div className="wmnds-col-md-2-3">
       <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--justify-between">
         <div className="wmnds-col-2-3 wmnds-m-b-lg">
           <h2>
-            Birmingham Moor street{' '}
+            {station.name}{' '}
             <Icon className={`${s.modeIcon} ${s.train}`} iconName="modes-isolated-rail" />
           </h2>
           <h3 className="wmnds-m-t-none">Rail zone 1</h3>
