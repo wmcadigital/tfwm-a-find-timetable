@@ -25,7 +25,7 @@ const StopServices = ({ lines, departures }: { lines: any; departures: any }) =>
   return (
     <div className="wmnds-live-departures wmnds-live-departures--bus">
       {linesWithDepartures
-        .sort((a: any, b: any) => b.departures.length - a.departures.length)
+        .filter((line: any) => line.departures.length)
         .map((line: any) => (
           <div
             key={line.id}
@@ -38,16 +38,10 @@ const StopServices = ({ lines, departures }: { lines: any; departures: any }) =>
                 className={`${s.serviceSelect} wmnds-live-departures__service-details`}
               >
                 <div className="wmnds-live-departures__service-name">{line.name}</div>
-                {line.departures.length > 0 ? (
-                  <div className="wmnds-live-departures__service-description">
-                    <strong>{line.departures[0].towards}</strong>
-                    <span className="wmnds-live-departures__service-operator">{line.operator}</span>
-                  </div>
-                ) : (
-                  <div className="wmnds-live-departures__service-description">
-                    Currently there are no services
-                  </div>
-                )}
+                <div className="wmnds-live-departures__service-description">
+                  <strong>{line.departures[0].towards}</strong>
+                  <span className="wmnds-live-departures__service-operator">{line.operator}</span>
+                </div>
               </button>
             </div>
             <div className="wmnds-col-1 wmnds-col-sm-1-2">

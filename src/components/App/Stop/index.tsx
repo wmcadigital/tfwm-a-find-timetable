@@ -28,6 +28,12 @@ const Stop = () => {
   }, [mounted, departures.getAPIResults]);
 
   useEffect(() => {
+    if (!mounted) {
+      stopDispatch({ type: 'UPDATE_STOP_DEPARTURES', payload: [] });
+    }
+  }, [mounted, stopDispatch]);
+
+  useEffect(() => {
     stopDispatch({ type: 'UPDATE_ATCOCODE', payload: atcoCode });
   }, [stopDispatch, atcoCode]);
 

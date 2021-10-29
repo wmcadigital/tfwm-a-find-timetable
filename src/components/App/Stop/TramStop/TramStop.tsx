@@ -29,7 +29,7 @@ const TramStop = () => {
           {
             operatorCode: 'TMM',
             routeName: 'Birmingham - Wolverhampton',
-            operator: stopPointData.stopPoint.lines[0].operator,
+            operatorName: stopPointData.stopPoint.lines[0].operator,
           },
         ],
       },

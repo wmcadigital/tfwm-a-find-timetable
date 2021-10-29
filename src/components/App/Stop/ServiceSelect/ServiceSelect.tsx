@@ -1,11 +1,21 @@
+import { useEffect, useState } from 'react';
 import { useStopContext } from 'globalState';
 import s from './ServiceSelect.module.scss';
 
 type Line = { id: string; name: string; operator: string };
 
 const ServiceSelect = () => {
+  const [mounted, setMounted] = useState(false);
   const [{ stopPointData, stopLines, selectedLine }, stopDispatch] = useStopContext();
   const services = stopPointData.stopPoint.lines;
+
+  useEffect(() => {
+    if (!mounted) {
+      stopDispatch({ type: 'UPDATE_SELECTED_LINE', payload: null });
+      setMounted(true);
+    }
+  }, [stopDispatch, mounted]);
+
   const handleChange = (value: Line | null) => {
     let routeData: any = value ? { ...value } : null;
     if (value) {

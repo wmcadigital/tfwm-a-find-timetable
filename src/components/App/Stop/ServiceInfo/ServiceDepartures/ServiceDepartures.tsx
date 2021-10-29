@@ -14,7 +14,7 @@ const ServiceDepartures = ({ departures, isTram }: { departures: any[]; isTram?:
           </div>
         </div>
         <p>
-          <strong>{selectedLine.routes[0].operator}</strong> runs this service
+          <strong>{selectedLine.routes[0].operatorName}</strong> runs this service
         </p>
         <Button
           iconLeft="general-star-empty"

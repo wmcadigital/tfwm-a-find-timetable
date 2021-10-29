@@ -22,6 +22,7 @@ const BusStop = () => {
     `/bus/v1/service/${stopPoint.lines.map((line: any) => line.id).join(',')}`,
     'UPDATE_STOP_LINES'
   );
+
   return (
     <div>
       {departures && (
