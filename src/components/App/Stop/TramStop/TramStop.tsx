@@ -1,8 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { useState, useEffect } from 'react';
 import { useStopContext } from 'globalState';
 
 // Components
 import Icon from 'components/shared/Icon/Icon';
+import NearestStops from 'components/shared/Sidebar/NearestStops';
 import s from '../Stop.module.scss';
 import StopInfoHeader from '../StopInfo/StopInfoHeader';
 import Map from '../Map/Map';
@@ -12,7 +14,10 @@ import ServiceTimetable from '../ServiceInfo/ServiceTimetable/ServiceTimetable';
 
 const TramStop = () => {
   const [showMap, setShowMap] = useState(false);
-  const [{ stopPointData, stopDepartures, stopDisruptions }, stopDispatch] = useStopContext();
+  const [
+    { stopPointData, stopDepartures, stopDisruptions, stopAtcoCode, selectedLine },
+    stopDispatch,
+  ] = useStopContext();
   const { stopPoint } = stopPointData;
   useEffect(() => {
     stopDispatch({
@@ -42,10 +47,19 @@ const TramStop = () => {
         </StopInfoHeader>
       </div>
       {showMap && <Map />}
-      <div className="wmnds-col-2-3">
-        <ServiceDepartures departures={stopDepartures.departures.slice(0, 5)} isTram />
-        {hasDisruptions && <ServiceDisruptions />}
-        <ServiceTimetable />
+      <div className="wmnds-grid wmnds-grid--spacing-md-2-lg wmnds-m-t-md">
+        <div className="wmnds-col-1 wmnds-col-md-2-3">
+          {selectedLine && (
+            <>
+              <ServiceDepartures departures={stopDepartures.departures.slice(0, 5)} isTram />
+              {hasDisruptions && <ServiceDisruptions />}
+              <ServiceTimetable />
+            </>
+          )}
+        </div>
+        <div className="wmnds-col-1 wmnds-col-md-1-3">
+          <NearestStops lat={stopPoint.latitude} lon={stopPoint.longitude} id={stopAtcoCode} />
+        </div>
       </div>
     </div>
   );

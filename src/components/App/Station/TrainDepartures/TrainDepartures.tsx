@@ -87,7 +87,8 @@ const TrainDepartures = () => {
                       </th>
                       <td data-header="Platform">{departure.platform}</td>
                       <td data-header="Time">
-                        {departure.estimatedTime === 'Cancelled' ? (
+                        {departure.estimatedTime === 'Cancelled' ||
+                        departure.estimatedTime === 'Delayed' ? (
                           <>
                             {departure.scheduledTime}
                             <strong className="wmnds-live-departures__train-timetable-status">

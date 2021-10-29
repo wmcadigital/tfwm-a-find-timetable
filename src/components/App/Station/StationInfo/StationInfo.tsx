@@ -3,9 +3,12 @@ import { useState } from 'react';
 import { useStationContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
 import Icon from 'components/shared/Icon/Icon';
+import NearestStops from 'components/shared/Sidebar/NearestStops';
+import NIcon from 'components/shared/Icon/NIcon';
 import s from '../Stop.module.scss';
 import TrainDepartures from '../TrainDepartures/TrainDepartures';
 import Map from '../Map/Map';
+import railZoneData from '../railZoneData.json';
 
 const Parking = () => {
   return (
@@ -61,34 +64,56 @@ const Facilities = () => {
 
 const StopInfo = () => {
   const [showMap, setShowMap] = useState(false);
-  const [{ stationPoint }] = useStationContext();
+  const [{ stationPoint, stationId }] = useStationContext();
   const station = stationPoint.data[0];
+  const zoneInfo = railZoneData.find((railZone: any) => railZone.crsCode === stationId);
   return (
     <div>
-      <div className="wmnds-col-md-2-3">
-        <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--justify-between">
-          <div className="wmnds-col-2-3 wmnds-m-b-lg">
-            <h2>
-              {station.name}{' '}
-              <Icon className={`${s.modeIcon} ${s.train}`} iconName="modes-isolated-rail" />
-            </h2>
-            <h3 className="wmnds-m-t-none">Rail zone 1</h3>
-          </div>
-          <div className="wmnds-col-auto">
-            <Button
-              btnClass="wmnds-btn--secondary wmnds-col-1"
-              text={showMap ? 'Hide map' : 'View map'}
-              iconRight="general-location-pin"
-              onClick={() => setShowMap(!showMap)}
-            />
+      <div className="wmnds-grid wmnds-grid--spacing-md-2-lg">
+        <div className="wmnds-col-1 wmnds-col-md-2-3">
+          <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--justify-between">
+            <div className="wmnds-col-2-3 wmnds-m-b-lg">
+              <h2>
+                {station.name}{' '}
+                <Icon className={`${s.modeIcon} ${s.train}`} iconName="modes-isolated-rail" />
+              </h2>
+              {zoneInfo && (
+                <h3 className="wmnds-m-t-none">
+                  {!zoneInfo.railZone ? (
+                    'Out of county'
+                  ) : (
+                    <>
+                      {zoneInfo.railZone === 6 ? (
+                        <NIcon str="nTrain zone 5" />
+                      ) : (
+                        `Rail zone ${zoneInfo.railZone}`
+                      )}
+                    </>
+                  )}
+                </h3>
+              )}
+            </div>
+            <div className="wmnds-col-auto">
+              <Button
+                btnClass="wmnds-btn--secondary wmnds-col-1"
+                text={showMap ? 'Hide map' : 'View map'}
+                iconRight="general-location-pin"
+                onClick={() => setShowMap(!showMap)}
+              />
+            </div>
           </div>
         </div>
       </div>
       {showMap && <Map />}
-      <div className="wmnds-col-md-2-3">
-        <TrainDepartures />
-        <Facilities />
-        <Parking />
+      <div className="wmnds-grid wmnds-grid--spacing-md-2-lg">
+        <div className="wmnds-col-1 wmnds-col-md-2-3">
+          <TrainDepartures />
+          <Facilities />
+          <Parking />
+        </div>
+        <div className="wmnds-col-1 wmnds-col-md-1-3">
+          <NearestStops lat={station.lat} lon={station.lon} id={stationId} />
+        </div>
       </div>
     </div>
   );
