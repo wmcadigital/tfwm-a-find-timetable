@@ -38,7 +38,10 @@ function NearestStops({ lat, lon, id }: { lat: number; lon: number; id: string }
                     }
                   };
                   return (
-                    <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-nearest-stop-station__stop">
+                    <div
+                      key={`${result.NaPTAN}_${result.Distance}`}
+                      className="wmnds-grid wmnds-grid--spacing-2-md wmnds-nearest-stop-station__stop"
+                    >
                       <div className="wmnds-col-auto">
                         <Icon
                           iconName={`modes-isolated-${mode()}`}
