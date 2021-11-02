@@ -27,6 +27,7 @@ const SearchResults = ({ classes }: { classes?: string }) => {
             distance="0.3 miles away"
             text={stop.properties.name}
             handleClick={handleClick}
+            key={stop.properties.atcoCode}
           />
         </div>
       ))}

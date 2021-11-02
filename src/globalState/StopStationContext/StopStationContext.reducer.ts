@@ -6,6 +6,7 @@ export const initialState = (() => {
     selectedModes: [],
     location: null,
     stops: [],
+    searchRadius: 1,
   };
 
   return state;
@@ -22,6 +23,8 @@ export const reducer = (
       return { ...state, location: action.payload };
     case 'UPDATE_STOPS':
       return { ...state, stops: action.payload };
+    case 'UPDATE_SEARCH_RADIUS':
+      return { ...state, searchRadius: action.payload };
     // Default should return initial state if error
     default:
       return initialState;
