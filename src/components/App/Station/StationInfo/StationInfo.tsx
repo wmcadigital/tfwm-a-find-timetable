@@ -4,7 +4,7 @@ import { useStationContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
 import Icon from 'components/shared/Icon/Icon';
 import Loader from 'components/shared/Loader/Loader';
-import NearestStops from 'components/shared/Sidebar/NearestStops';
+import Sidebar from 'components/shared/Sidebar/Sidebar';
 import NIcon from 'components/shared/Icon/NIcon';
 import s from '../Stop.module.scss';
 import TrainDepartures from '../TrainDepartures/TrainDepartures';
@@ -12,8 +12,8 @@ import Map from '../Map/Map';
 import railZoneData from '../railZoneData.json';
 import useFacilitiesAPI from './useFacilitiesAPI';
 
-const ParkingInfo = ({ parking }: { parking: any }) => {
-  const { Parking } = parking.InterChange;
+const StationParking = ({ parkingInfo }: { parkingInfo: any }) => {
+  const { Parking } = parkingInfo.InterChange;
   if (Parking) {
     return (
       <div className="wmnds-facilities wmnds-bg-white wmnds-p-lg wmnds-m-b-lg">
@@ -191,14 +191,14 @@ const StationInfo = () => {
               {results && (
                 <>
                   <Facilities facilities={results[0].Key} />
-                  <ParkingInfo parking={results[0].Key} />
+                  <StationParking parkingInfo={results[0].Key} />
                 </>
               )}
             </>
           )}
         </div>
         <div className="wmnds-col-1 wmnds-col-md-1-3">
-          <NearestStops lat={station.lat} lon={station.lon} id={stationId} />
+          <Sidebar latitude={station.lat} longitude={station.lon} id={`SB_${stationId}`} />
         </div>
       </div>
     </div>

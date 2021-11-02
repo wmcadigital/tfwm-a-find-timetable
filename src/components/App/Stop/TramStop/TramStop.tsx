@@ -4,7 +4,7 @@ import { useStopContext } from 'globalState';
 
 // Components
 import Icon from 'components/shared/Icon/Icon';
-import NearestStops from 'components/shared/Sidebar/NearestStops';
+import Sidebar from 'components/shared/Sidebar/Sidebar';
 import s from '../Stop.module.scss';
 import StopInfoHeader from '../StopInfo/StopInfoHeader';
 import Map from '../Map/Map';
@@ -58,7 +58,11 @@ const TramStop = () => {
           )}
         </div>
         <div className="wmnds-col-1 wmnds-col-md-1-3">
-          <NearestStops lat={stopPoint.latitude} lon={stopPoint.longitude} id={stopAtcoCode} />
+          <Sidebar
+            latitude={stopPoint.latitude}
+            longitude={stopPoint.longitude}
+            id={`SB_${stopAtcoCode}`}
+          />
         </div>
       </div>
     </div>

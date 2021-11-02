@@ -8,7 +8,7 @@ function NearestStops({ lat, lon, id }: { lat: number; lon: number; id: string }
   );
 
   return (
-    <div className="wmnds-nearest-stop-station">
+    <div className="wmnds-nearest-stop-station wmnds-m-b-lg">
       <div className="wmnds-content-card">
         <div className="wmnds-p-md">
           <h2>Nearest stops or stations</h2>
