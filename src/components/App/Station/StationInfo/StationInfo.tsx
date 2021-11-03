@@ -4,7 +4,7 @@ import { useStationContext } from 'globalState';
 import Button from 'components/shared/Button/Button';
 import Icon from 'components/shared/Icon/Icon';
 import Loader from 'components/shared/Loader/Loader';
-import Sidebar from 'components/shared/Sidebar/Sidebar';
+import Sidebar from 'components/App/Sidebar/Sidebar';
 import NIcon from 'components/shared/Icon/NIcon';
 import s from '../Stop.module.scss';
 import TrainDepartures from '../TrainDepartures/TrainDepartures';

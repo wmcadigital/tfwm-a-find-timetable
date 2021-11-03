@@ -4,7 +4,7 @@ import { useStopContext } from 'globalState';
 
 // Components
 import Icon from 'components/shared/Icon/Icon';
-import Sidebar from 'components/shared/Sidebar/Sidebar';
+import Sidebar from 'components/App/Sidebar/Sidebar';
 import s from '../Stop.module.scss';
 import StopInfoHeader from '../StopInfo/StopInfoHeader';
 import Map from '../Map/Map';

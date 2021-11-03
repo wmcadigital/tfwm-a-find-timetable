@@ -4,10 +4,11 @@ import ModeSelect from 'components/shared/ModeSelect/ModeSelect';
 import { Mode } from 'globalState/GlobalContext/GlobalContext.types';
 import LocationSearch from './LocationSearch';
 import RadiusSearch from './RadiusSearch/RadiusSearch';
+import useGetStopsAPI from '../customHooks/useGetStopsAPI';
 
 const StopStationSearch = () => {
   const [{ selectedModes }, stopStationDispatch] = useStopStationContext();
-
+  useGetStopsAPI();
   const handleSelect = (mode: Mode) => {
     let payload: Mode[] = [];
     if (selectedModes.includes(mode)) {
