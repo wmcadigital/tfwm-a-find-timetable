@@ -37,6 +37,7 @@ const useCreateMapView = (mapContainerRef: any) => {
         container: mapContainerRef.current,
         map: new Map({ basemap }),
         center: [-2.0047209, 52.4778132],
+        zoom: 14,
         constraints: {
           snapToZoom: true,
         },

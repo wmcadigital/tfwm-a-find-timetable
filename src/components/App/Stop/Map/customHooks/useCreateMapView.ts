@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState, useCallback } from 'react';
 import { loadModules, setDefaultOptions } from 'esri-loader';
-import mapMarker from 'assets/svgs/map/map-marker.svg';
+import mapMarker from 'globalState/helpers/mapMarker';
 import { useStopContext } from 'globalState';
 
 const useCreateMapView = (mapContainerRef: any) => {
@@ -10,6 +10,7 @@ const useCreateMapView = (mapContainerRef: any) => {
   const [isCreated, setIsCreated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [{ stopPointData }] = useStopContext();
+  const stopMode = stopPointData.stopPoint.busStopType === 'NaptanMetroPlatform' ? 'tram' : 'bus';
 
   const createMapView = useCallback(async () => {
     try {
@@ -94,7 +95,7 @@ const useCreateMapView = (mapContainerRef: any) => {
           type: 'simple',
           symbol: {
             type: 'picture-marker',
-            url: mapMarker,
+            url: mapMarker(stopMode),
             width: 24,
             height: 24,
           },
@@ -107,7 +108,7 @@ const useCreateMapView = (mapContainerRef: any) => {
           {
             title: '{name}',
             id: 'add-stop',
-            image: mapMarker,
+            image: mapMarker(stopMode),
             className: 'esri-add-stop',
           },
         ],

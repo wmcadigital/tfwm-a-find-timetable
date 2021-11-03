@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState, useCallback } from 'react';
 import { loadModules, setDefaultOptions } from 'esri-loader';
-import mapMarker from 'assets/svgs/map/map-marker.svg';
+import mapMarker from 'globalState/helpers/mapMarker';
 
 const useCreateMapView = (mapContainerRef: any, results: any) => {
   const [viewState, setViewState] = useState<any>();
@@ -95,7 +95,7 @@ const useCreateMapView = (mapContainerRef: any, results: any) => {
           type: 'simple',
           symbol: {
             type: 'picture-marker',
-            url: mapMarker,
+            url: mapMarker(),
             width: 24,
             height: 24,
           },
@@ -108,7 +108,7 @@ const useCreateMapView = (mapContainerRef: any, results: any) => {
           {
             title: '{name}',
             id: 'add-stop',
-            image: mapMarker,
+            image: mapMarker(),
             className: 'esri-add-stop',
           },
         ],
