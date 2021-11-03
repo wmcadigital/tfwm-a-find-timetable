@@ -23,6 +23,9 @@ export type StateAction =
       payload: IStop[];
     }
   | {
+      type: 'RESET_FORM';
+    }
+  | {
       type: 'UPDATE_SEARCH_RADIUS';
       payload: number;
     };

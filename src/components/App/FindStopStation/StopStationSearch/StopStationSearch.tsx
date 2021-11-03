@@ -20,7 +20,7 @@ const StopStationSearch = () => {
   };
 
   const resetForm = () => {
-    console.log('reset');
+    stopStationDispatch({ type: 'RESET_FORM' });
   };
 
   return (

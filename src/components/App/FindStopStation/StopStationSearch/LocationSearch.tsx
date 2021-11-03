@@ -7,7 +7,6 @@ import useLocationAPI from '../customHooks/useLocationAPI';
 const LocationSearch = ({ label }: { label?: string }) => {
   const [query, setQuery] = useState<string>('');
   const [{ location }, stopStationDispatch] = useStopStationContext();
-  const [selectedItem, setSelectedItem] = useState<ILocation | null>(location);
   const { loading, results } = useLocationAPI(query);
 
   const onUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,8 +14,11 @@ const LocationSearch = ({ label }: { label?: string }) => {
   };
 
   const onSelect = (result: ILocation) => {
-    setSelectedItem(result);
     stopStationDispatch({ type: 'UPDATE_LOCATION', payload: result });
+  };
+
+  const onClear = () => {
+    stopStationDispatch({ type: 'UPDATE_LOCATION', payload: null });
   };
 
   return (
@@ -33,8 +35,9 @@ const LocationSearch = ({ label }: { label?: string }) => {
         onUpdate={onUpdate}
         loading={loading}
         results={results}
-        selectedItem={selectedItem}
+        selectedItem={location}
         onSelectResult={onSelect}
+        onClear={onClear}
         label={label}
       />
     </div>
