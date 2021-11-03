@@ -36,7 +36,7 @@ const useLocationAPI = (query: string) => {
       name: addr.address,
       ...addr,
     }));
-    console.log(response);
+
     if (validResults?.length > 0) {
       setResults(validResults);
     } else {

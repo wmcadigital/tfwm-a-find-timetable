@@ -23,7 +23,7 @@ const SearchResults = ({ classes }: { classes?: string }) => {
             mode={getStopType(stop.properties.type)}
             distance={`${stop.locationDistance?.toFixed(1)} miles away`}
             text={stop.properties.name}
-            atcoCode={stop.properties.atcoCode}
+            atcoCode={stop.properties.atcoCode || stop.properties.crs || ''}
             key={stop.properties.atcoCode}
           />
         </div>

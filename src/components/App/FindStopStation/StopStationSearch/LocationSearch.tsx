@@ -9,14 +9,14 @@ const LocationSearch = () => {
   const [query, setQuery] = useState<string>('');
   const [selectedItem, setSelectedItem] = useState<ILocation | null>(null);
   const { loading, results } = useLocationAPI(query);
-  const stops = useGetStopsAPI(selectedItem, 0.5);
+  useGetStopsAPI();
   const [, stopStationDispatch] = useStopStationContext();
 
-  console.log(
-    stops.results
-      .filter((stop) => stop.properties.type !== 'bus-stop' && stop.properties.type !== 'car-park')
-      .map((stop) => stop.properties.type)
-  );
+  // console.log(
+  //   stops.results
+  //     .filter((stop) => stop.properties.type !== 'bus-stop' && stop.properties.type !== 'car-park')
+  //     .map((stop) => stop.properties.type)
+  // );
 
   const onUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);

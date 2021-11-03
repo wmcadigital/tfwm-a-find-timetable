@@ -10,7 +10,8 @@ export interface Geometry {
 }
 export interface Properties {
   name: string;
-  atcoCode: string;
+  atcoCode?: string;
+  crs?: string;
   type: string;
   stopInfo: string;
   departures: string;

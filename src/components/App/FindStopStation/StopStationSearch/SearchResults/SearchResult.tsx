@@ -19,7 +19,7 @@ const SearchResult = ({
         <Icon iconName={`modes-bg-${mode}`} className={`${s.icon} ${s[mode]}`} />
       </div>
       <div className="wmnds-col-auto">
-        <Link to={`/stop/${atcoCode}`}>{text}</Link>
+        <Link to={`/${mode === 'rail' ? 'station' : 'stop'}/${atcoCode}`}>{text}</Link>
         <p className="wmnds-m-none">{distance}</p>
       </div>
     </div>

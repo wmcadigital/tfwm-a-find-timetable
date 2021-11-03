@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { IStop } from 'globalState/StopStationContext/types/IStop';
-import { ILocation } from 'globalState/StopStationContext/types/ILocation';
 import { useStopStationContext } from 'globalState';
 
 interface IError {
@@ -10,9 +9,9 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useGetStopsAPI = (location: ILocation | null, radius: number) => {
+const useGetStopsAPI = () => {
   const [results, setResults] = useState<any[]>([]);
-  const [, stopStationDispatch] = useStopStationContext();
+  const [{ location, searchRadius, selectedModes }, stopStationDispatch] = useStopStationContext();
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
 
@@ -105,7 +104,6 @@ const useGetStopsAPI = (location: ILocation | null, radius: number) => {
     setLoading(true); // Update loading state to true as we are hitting API
     startApiTimeout();
     const { x: longitude, y: latitude } = location!.location;
-    const radiusMiles = radius * 1609;
     const options = {
       headers: {
         'Ocp-Apim-Subscription-Key': REACT_APP_API_KEY,
@@ -114,13 +112,16 @@ const useGetStopsAPI = (location: ILocation | null, radius: number) => {
     };
 
     axios
-      .get(`${REACT_APP_API_HOST}/Stop/v2/Nearest/${latitude}/${longitude}/${radiusMiles}`, options)
+      .get(
+        `${REACT_APP_API_HOST}/Stop/v2/Nearest/${latitude}/${longitude}/${searchRadius * 1609}`,
+        options
+      )
       .then((res) => mounted.current && handleApiResponse(res))
       .catch(handleApiError);
-  }, [location, radius, handleApiResponse, startApiTimeout]);
+  }, [location, searchRadius, handleApiResponse, startApiTimeout]);
 
   useEffect(() => {
-    if (location) {
+    if (location && searchRadius && selectedModes.length) {
       getAPIResults();
     }
     // Unmount / cleanup
@@ -129,7 +130,7 @@ const useGetStopsAPI = (location: ILocation | null, radius: number) => {
       cancelRequest(); // cancel the request
       clearApiTimeout(); // clear timeout
     };
-  }, [getAPIResults, location]);
+  }, [getAPIResults, location, searchRadius, selectedModes]);
 
   return { loading, errorInfo, results, getAPIResults };
 };
