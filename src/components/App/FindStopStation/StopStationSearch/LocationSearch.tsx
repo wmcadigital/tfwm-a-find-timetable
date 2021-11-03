@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AutoComplete from 'components/shared/AutoComplete/AutoComplete';
+import { useStopStationContext } from 'globalState';
 import { ILocation } from 'globalState/StopStationContext/types/ILocation';
 import useLocationAPI from '../customHooks/useLocationAPI';
 import useGetStopsAPI from '../customHooks/useGetStopsAPI';
@@ -9,6 +10,7 @@ const LocationSearch = () => {
   const [selectedItem, setSelectedItem] = useState<ILocation | null>(null);
   const { loading, results } = useLocationAPI(query);
   const stops = useGetStopsAPI(selectedItem, 0.5);
+  const [, stopStationDispatch] = useStopStationContext();
 
   console.log(
     stops.results
@@ -22,6 +24,7 @@ const LocationSearch = () => {
 
   const onSelect = (result: ILocation) => {
     setSelectedItem(result);
+    stopStationDispatch({ type: 'UPDATE_LOCATION', payload: result });
   };
 
   return (

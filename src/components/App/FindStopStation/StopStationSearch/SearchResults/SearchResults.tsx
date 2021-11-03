@@ -3,9 +3,6 @@ import SearchResult from './SearchResult';
 
 const SearchResults = ({ classes }: { classes?: string }) => {
   const [{ stops }] = useStopStationContext();
-  const handleClick = () => {
-    console.log('click');
-  };
 
   const getStopType = (type: string) => {
     switch (type) {
@@ -24,9 +21,9 @@ const SearchResults = ({ classes }: { classes?: string }) => {
         <div className={classes}>
           <SearchResult
             mode={getStopType(stop.properties.type)}
-            distance="0.3 miles away"
+            distance={`${stop.locationDistance?.toFixed(1)} miles away`}
             text={stop.properties.name}
-            handleClick={handleClick}
+            atcoCode={stop.properties.atcoCode}
             key={stop.properties.atcoCode}
           />
         </div>

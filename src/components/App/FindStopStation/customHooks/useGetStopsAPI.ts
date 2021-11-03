@@ -35,10 +35,39 @@ const useGetStopsAPI = (location: ILocation | null, radius: number) => {
 
   const handleApiResponse = useCallback(
     (response) => {
+      function deg2rad(deg: number) {
+        return deg * (Math.PI / 180);
+      }
+
+      function getDistanceFromLatLon(lat1: number, lon1: number, lat2: number, lon2: number) {
+        const R = 6371; // Radius of the earth in km
+        const dLat = deg2rad(lat2 - lat1); // deg2rad below
+        const dLon = deg2rad(lon2 - lon1);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(deg2rad(lat1)) *
+            Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = R * c; // Distance in km
+        return d / 1.609;
+      }
+
       if (response?.data) {
-        const payload = response.data.features.filter(
-          (stop: IStop) => stop.properties.type !== 'car-park'
-        );
+        // filter out car parks and map distance
+        const payload = response.data.features
+          .filter((stop: IStop) => stop.properties.type !== 'car-park')
+          .map((stop: IStop) => ({
+            ...stop,
+            locationDistance: getDistanceFromLatLon(
+              stop.geometry.coordinates![0],
+              stop.geometry.coordinates![1],
+              location!.location.x,
+              location!.location.y
+            ),
+          }))
+          .sort((a: IStop, b: IStop) => (a.locationDistance || 0) - (b.locationDistance || 0));
         stopStationDispatch({ type: 'UPDATE_STOPS', payload });
       } else {
         setErrorInfo({
@@ -50,7 +79,7 @@ const useGetStopsAPI = (location: ILocation | null, radius: number) => {
       clearApiTimeout();
       setLoading(false);
     },
-    [stopStationDispatch]
+    [stopStationDispatch, location]
   );
 
   const handleApiError = (error: any) => {
