@@ -144,7 +144,7 @@ const TrainDepartures = () => {
                   {stationDepartures.arrivals.map((arrival: any) => (
                     <tr key={arrival.serviceId}>
                       <th scope="row" data-header="Train">
-                        <strong>{arrival.destinationName}</strong>
+                        <strong>{arrival.originName}</strong>
                         <span>{arrival.operator}</span>
                       </th>
                       <td data-header="Platform">{arrival.platform}</td>
