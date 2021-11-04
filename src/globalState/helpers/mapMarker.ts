@@ -1,6 +1,7 @@
 import busMarker from 'assets/svgs/map/map-marker-bus.svg';
 import tramMarker from 'assets/svgs/map/map-marker-metro.svg';
 import trainMarker from 'assets/svgs/map/map-marker-rail.svg';
+import pinMarker from 'assets/svgs/map/map-marker.svg';
 
 const mapMarker = (mode?: 'bus' | 'tram' | 'train') => {
   switch (mode) {
@@ -11,7 +12,7 @@ const mapMarker = (mode?: 'bus' | 'tram' | 'train') => {
     case 'train':
       return trainMarker;
     default:
-      return busMarker;
+      return pinMarker;
   }
 };
 
