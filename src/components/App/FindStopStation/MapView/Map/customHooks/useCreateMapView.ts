@@ -58,58 +58,33 @@ const useCreateMapView = (mapContainerRef: any) => {
         },
       });
 
-      const circleGeometry = new Circle({
-        center: [-2.0047209, 52.4778132],
-        geodesic: true,
-        numberOfPoints: 100,
-        radius: 1,
-        radiusUnit: 'miles',
-      });
-
-      const circleGraphic = new Graphic({
-        geometry: circleGeometry,
+      const loadGraphic = {
+        geometry: {
+          type: 'polyline',
+          paths: [-2.0047209, 52.4778132],
+        },
         symbol: {
           type: 'simple-fill',
-          style: 'solid',
-          color: [157, 91, 175, 0.2],
+          style: 'none',
           outline: {
             style: 'none',
           },
         },
-      });
+      };
 
-      const pinMarker = new Graphic({
-        geometry: {
-          type: 'point',
-          longitude: -2.0047209,
-          latitude: 52.4778132,
-          spatialreference: {
-            wkid: 4326,
-          },
-        },
-        symbol: {
-          type: 'picture-marker',
-          url: mapMarker(),
-          width: 24,
-          height: 24,
-        },
+      const load = new GraphicsLayer({
+        graphics: [loadGraphic],
       });
-
-      const circleLayer = new GraphicsLayer({
-        graphics: [circleGraphic, pinMarker],
-      });
-
-      view.map.add(circleLayer);
 
       // Move ui elements into the right position
       view.ui.move(['zoom'], 'top-right');
       view.ui.move(['attribution'], 'bottom');
-      view.whenLayerView(circleLayer).then((layerView: any) => {
+      view.map.add(load);
+      view.whenLayerView(load).then((layerView: any) => {
         watchUtils.whenFalse(layerView, 'updating', () => {
           setIsLoading(false);
         });
       });
-      view.goTo(circleLayer);
       setViewState(view);
       setIsCreated(true);
     } catch (e) {

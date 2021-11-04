@@ -5,11 +5,13 @@ import s from './Map.module.scss';
 import './Map.scss';
 // Import custom hooks for map functionality
 import useCreateMapView from './customHooks/useCreateMapView';
+import useCreateLocationLayer from './customHooks/useCreateLocationLayer';
 
 const Map = () => {
   // MAP SETUP
   const mapContainerRef = useRef<any>();
-  const { isLoading } = useCreateMapView(mapContainerRef);
+  const { isLoading, viewState } = useCreateMapView(mapContainerRef);
+  useCreateLocationLayer(viewState);
 
   return (
     <div className={`${s.mapView}`}>
