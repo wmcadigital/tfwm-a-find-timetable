@@ -6,12 +6,14 @@ import './Map.scss';
 // Import custom hooks for map functionality
 import useCreateMapView from './customHooks/useCreateMapView';
 import useUpdateLocationLayer from './customHooks/useUpdateLocationLayer';
+import useCreateStopsLayer from './customHooks/useCreateStopsLayer';
 
 const Map = () => {
   // MAP SETUP
   const mapContainerRef = useRef<any>();
   const { isLoading, viewState } = useCreateMapView(mapContainerRef);
   useUpdateLocationLayer(viewState);
+  useCreateStopsLayer(viewState);
 
   return (
     <div className={`${s.mapView}`}>

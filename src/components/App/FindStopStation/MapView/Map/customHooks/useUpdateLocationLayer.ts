@@ -6,7 +6,7 @@ import mapMarker from 'globalState/helpers/mapMarker';
 
 const useUpdateLocationLayer = (view: any) => {
   const map = view !== null && view?.map;
-  const locationLayer = view?.map.findLayerById('locationLayer');
+  const locationLayer = view?.map?.findLayerById('locationLayer');
 
   const [{ location, searchRadius }] = useStopStationContext();
 
@@ -59,7 +59,7 @@ const useUpdateLocationLayer = (view: any) => {
       locationLayer.addMany([circleGraphic, pinMarker]);
       view.goTo(circleGraphic);
 
-      map.reorder(locationLayer, 5);
+      map.reorder(locationLayer, 0);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
