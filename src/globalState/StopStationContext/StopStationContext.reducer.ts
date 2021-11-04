@@ -26,7 +26,6 @@ export const reducer = (
     case 'UPDATE_SEARCH_RADIUS':
       return { ...state, searchRadius: action.payload };
     case 'RESET_FORM':
-      console.log(initialState);
       return initialState;
     // Default should return initial state if error
     default:

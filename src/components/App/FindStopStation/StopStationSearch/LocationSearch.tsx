@@ -19,6 +19,7 @@ const LocationSearch = ({ label }: { label?: string }) => {
 
   const onClear = () => {
     stopStationDispatch({ type: 'UPDATE_LOCATION', payload: null });
+    stopStationDispatch({ type: 'UPDATE_STOPS', payload: [] });
   };
 
   return (

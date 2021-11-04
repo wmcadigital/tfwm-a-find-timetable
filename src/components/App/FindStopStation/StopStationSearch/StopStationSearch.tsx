@@ -17,6 +17,9 @@ const StopStationSearch = () => {
       payload = [...selectedModes, mode];
     }
     stopStationDispatch({ type: 'UPDATE_SELECTED_MODES', payload });
+    if (!payload.length) {
+      stopStationDispatch({ type: 'UPDATE_STOPS', payload: [] });
+    }
   };
 
   const resetForm = () => {

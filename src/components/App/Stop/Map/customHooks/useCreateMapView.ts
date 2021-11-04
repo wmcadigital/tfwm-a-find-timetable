@@ -10,7 +10,6 @@ const useCreateMapView = (mapContainerRef: any) => {
   const [isCreated, setIsCreated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [{ stopPointData }] = useStopContext();
-  const stopMode = stopPointData.stopPoint.busStopType === 'NaptanMetroPlatform' ? 'tram' : 'bus';
 
   const createMapView = useCallback(async () => {
     try {
@@ -35,6 +34,9 @@ const useCreateMapView = (mapContainerRef: any) => {
         'esri/core/watchUtils',
       ]);
 
+      const stopMode =
+        stopPointData.stopPoint.busStopType === 'NaptanMetroPlatform' ? 'tram' : 'bus';
+
       const basemap = new Basemap({
         baseLayers: [
           new VectorTileLayer({
@@ -50,6 +52,7 @@ const useCreateMapView = (mapContainerRef: any) => {
       const view = new MapView({
         container: mapContainerRef.current,
         map: new Map({ basemap }),
+        zoom: 15,
         center: [stopPointData.stopPoint.longitude, stopPointData.stopPoint.latitude],
         constraints: {
           snapToZoom: true,
@@ -114,10 +117,6 @@ const useCreateMapView = (mapContainerRef: any) => {
         ],
       };
       stopsLayer.popupTemplate = popup;
-
-      view.goTo({
-        zoom: 15,
-      });
       view.map.add(stopsLayer);
 
       // Move ui elements into the right position

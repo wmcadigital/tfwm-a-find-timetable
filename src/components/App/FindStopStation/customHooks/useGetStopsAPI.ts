@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { IStop } from 'globalState/StopStationContext/types/IStop';
@@ -11,7 +12,8 @@ interface IError {
 
 const useGetStopsAPI = () => {
   const [results, setResults] = useState<any[]>([]);
-  const [{ location, searchRadius, selectedModes }, stopStationDispatch] = useStopStationContext();
+  const [{ location, searchRadius, selectedModes, stops }, stopStationDispatch] =
+    useStopStationContext();
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
 
@@ -53,10 +55,24 @@ const useGetStopsAPI = () => {
         return d / 1.609;
       }
 
+      const stopTypes: string[] = selectedModes.map((mode: string) => {
+        switch (mode) {
+          case 'rail':
+            return 'rail-station';
+          case 'metro':
+            return 'tram-stop';
+          default:
+            return 'bus-stop';
+        }
+      });
+
       if (response?.data) {
         // filter out car parks and map distance
         const payload = response.data.features
-          .filter((stop: IStop) => stop.properties.type !== 'car-park')
+          .filter(
+            (stop: IStop) =>
+              stop.properties.type !== 'car-park' && stopTypes.includes(stop.properties.type)
+          )
           .map((stop: IStop) => ({
             ...stop,
             locationDistance: getDistanceFromLatLon(
@@ -78,7 +94,7 @@ const useGetStopsAPI = () => {
       clearApiTimeout();
       setLoading(false);
     },
-    [stopStationDispatch, location]
+    [stopStationDispatch, location, selectedModes]
   );
 
   const handleApiError = (error: any) => {
@@ -132,7 +148,7 @@ const useGetStopsAPI = () => {
     };
   }, [getAPIResults, location, searchRadius, selectedModes]);
 
-  return { loading, errorInfo, results, getAPIResults };
+  return { loading, errorInfo, results, getAPIResults, stops };
 };
 
 export default useGetStopsAPI;
