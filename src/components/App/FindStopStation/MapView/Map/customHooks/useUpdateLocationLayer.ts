@@ -1,28 +1,28 @@
-import { useEffect, useState, useCallback } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useEffect, useCallback } from 'react';
 import { loadModules } from 'esri-loader';
 import { useStopStationContext } from 'globalState';
 import mapMarker from 'globalState/helpers/mapMarker';
 
-const useCreateLocationLayer = (view: any) => {
-  const [isLocationLayerCreated, setIsLocationLayerCreated] = useState(false);
+const useUpdateLocationLayer = (view: any) => {
   const map = view !== null && view?.map;
+  const locationLayer = view?.map.findLayerById('locationLayer');
 
   const [{ location, searchRadius }] = useStopStationContext();
 
-  const createLocationLayer = useCallback(async () => {
+  const updateLocationLayer = useCallback(async () => {
     try {
-      if (!location) return;
-      const [GraphicsLayer, Circle, Graphic] = await loadModules([
-        'esri/layers/GraphicsLayer',
-        'esri/geometry/Circle',
-        'esri/Graphic',
-      ]);
+      if (!location) {
+        locationLayer.removeAll();
+        return;
+      }
+      const [Circle, Graphic] = await loadModules(['esri/geometry/Circle', 'esri/Graphic']);
 
       const circleGeometry = new Circle({
         center: [location.location.x, location.location.y],
         geodesic: true,
         numberOfPoints: 100,
-        radius: searchRadius || 1,
+        radius: searchRadius,
         radiusUnit: 'miles',
       });
 
@@ -55,26 +55,21 @@ const useCreateLocationLayer = (view: any) => {
         },
       });
 
-      const locationLayer = new GraphicsLayer({
-        graphics: [circleGraphic, pinMarker],
-      });
-
+      locationLayer.removeAll();
+      locationLayer.addMany([circleGraphic, pinMarker]);
       view.goTo(circleGraphic);
-      map.add(locationLayer);
+
       map.reorder(locationLayer, 5);
-      setIsLocationLayerCreated(true);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
-  }, [location, view, map, searchRadius]);
+  }, [location, view, map, searchRadius, locationLayer]);
 
   useEffect(() => {
-    if (isLocationLayerCreated || !map) return;
-    createLocationLayer();
-  }, [isLocationLayerCreated, createLocationLayer, map]);
-
-  return { isLocationLayerCreated, setIsLocationLayerCreated };
+    if (!map || !locationLayer) return;
+    updateLocationLayer();
+  }, [locationLayer, updateLocationLayer, map]);
 };
 
-export default useCreateLocationLayer;
+export default useUpdateLocationLayer;

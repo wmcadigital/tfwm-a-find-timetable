@@ -58,29 +58,16 @@ const useCreateMapView = (mapContainerRef: any) => {
         },
       });
 
-      const loadGraphic = {
-        geometry: {
-          type: 'polyline',
-          paths: [-2.0047209, 52.4778132],
-        },
-        symbol: {
-          type: 'simple-fill',
-          style: 'none',
-          outline: {
-            style: 'none',
-          },
-        },
-      };
-
-      const load = new GraphicsLayer({
-        graphics: [loadGraphic],
+      const locationLayer = new GraphicsLayer({
+        id: 'locationLayer',
+        graphics: [],
       });
 
       // Move ui elements into the right position
       view.ui.move(['zoom'], 'top-right');
       view.ui.move(['attribution'], 'bottom');
-      view.map.add(load);
-      view.whenLayerView(load).then((layerView: any) => {
+      view.map.add(locationLayer);
+      view.whenLayerView(locationLayer).then((layerView: any) => {
         watchUtils.whenFalse(layerView, 'updating', () => {
           setIsLoading(false);
         });
