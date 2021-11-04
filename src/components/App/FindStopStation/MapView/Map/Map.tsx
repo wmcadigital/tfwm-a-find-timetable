@@ -7,13 +7,15 @@ import './Map.scss';
 import useCreateMapView from './customHooks/useCreateMapView';
 import useUpdateLocationLayer from './customHooks/useUpdateLocationLayer';
 import useCreateStopsLayer from './customHooks/useCreateStopsLayer';
+import useUpdateStopsLayer from './customHooks/useUpdateStopsLayer';
 
 const Map = () => {
   // MAP SETUP
   const mapContainerRef = useRef<any>();
   const { isLoading, viewState } = useCreateMapView(mapContainerRef);
   useUpdateLocationLayer(viewState);
-  useCreateStopsLayer(viewState);
+  const { isStopsLayerCreated } = useCreateStopsLayer(viewState);
+  useUpdateStopsLayer(isStopsLayerCreated, viewState);
 
   return (
     <div className={`${s.mapView}`}>
