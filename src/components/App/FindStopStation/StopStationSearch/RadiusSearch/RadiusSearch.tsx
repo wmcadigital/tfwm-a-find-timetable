@@ -19,8 +19,8 @@ function RadiusSearch() {
   };
 
   useEffect(() => {
-    if (searchRadius > 100 || searchRadius < 0) {
-      setError('Please enter a number between 1 and 100');
+    if (searchRadius > 30 || searchRadius < 0) {
+      setError('Please enter a number between 1 and 30');
     } else {
       setError(null);
     }
@@ -36,6 +36,7 @@ function RadiusSearch() {
             className={`${s.valueControl} ${s.minus}`}
             onClick={handleMinus}
             disabled={searchRadius < 2}
+            title="Decrease search radius"
           >
             <Icon iconName="general-minimise" />
           </button>
@@ -55,6 +56,7 @@ function RadiusSearch() {
             className={`${s.valueControl} ${s.add}`}
             onClick={handleAdd}
             disabled={searchRadius >= 100}
+            title="Increase search radius"
           >
             <Icon iconName="general-expand" />
           </button>
