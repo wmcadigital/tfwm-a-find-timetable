@@ -12,7 +12,7 @@ import Loader from 'components/shared/Loader/Loader';
 import Route from 'components/shared/Route/Route';
 import FileDownload from 'components/shared/FileDownload/FileDownload';
 import WarningText from 'components/shared/WarningText/WarningText';
-import Map from './Map/Map';
+// import Map from './Map/Map';
 
 import s from './TimetableView.module.scss';
 
@@ -107,42 +107,42 @@ const TimetableRoute = ({
   showInbound: boolean;
   timetableHeader: any;
 }) => {
-  const [mapView, setMapView] = useState(false);
+  // const [mapView, setMapView] = useState(false);
   const { loading, results } = useTimetableAPI(when, showInbound, timetableHeader.LineId);
-  const { inbound, outbound, routeMap, stopData } = results;
+  const { inbound, outbound } = results;
 
   return (
     <>
       {loading ? (
-        <div className={`wmnds-m-lg ${mapView ? 'wmnds-col-1' : 'wmnds-col-md-2-3'}`}>
+        <div className="wmnds-m-lg wmnds-col-md-2-3">
           <Loader />
         </div>
       ) : (
         <>
           {results ? (
-            <div className={mapView ? 'wmnds-col-1' : 'wmnds-col-md-2-3'}>
+            <div className="wmnds-col-md-2-3">
               <h2 className="wmnds-h3">Route</h2>
               <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid wmnds-grid--justify-between">
-                <div className={mapView ? 'wmnds-col-md-1-2' : 'wmnds-col-3-4'}>
+                <div className="wmnds-col-3-4">
                   <p>
                     Click on a stop name to find timetables, live departures, disruptions and the
                     nearest stops or stations.
                   </p>
                 </div>
-                <div className="wmnds-col-auto">
+                {/* <div className="wmnds-col-auto">
                   <Button
                     onClick={() => setMapView(!mapView)}
                     btnClass="wmnds-btn--secondary wmnds-col-1"
                     text={mapView ? 'List view' : 'Map view'}
                     iconRight={mapView ? 'general-list' : 'general-location-pin'}
                   />
-                </div>
+                </div> */}
               </div>
-              {mapView ? (
+              {/* {mapView ? (
                 <Map results={{ routeMap, stopData }} />
-              ) : (
-                <Route route={showInbound ? inbound : outbound} />
-              )}
+              ) : ( */}
+              <Route route={showInbound ? inbound : outbound} />
+              {/* )} */}
             </div>
           ) : (
             'Error'
