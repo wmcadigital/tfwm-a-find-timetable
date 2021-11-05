@@ -8,6 +8,7 @@ import useCreateMapView from './customHooks/useCreateMapView';
 import useUpdateLocationLayer from './customHooks/useUpdateLocationLayer';
 import useCreateStopsLayer from './customHooks/useCreateStopsLayer';
 import useUpdateStopsLayer from './customHooks/useUpdateStopsLayer';
+import usePointerEvents from './customHooks/usePointerEvents';
 
 const Map = () => {
   // MAP SETUP
@@ -16,6 +17,7 @@ const Map = () => {
   useUpdateLocationLayer(viewState);
   const { isStopsLayerCreated } = useCreateStopsLayer(viewState);
   useUpdateStopsLayer(isStopsLayerCreated, viewState);
+  usePointerEvents(viewState, isStopsLayerCreated);
 
   return (
     <div className={`${s.mapView}`}>

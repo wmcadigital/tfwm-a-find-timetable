@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState, useCallback } from 'react';
 import { loadModules } from 'esri-loader';
 import { useStopStationContext } from 'globalState';
@@ -15,24 +14,12 @@ const useCreateStopsLayer = (view: any) => {
       if (stops.length === 0) return;
       const [FeatureLayer] = await loadModules(['esri/layers/FeatureLayer']);
 
-      const getStopType = (type: string) => {
-        switch (type) {
-          case 'tram-stop':
-            return 'metro';
-          case 'rail-station':
-            return 'rail';
-          default:
-            return 'bus';
-        }
-      };
-
       const placeholder = {
         attributes: {
           name: stops[0].properties.name,
-          atcoCode: stops[0].properties.atcoCode || '',
+          id: stops[0].properties.atcoCode || stops[0].properties.crs,
           mapIcon: 'bus',
           stopType: stops[0].properties.type,
-          crs: stops[0].properties.crs || '',
         },
         geometry: {
           type: 'point',
@@ -78,13 +65,8 @@ const useCreateStopsLayer = (view: any) => {
             type: 'string',
           },
           {
-            name: 'atcoCode',
-            alias: 'atcoCode',
-            type: 'string',
-          },
-          {
-            name: 'crs',
-            alias: 'crs',
+            name: 'id',
+            alias: 'id',
             type: 'string',
           },
         ],

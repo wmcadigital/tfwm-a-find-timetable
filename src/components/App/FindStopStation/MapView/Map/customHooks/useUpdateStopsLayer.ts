@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useEffect } from 'react';
 import { useStopStationContext } from 'globalState';
-
-import { loadModules } from 'esri-loader';
 
 const useUpdateStopsLayer = (isStopsLayerCreated: boolean, view: any) => {
   const map = view !== null && view?.map;
@@ -10,7 +7,6 @@ const useUpdateStopsLayer = (isStopsLayerCreated: boolean, view: any) => {
 
   const updateMapStops = useCallback(async () => {
     try {
-      const [Graphic] = await loadModules(['esri/Graphic']);
       const stopsLayer = map.findLayerById(`stopsLayer`);
 
       const applyEditsToLayer = (edits: any, layer: any) => {
@@ -39,10 +35,9 @@ const useUpdateStopsLayer = (isStopsLayerCreated: boolean, view: any) => {
           return {
             attributes: {
               name: stop.properties.name,
-              atcoCode: stop.properties.atcoCode,
+              id: stop.properties.atcoCode || stop.properties.crs,
               stopType: stop.properties.type,
               mapIcon: getStopType(stop.properties.type),
-              crs: stop.properties.crs,
             },
             geometry: {
               type: 'point',
