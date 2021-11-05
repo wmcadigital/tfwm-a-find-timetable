@@ -16,9 +16,13 @@ const ServiceInfo = () => {
 
   return (
     <>
-      <ServiceDepartures departures={lineDepartures} />
-      {selectedLine?.hasDisruptions && <ServiceDisruptions />}
-      <ServiceTimetable />
+      {selectedLine?.routes && (
+        <>
+          <ServiceDepartures departures={lineDepartures} />
+          {selectedLine?.hasDisruptions && <ServiceDisruptions />}
+          <ServiceTimetable />
+        </>
+      )}
     </>
   );
 };

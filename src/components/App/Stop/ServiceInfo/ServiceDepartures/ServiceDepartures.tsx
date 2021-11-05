@@ -3,7 +3,7 @@ import Button from 'components/shared/Button/Button';
 
 const ServiceDepartures = ({ departures, isTram }: { departures: any[]; isTram?: boolean }) => {
   const [{ selectedLine, stopDepartures }] = useStopContext();
-
+  if (!selectedLine.routes) return null;
   return (
     <div className="wmnds-m-b-lg">
       <div className="wmnds-live-departures wmnds-live-departures--service">

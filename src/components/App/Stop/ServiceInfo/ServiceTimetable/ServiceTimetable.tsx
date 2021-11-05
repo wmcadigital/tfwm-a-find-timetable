@@ -8,10 +8,10 @@ import useStopAPI from '../../customHooks/useStopAPI';
 import useDepartureRouteAPI from '../../customHooks/useDepartureRouteAPI';
 
 const ServiceTimetable = () => {
+  const [{ selectedLine, stopAtcoCode }] = useStopContext();
   const [dayCode, setDayCode] = useState(0);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [timeMustUpdate, setTimeMustUpdate] = useState(false);
-  const [{ selectedLine, stopAtcoCode }] = useStopContext();
   const { loading, results } = useStopAPI(
     `/Stop/v2/LineTimetable/${stopAtcoCode}/${selectedLine.id}/${selectedLine.routes[0].operatorCode}/${dayCode}`
   );
