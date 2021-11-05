@@ -17,23 +17,12 @@ const SearchResults = ({ classes }: { classes?: string }) => {
     setAmountToShow(10);
   }, [stops, searchRadius, selectedModes]);
 
-  const getStopType = (type: string) => {
-    switch (type) {
-      case 'tram-stop':
-        return 'metro';
-      case 'rail-station':
-        return 'rail';
-      default:
-        return 'bus';
-    }
-  };
-
   return (
     <div>
       {stops.slice(0, amountToShow).map((stop) => (
         <div className={classes}>
           <SearchResult
-            mode={getStopType(stop.properties.type)}
+            stopType={stop.properties.type}
             distance={`${stop.locationDistance?.toFixed(1)} miles away`}
             text={stop.properties.name}
             atcoCode={stop.properties.atcoCode || stop.properties.crs || ''}

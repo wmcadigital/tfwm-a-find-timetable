@@ -7,6 +7,7 @@ export type State = {
   location: ILocation | null;
   stops: IStop[];
   searchRadius: number;
+  selectedStopId?: string | null;
 };
 
 export type StateAction =
@@ -28,6 +29,10 @@ export type StateAction =
   | {
       type: 'UPDATE_SEARCH_RADIUS';
       payload: number;
+    }
+  | {
+      type: 'UPDATE_SELECTED_STOP';
+      payload: string | null;
     };
 
 export type Context = [State, React.Dispatch<StateAction>];

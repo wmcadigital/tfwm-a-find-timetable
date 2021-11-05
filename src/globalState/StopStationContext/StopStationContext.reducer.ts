@@ -22,9 +22,11 @@ export const reducer = (
     case 'UPDATE_LOCATION':
       return { ...state, location: action.payload };
     case 'UPDATE_STOPS':
-      return { ...state, stops: action.payload };
+      return { ...state, stops: action.payload, selectedStopId: null };
     case 'UPDATE_SEARCH_RADIUS':
       return { ...state, searchRadius: action.payload };
+    case 'UPDATE_SELECTED_STOP':
+      return { ...state, selectedStopId: action.payload };
     case 'RESET_FORM':
       return initialState;
     // Default should return initial state if error

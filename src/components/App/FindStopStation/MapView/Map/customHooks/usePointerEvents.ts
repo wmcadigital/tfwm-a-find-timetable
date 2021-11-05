@@ -5,7 +5,6 @@ import { useStopStationContext } from 'globalState';
 
 const usePointerEvents = (view: any, isStopsLayerCreated: boolean) => {
   const [areEventsAdded, setAreEventsAdded] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, stopStationDispatch] = useStopStationContext();
 
   const getClickedFeature = useCallback(
@@ -31,19 +30,15 @@ const usePointerEvents = (view: any, isStopsLayerCreated: boolean) => {
     [view]
   );
 
-  const selectStopStation = useCallback((stopStationId) => {
-    console.log(stopStationId);
-    // if (modeState.mode !== 'roads') {
-    //   stopStationDispatch({
-    //     type: 'RESET_SELECTED_SERVICES',
-    //   });
-    // }
-    // //   Update state to make it selected map disruption
-    // stopStationDispatch({
-    //   type: 'UDPATE_SELECTED_ITEM',
-    //   payload: { id: stopStationId, selectedByMap: true },
-    // });
-  }, []);
+  const selectStopStation = useCallback(
+    (stopStationId) => {
+      stopStationDispatch({
+        type: 'UPDATE_SELECTED_STOP',
+        payload: stopStationId,
+      });
+    },
+    [stopStationDispatch]
+  );
 
   const setSelectedItem = useCallback(
     async (event) => {

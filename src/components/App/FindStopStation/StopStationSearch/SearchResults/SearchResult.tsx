@@ -3,18 +3,30 @@ import Icon from 'components/shared/Icon/Icon';
 import s from './SearchResult.module.scss';
 
 const SearchResult = ({
-  mode,
+  stopType,
   text,
   distance,
   atcoCode,
 }: {
-  mode: string;
+  stopType: string;
   text: string;
   distance: string;
   atcoCode: string;
 }) => {
+  const getMode = (type: string) => {
+    switch (type) {
+      case 'tram-stop':
+        return 'metro';
+      case 'rail-station':
+        return 'rail';
+      default:
+        return 'bus';
+    }
+  };
+  const mode = getMode(stopType);
+
   return (
-    <div className={`wmnds-grid wmnds-grid--spacing-2-sm ${s.result}`}>
+    <div className={`wmnds-grid wmnds-grid--spacing-2-md ${s.result}`}>
       <div className="wmnds-col-auto">
         <Icon iconName={`modes-bg-${mode}`} className={`${s.icon} ${s[mode]}`} />
       </div>
