@@ -39,7 +39,7 @@ const ServiceDisruptions = () => {
                       text={lineName}
                       severity={disruption.disruptionSeverity}
                     />
-                    <span>
+                    <span className="wmnds-col-1">
                       {disruption.title} at <strong>{disruption.subtitle}</strong>
                     </span>
                   </>

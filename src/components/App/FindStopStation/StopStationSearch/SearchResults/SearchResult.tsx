@@ -27,7 +27,7 @@ const SearchResult = ({
 
   return (
     <div className={`wmnds-grid wmnds-grid--spacing-2-md ${s.result}`}>
-      <div className="wmnds-col-auto">
+      <div className="wmnds-col-auto wmnds-p-t-xs">
         <Icon iconName={`modes-bg-${mode}`} className={`${s.icon} ${s[mode]}`} />
       </div>
       <div className="wmnds-col-auto">

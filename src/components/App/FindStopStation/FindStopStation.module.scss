@@ -13,11 +13,16 @@
 
   @media (min-width: $breakpoint-md) {
     padding-top: 0;
+
+    button {
+      margin-bottom: 0;
+      margin-left: $size-sm;
+    }
   }
 
   button {
     display: inline-flex;
-    margin-left: $size-sm;
+    margin-bottom: $size-lg;
     white-space: nowrap;
   }
 }

@@ -5,5 +5,16 @@
   &.summary {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+
+    & > *:not(:last-child) {
+      margin-bottom: $size-sm;
+    }
+  }
+
+  @media (min-width: $breakpoint-md) {
+    &.summary {
+      flex-wrap: nowrap;
+    }
   }
 }

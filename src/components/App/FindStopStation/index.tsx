@@ -14,20 +14,20 @@ const FindStopStation = () => {
           <Breadcrumbs />
         </div>
         <div className={`wmnds-grid wmnds-grid--justify-between ${s.mainHeading}`}>
-          <div className="wmnds-col-auto">
+          <div className="wmnds-col-1 wmnds-col-md-auto">
             <h1>Find a stop or station</h1>
           </div>
-          <div className="wmnds-col-auto">
+          <div className="wmnds-col-1 wmnds-col-md-auto">
             <Button
               text={`${listView ? 'Map view' : 'List view'}`}
-              btnClass="wmnds-btn--secondary"
+              btnClass="wmnds-btn--secondary wmnds-col-1 wmnds-col-md-auto"
               iconRight={`general-${!listView ? 'list' : 'location-pin'}`}
               onClick={() => setListView(!listView)}
             />
           </div>
         </div>
         <div className="wmnds-grid">
-          <div className="wmnds-col-2-3">
+          <div className="wmnds-col-md-2-3">
             <p>
               Select a stop or station to see live departures, disruptions, timetables and nearest
               stops or stations.

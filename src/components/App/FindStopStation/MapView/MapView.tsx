@@ -47,7 +47,7 @@ const MapView = () => {
     <div className={s.mapViewSection}>
       <div className={`${s.container} wmnds-grid wmnds-grid--spacing-md-2-lg`}>
         <div className="wmnds-col-1-1 wmnds-col-md-1-2 wmnds-col-lg-1-3">
-          <div className="wmnds-p-md">
+          <div className="wmnds-p-md wmnds-p-b-lg wmnds-bg-white">
             <StopStationSearch />
             <HelpMessage />
             <SelectedStop />

@@ -7,9 +7,12 @@
 @import '~assets/wmnds/mixins';
 
 .listSearch {
-  max-width: 320px;
   padding: $size-md $size-md $size-lg;
   border-radius: 10px;
+
+  @media (min-width: $breakpoint-md) {
+    max-width: 320px;
+  }
 }
 
 .result {

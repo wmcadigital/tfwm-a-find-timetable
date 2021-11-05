@@ -8,7 +8,7 @@ const Loader = ({ text, size }: { text?: string; size?: 'small' | 'large' }) => 
       >
         <p className="wmnds-loader__content">Content is loading...</p>
       </div>
-      {text && <p className="h4 wmnds-text-align-center">{text}</p>}
+      {text && <p className="wmnds-h4 wmnds-text-align-center">{text}</p>}
     </div>
   );
 };

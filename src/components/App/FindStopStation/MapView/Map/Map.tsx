@@ -29,7 +29,7 @@ const Map = () => {
       />
       {isLoading && (
         <div className={s.loader}>
-          <Loader size="small" />
+          <Loader size="small" text="Loading map" />
         </div>
       )}
     </div>

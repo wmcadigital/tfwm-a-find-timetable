@@ -148,7 +148,7 @@ const StationInfo = () => {
       <div className="wmnds-grid wmnds-grid--spacing-md-2-lg">
         <div className="wmnds-col-1 wmnds-col-md-2-3">
           <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--justify-between">
-            <div className="wmnds-col-2-3 wmnds-m-b-lg">
+            <div className="wmnds-col-md-2-3 wmnds-m-b-md">
               <h2>
                 {station.name}{' '}
                 <Icon className={`${s.modeIcon} ${s.train}`} iconName="modes-isolated-rail" />
@@ -169,7 +169,7 @@ const StationInfo = () => {
                 </h3>
               )}
             </div>
-            <div className="wmnds-col-auto">
+            <div className="wmnds-col-1 wmnds-col-md-auto wmnds-m-b-lg">
               <Button
                 btnClass="wmnds-btn--secondary wmnds-col-1"
                 text={showMap ? 'Hide map' : 'View map'}
