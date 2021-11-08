@@ -13,7 +13,7 @@ const App = () => {
       <ContextProvider>
         <Router>
           <Switch>
-            <Route path="/find-a-timetable">
+            <Route path="/timetable">
               <FindTimetable />
             </Route>
             <Route path="/station/:id">

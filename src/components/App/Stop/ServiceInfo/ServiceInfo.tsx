@@ -26,7 +26,7 @@ const ServiceInfo = ({ isTram }: { isTram?: boolean }) => {
           />
           {selectedLine?.hasDisruptions ||
             (stopDisruptions?.filter((disruption: any) => disruption.mode === 'tram') && (
-              <ServiceDisruptions />
+              <ServiceDisruptions mode={isTram ? 'metro' : 'bus'} />
             ))}
           <ServiceTimetable />
         </>

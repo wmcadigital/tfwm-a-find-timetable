@@ -6,7 +6,7 @@ import Message from 'components/shared/Message/Message';
 import { sanitize } from 'dompurify';
 import s from './ServiceDisruptions.module.scss';
 
-const ServiceDisruptions = () => {
+const ServiceDisruptions = ({ mode }: { mode?: 'bus' | 'metro' | 'rail' }) => {
   const [{ selectedLine, stopDisruptions }] = useStopContext();
   const [serviceDisruptions, setServiceDisruptions] = useState<any>(null);
   const lineId = selectedLine.id;
@@ -33,7 +33,7 @@ const ServiceDisruptions = () => {
                 summary={
                   <>
                     <DisruptionIndicatorSmall
-                      iconLeft="modes-isolated-bus"
+                      iconLeft={`modes-isolated-${mode}`}
                       className={s.disruptionIndicator}
                       text={lineName}
                       severity={disruption.disruptionSeverity}
