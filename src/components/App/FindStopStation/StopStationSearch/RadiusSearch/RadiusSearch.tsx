@@ -4,27 +4,47 @@ import Icon from 'components/shared/Icon/Icon';
 import Message from 'components/shared/Message/Message';
 import s from './RadiusSearch.module.scss';
 
-function RadiusSearch() {
+const RadiusSearch = () => {
   const [{ searchRadius }, stopStationDispatch] = useStopStationContext();
   const [error, setError] = useState<string | null>();
 
+  const { minRadius, maxRadius } = { minRadius: 0.1, maxRadius: 30 };
+  const getIncrement = (minus?: boolean) => {
+    let increment = 1;
+    if (searchRadius < 1 || (minus && searchRadius === 1)) {
+      increment = 0.1;
+    }
+    return minus
+      ? Number((searchRadius - increment).toFixed(1))
+      : Number((searchRadius + increment).toFixed(1));
+  };
+
   const handleMinus = () => {
-    stopStationDispatch({ type: 'UPDATE_SEARCH_RADIUS', payload: searchRadius - 1 });
+    stopStationDispatch({
+      type: 'UPDATE_SEARCH_RADIUS',
+      payload: getIncrement(true),
+    });
   };
   const handleAdd = () => {
-    stopStationDispatch({ type: 'UPDATE_SEARCH_RADIUS', payload: searchRadius + 1 });
+    stopStationDispatch({
+      type: 'UPDATE_SEARCH_RADIUS',
+      payload: getIncrement(),
+    });
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    stopStationDispatch({ type: 'UPDATE_SEARCH_RADIUS', payload: Number(e.target.value) });
+    stopStationDispatch({
+      type: 'UPDATE_SEARCH_RADIUS',
+      payload: Number(Number(e.target.value).toFixed(1)),
+    });
   };
 
   useEffect(() => {
-    if (searchRadius > 30 || searchRadius < 0) {
+    if (searchRadius > maxRadius || searchRadius < 0) {
       setError('Please enter a number between 1 and 30');
     } else {
       setError(null);
     }
-  }, [searchRadius]);
+  }, [searchRadius, maxRadius]);
 
   return (
     <div>
@@ -35,7 +55,7 @@ function RadiusSearch() {
             type="button"
             className={`${s.valueControl} ${s.minus}`}
             onClick={handleMinus}
-            disabled={searchRadius < 2}
+            disabled={searchRadius <= minRadius}
             title="Decrease search radius"
           >
             <Icon iconName="general-minimise" />
@@ -55,7 +75,7 @@ function RadiusSearch() {
             type="button"
             className={`${s.valueControl} ${s.add}`}
             onClick={handleAdd}
-            disabled={searchRadius >= 100}
+            disabled={searchRadius >= maxRadius}
             title="Increase search radius"
           >
             <Icon iconName="general-expand" />
@@ -65,6 +85,6 @@ function RadiusSearch() {
       {error && <Message type="error" title="Invalid search radius" message={error} />}
     </div>
   );
-}
+};
 
 export default RadiusSearch;
