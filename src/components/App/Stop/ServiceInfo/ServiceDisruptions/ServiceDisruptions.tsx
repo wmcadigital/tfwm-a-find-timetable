@@ -27,9 +27,8 @@ const ServiceDisruptions = () => {
       {serviceDisruptions ? (
         <>
           {serviceDisruptions.map((disruption: any) => (
-            <div className="wmnds-m-b-md">
+            <div className="wmnds-m-b-md" key={disruption.id}>
               <Accordion
-                key={disruption.id}
                 id={disruption.id}
                 summary={
                   <>

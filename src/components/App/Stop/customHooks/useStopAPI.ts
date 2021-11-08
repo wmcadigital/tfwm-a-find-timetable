@@ -8,7 +8,7 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useStopAPI = (apiPath: string, type?: any) => {
+const useStopAPI = (apiPath?: string | null, type?: any) => {
   const [results, setResults] = useState<any>();
   const [, stopDispatch] = useStopContext();
   const [loading, setLoading] = useState(false); // Set loading state for spinner
@@ -82,6 +82,7 @@ const useStopAPI = (apiPath: string, type?: any) => {
 
   // Take main function out of useEffect, so it can be called elsewhere to retry the search
   const getAPIResults = useCallback(() => {
+    if (!apiPath) return;
     source.current = axios.CancelToken.source();
     mounted.current = true; // Set mounted to true (used later to make sure we don't do events as component is unmounting)
     const { REACT_APP_API_HOST, REACT_APP_API_KEY } = process.env; // Destructure env vars
@@ -108,7 +109,7 @@ const useStopAPI = (apiPath: string, type?: any) => {
       cancelRequest(); // cancel the request
       clearApiTimeout(); // clear timeout
     };
-  }, [getAPIResults]);
+  }, [getAPIResults, apiPath]);
 
   return { loading, errorInfo, results, getAPIResults };
 };

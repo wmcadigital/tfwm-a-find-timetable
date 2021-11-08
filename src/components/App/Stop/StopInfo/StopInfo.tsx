@@ -1,8 +1,7 @@
 import { useStopContext } from 'globalState';
 
 // Components
-import BusStop from '../BusStop/BusStop';
-import TramStop from '../TramStop/TramStop';
+import Stop from './Stop';
 
 const StopInfo = () => {
   const [{ stopPointData, stopDepartures }] = useStopContext();
@@ -13,9 +12,7 @@ const StopInfo = () => {
     mode = 'metro';
   }
 
-  return (
-    <>{stopDepartures ? <div>{mode === 'bus' ? <BusStop /> : <TramStop />}</div> : 'No results'}</>
-  );
+  return <>{stopDepartures ? <Stop isTram={mode !== 'bus'} /> : 'No results'}</>;
 };
 
 export default StopInfo;

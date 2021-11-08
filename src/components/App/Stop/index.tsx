@@ -18,7 +18,7 @@ const Stop = () => {
   const [{ stopPointData, stopDepartures }, stopDispatch] = useStopContext();
 
   useEffect(() => {
-    const apiInterval = setInterval(departures.getAPIResults, 30000);
+    const apiInterval = setInterval(departures.getAPIResults, 60000);
     if (!mounted) {
       setMounted(true);
     }
