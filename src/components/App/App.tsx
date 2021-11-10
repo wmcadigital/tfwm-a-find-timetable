@@ -1,31 +1,20 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 // Contexts
 import ContextProvider from 'globalState/ContextProvider';
-import { useFormContext } from 'globalState';
-// Components
-import Breadcrumbs from 'components/shared/Breadcrumbs/Breadcrumbs';
-import ServiceSearchView from './ServiceSearchView/ServiceSearchView';
-import TimetableView from './TimetableView/TimetableView';
-
-const ViewToShow = () => {
-  const [{ selectedService }] = useFormContext();
-  return (
-    <>
-      <div className="wmnds-m-b-md">
-        <Breadcrumbs />
-      </div>
-      <div className="wmnds-p-b-lg">
-        {selectedService ? <TimetableView /> : <ServiceSearchView />}
-      </div>
-    </>
-  );
-};
+import FindTimetable from './FindTimetable';
 
 const App = () => {
   return (
     <React.StrictMode>
       <ContextProvider>
-        <ViewToShow />
+        <Router>
+          <Switch>
+            <Route path="/">
+              <FindTimetable />
+            </Route>
+          </Switch>
+        </Router>
       </ContextProvider>
     </React.StrictMode>
   );
