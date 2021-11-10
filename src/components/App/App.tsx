@@ -3,9 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 // Contexts
 import ContextProvider from 'globalState/ContextProvider';
 import FindTimetable from './FindTimetable';
-import FindStopStation from './FindStopStation';
-import Stop from './Stop';
-import Station from './Station';
 
 const App = () => {
   return (
@@ -13,17 +10,8 @@ const App = () => {
       <ContextProvider>
         <Router>
           <Switch>
-            <Route path="/timetable">
-              <FindTimetable />
-            </Route>
-            <Route path="/station/:id">
-              <Station />
-            </Route>
-            <Route path="/stop/:atcoCode">
-              <Stop />
-            </Route>
             <Route path="/">
-              <FindStopStation />
+              <FindTimetable />
             </Route>
           </Switch>
         </Router>
