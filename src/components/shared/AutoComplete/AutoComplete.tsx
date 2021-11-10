@@ -17,7 +17,7 @@ type AutoCompleteProps = {
   className?: string;
   type?: 'text' | 'number';
   onUpdate: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSelectResult?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSelectResult?: (result: any) => void;
   onClear?: () => void;
   results?: any[] | null;
   initialQuery?: string;

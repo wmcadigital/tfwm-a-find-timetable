@@ -9,4 +9,5 @@
 // Much easier! :)
 
 // Don't forget to add the providers for each context to the ./ContextProvider.js file(more info inside there)
-export { useFormContext, FormProvider } from './FormContext';
+export { useGlobalContext, GlobalProvider } from './GlobalContext';
+export { useTimetableContext, TimetableProvider } from './TimetableContext';
