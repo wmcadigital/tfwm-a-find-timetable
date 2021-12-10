@@ -14,9 +14,13 @@ const ServiceResult = ({ result }: { result: IServiceResult }) => {
   const notYetValid = now < d;
   const startDate = formatDate(d);
   const stateless = result.Service.Stateless.replaceAll(':', '_').replace('*', 'H');
+  const version = result.Service.Version;
 
   return (
-    <Link to={`/timetable/${stateless}`} className={`wmnds-p-md wmnds-bg-white ${s.serviceResult}`}>
+    <Link
+      to={`/timetable/${stateless}/${version}`}
+      className={`wmnds-p-md wmnds-bg-white ${s.serviceResult}`}
+    >
       <div className={`wmnds-grid wmnds-grid--spacing-2-md wmnds-m-b-md ${s.serviceResultHeader}`}>
         <div className="wmnds-col-auto">
           <DisruptionIndicatorMedium text={result.Service.ServiceNumber} />

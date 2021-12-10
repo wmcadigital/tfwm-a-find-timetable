@@ -1,16 +1,25 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useTimetableContext } from 'globalState';
+import { ServiceIdentifier } from 'globalState/TimetableContext/TimetableContext.types';
 // Components
 import Breadcrumbs from 'components/shared/Breadcrumbs/Breadcrumbs';
+import TimetableView from './TimetableView/TimetableView';
 
 const Timetable = () => {
-  const [{ selectedService }] = useTimetableContext();
+  const [{ serviceId }, timetableDispatch] = useTimetableContext();
+  const { id, atcoCode, operatorCode } = useParams<ServiceIdentifier>();
+
+  useEffect(() => {
+    timetableDispatch({ type: 'UPDATE_SERVICE_ID', payload: { id, atcoCode, operatorCode } });
+  }, [id, atcoCode, operatorCode, timetableDispatch]);
+
   return (
     <div className="wmnds-container wmnds-p-b-lg">
       <div className="wmnds-m-b-md">
         <Breadcrumbs />
       </div>
-      <h1>Timetable</h1>
+      {serviceId && <TimetableView />}
     </div>
   );
 };

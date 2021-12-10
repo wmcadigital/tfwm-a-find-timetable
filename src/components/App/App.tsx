@@ -11,7 +11,7 @@ const App = () => {
       <ContextProvider>
         <Router>
           <Switch>
-            <Route path="/timetable/:stateless">
+            <Route path="/timetable/:id/:atcoCode/:operatorCode">
               <Timetable />
             </Route>
             <Route path="/">
