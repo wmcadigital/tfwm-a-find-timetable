@@ -1,5 +1,4 @@
-// Import context
-import { useTimetableContext } from 'globalState';
+import { Link } from 'react-router-dom';
 import formatDate from 'globalState/helpers/formatDate';
 // Import types
 import { IServiceResult } from 'globalState/TimetableContext/types/IServiceResult';
@@ -10,23 +9,14 @@ import WarningText from 'components/shared/WarningText/WarningText';
 import s from './ServiceResult.module.scss';
 
 const ServiceResult = ({ result }: { result: IServiceResult }) => {
-  const [, timetableDispatch] = useTimetableContext();
-
-  const updateSelectedService = () => {
-    timetableDispatch({ type: 'UPDATE_SELECTED_SERVICE', payload: result });
-  };
-
   const d = new Date(result.Service.ValidityStart);
   const now = new Date();
   const notYetValid = now < d;
   const startDate = formatDate(d);
+  const stateless = result.Service.Stateless.replaceAll(':', '_').replace('*', 'H');
 
   return (
-    <button
-      onClick={updateSelectedService}
-      className={`wmnds-p-md wmnds-bg-white ${s.serviceResult}`}
-      type="button"
-    >
+    <Link to={`/timetable/${stateless}`} className={`wmnds-p-md wmnds-bg-white ${s.serviceResult}`}>
       <div className={`wmnds-grid wmnds-grid--spacing-2-md wmnds-m-b-md ${s.serviceResultHeader}`}>
         <div className="wmnds-col-auto">
           <DisruptionIndicatorMedium text={result.Service.ServiceNumber} />
@@ -44,7 +34,7 @@ const ServiceResult = ({ result }: { result: IServiceResult }) => {
       <div>
         <span className="wmnds-link">{result.Service.OperatorName}</span> runs this service
       </div>
-    </button>
+    </Link>
   );
 };
 
