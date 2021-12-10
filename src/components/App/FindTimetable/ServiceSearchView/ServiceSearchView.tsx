@@ -62,7 +62,7 @@ const ServiceSearch = () => {
       <h1>Find a timetable</h1>
       <div className="wmnds-grid wmnds-grid--spacing-md-2-lg">
         <div className="wmnds-col-1 wmnds-col-md-1-3">
-          <div className="wmnds-p-md wmnds-bg-white">
+          <div className="wmnds-p-md wmnds-bg-white wmnds-m-b-lg">
             <div className="wmnds-m-b-md wmnds-text-align-right">
               <Button text="Clear search" onClick={resetForm} btnClass="wmnds-btn--link" />
             </div>

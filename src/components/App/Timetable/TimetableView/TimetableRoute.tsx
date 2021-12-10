@@ -29,7 +29,7 @@ const TimetableRoute = ({
             <div className="wmnds-col-md-2-3">
               <h2 className="wmnds-h3">Route</h2>
               <div className="wmnds-grid wmnds-grid--spacing-2-md wmnds-grid wmnds-grid--justify-between">
-                <div className="wmnds-col-3-4">
+                <div className="wmnds-col-1 wmnds-col-md-3-4">
                   <p>
                     Click on a stop name to find timetables, live departures, disruptions and the
                     nearest stops or stations.

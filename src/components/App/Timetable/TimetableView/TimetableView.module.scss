@@ -3,11 +3,19 @@
 
 .timetableView {
   .timetableHeader {
-    flex-wrap: nowrap;
     align-items: flex-start;
 
     button {
+      margin-top: 1rem;
       white-space: nowrap;
+    }
+
+    @media (min-width: $breakpoint-md) {
+      flex-wrap: nowrap;
+
+      button {
+        margin-top: 0;
+      }
     }
 
     .routeDescription {

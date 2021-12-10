@@ -16,7 +16,7 @@ const ModeSelect = ({
   return (
     <>
       <p className="wmnds-h4 wmnds-m-t-none">{label}</p>
-      <div className={`wmnds-grid ${classes}`}>
+      <div className={`wmnds-grid ${classes}`} style={{ flexWrap: 'nowrap' }}>
         <div className="wmnds-col-auto">
           <Button
             onClick={() => handleSelect('bus')}

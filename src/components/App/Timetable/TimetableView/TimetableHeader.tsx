@@ -37,17 +37,19 @@ const TimetableHeader = ({
 
   return (
     <div className={`wmnds-col-md-2-3 wmnds-m-b-md ${s.timetableView}`}>
-      <div className={`wmnds-grid wmnds-grid--spacing-3-md wmnds-m-b-lg ${s.timetableHeader}`}>
+      <div
+        className={`wmnds-grid wmnds-grid--spacing-2-md wmnds-grid--spacing-md-3-md wmnds-m-b-lg ${s.timetableHeader}`}
+      >
         <div className="wmnds-col-auto">
           <DisruptionIndicator text={timetableHeader.BaseRoute.ServiceNumber} />
         </div>
-        <div className={`wmnds-col-auto ${s.routeDescription}`}>
+        <div className={`wmnds-col-3-4 wmnds-col-auto ${s.routeDescription}`}>
           <h1 className="wmnds-h3 wmnds-m-none">{timetableData?.RouteDescription}</h1>
         </div>
-        <div className="wmnds-col-auto">
+        <div className="wmnds-col-1 wmnds-col-md-auto">
           <Button
             onClick={toggleDirection}
-            btnClass="wmnds-btn--secondary"
+            btnClass="wmnds-col-1 wmnds-btn--secondary"
             text="Change direction"
             iconRight="general-swap"
           />
