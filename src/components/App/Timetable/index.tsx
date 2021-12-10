@@ -19,7 +19,6 @@ const Timetable = () => {
       });
     }
     if (stateless) {
-      console.log('here');
       timetableDispatch({
         type: 'UPDATE_SERVICE_STATELESS',
         payload: { stateless, version },

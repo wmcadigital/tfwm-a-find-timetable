@@ -110,7 +110,7 @@ const useTimetableAPI = (when: string, timetableHeader: any, isInbound?: boolean
       timetableHeader.BaseRoute.LineName.replaceAll(':', '_').replaceAll('*', 'H')
     );
 
-    const id = serviceId?.id || '85551';
+    const id = serviceId?.id || '85551'; // Need to find a way to get the correct Ito id
     const version = timetableHeader.BaseRoute.VersionNumber;
     const inboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Inbound/${when}`;
     const outboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Outbound/${when}`;

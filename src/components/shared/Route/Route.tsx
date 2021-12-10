@@ -6,7 +6,7 @@ const Route = ({ route }: { route: any[] }) => {
       <ul className="wmnds-timetable__route">
         {route.map((stop) => (
           <li key={`${stop.Id}_${stop.ArrivalDeparture}`} className="wmnds-timetable__route-item">
-            <Link to={`/stop/${stop.NaPTAN}`}>{stop.Name}</Link>
+            <Link to={`//find-stop-or-station.tfwm.org.uk/stop/${stop.NaPTAN}`}>{stop.Name}</Link>
           </li>
         ))}
       </ul>
