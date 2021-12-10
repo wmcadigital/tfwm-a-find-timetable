@@ -10,18 +10,22 @@ import TimetableRoute from './TimetableRoute';
 // import Map from './Map/Map';
 
 const TimetableView = () => {
-  const [{ serviceId }] = useTimetableContext();
+  const [{ serviceId, serviceStateless }] = useTimetableContext();
   const [showInbound, setShowInbound] = useState(true);
   const [when, setWhen] = useState<string>('0');
-  const { id, atcoCode, operatorCode } = serviceId;
 
-  const fetchUrl =
-    id.length && atcoCode.length && operatorCode.length
-      ? `/TimetableStopApi/GetTimetableHeader/${id}/${when}/${atcoCode}/${operatorCode}`
-      : '';
+  const fetchUrl = () => {
+    if (serviceId) {
+      return `/TimetableStopApi/GetTimetableHeader/${serviceId.id}/${when}/${serviceId.atcoCode}/${serviceId.operatorCode}`;
+    }
+    if (serviceStateless) {
+      return `/TimetableStopApi/GetTimetableHeader/${serviceStateless.stateless}/${serviceStateless.version}`;
+    }
+    return '';
+  };
 
   const { response, isFetching } = useFetch<any>(
-    fetchUrl,
+    fetchUrl(),
     'https://journeyplanner.networkwestmidlands.com/api'
   );
 

@@ -109,11 +109,13 @@ const useTimetableAPI = (when: string, timetableHeader: any, isInbound?: boolean
     const stateless = encodeURI(
       timetableHeader.BaseRoute.LineName.replaceAll(':', '_').replaceAll('*', 'H')
     );
+
+    const id = serviceId?.id || '85551';
     const version = timetableHeader.BaseRoute.VersionNumber;
     const inboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Inbound/${when}`;
     const outboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Outbound/${when}`;
     const routeMapPath = `${apiPath}/TimetableStopApi/getRouteMap/${stateless}/${version}/${direction}/${when}`;
-    const mapPath = `${REACT_APP_API_HOST}/Tfwm-Api/Line/${serviceId.id}/Route/sequence/${direction}`;
+    const mapPath = `${REACT_APP_API_HOST}/Tfwm-Api/Line/${id}/Route/sequence/${direction}`;
 
     const inboundReq = axios.get(inboundPath, options);
     const outboundReq = axios.get(outboundPath, options);
