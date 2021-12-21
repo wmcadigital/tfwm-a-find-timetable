@@ -14,7 +14,7 @@ const ServiceModeSelect = () => {
     <ModeSelect
       selectedModes={selectedMode && [selectedMode]}
       handleSelect={handleSelect}
-      classes="wmnds-grid--spacing-3-xs"
+      classes="wmnds-grid--spacing-3-xsm"
     />
   );
 };
