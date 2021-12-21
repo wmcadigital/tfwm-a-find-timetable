@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 // Contexts
 import ContextProvider from 'globalState/ContextProvider';
 import FindTimetable from './FindTimetable';
+import Timetable from './Timetable';
 
 const App = () => {
   return (
@@ -10,6 +11,11 @@ const App = () => {
       <ContextProvider>
         <Router>
           <Switch>
+            <Route
+              path={['/timetable/:id/:atcoCode/:operatorCode', '/timetable/:stateless/:version']}
+            >
+              <Timetable />
+            </Route>
             <Route path="/">
               <FindTimetable />
             </Route>

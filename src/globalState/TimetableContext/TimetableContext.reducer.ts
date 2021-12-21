@@ -12,6 +12,8 @@ import * as TTimetable from './TimetableContext.types';
 export const initialState = (() => {
   const state: TTimetable.State = {
     selectedService: null,
+    serviceId: null,
+    serviceStateless: null,
     selectedMode: (getSearchParam('mode') as Mode) || null,
     busQuery: getSearchParam('q') || '',
     trainQuery: {
@@ -32,6 +34,10 @@ export const reducer = (state = initialState, action: TTimetable.StateAction): T
     case 'UPDATE_SELECTED_MODE':
       setSearchParam('mode', action.payload);
       return { ...state, selectedMode: action.payload };
+    case 'UPDATE_SERVICE_ID':
+      return { ...state, serviceId: action.payload };
+    case 'UPDATE_SERVICE_STATELESS':
+      return { ...state, serviceStateless: action.payload };
     case 'UPDATE_SELECTED_SERVICE':
       return { ...state, selectedService: action.payload };
     case 'UPDATE_BUS_QUERY':

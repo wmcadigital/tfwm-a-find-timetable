@@ -9,8 +9,8 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useTimetableAPI = (when: string, isInbound?: boolean, serviceId?: string) => {
-  const [{ selectedService }] = useTimetableContext();
+const useTimetableAPI = (when: string, timetableHeader: any, isInbound?: boolean) => {
+  const [{ serviceId }] = useTimetableContext();
   const [results, setResults] = useState<any>({
     inbound: [],
     outbound: [],
@@ -104,15 +104,18 @@ const useTimetableAPI = (when: string, isInbound?: boolean, serviceId?: string) 
       'Ocp-Apim-Subscription-Key': REACT_APP_API_KEY,
       'Content-Type': 'text/plain',
     };
-    const lineId = serviceId || selectedService!.Service.ItoLineId;
     const direction = isInbound ? 'Inbound' : 'Outbound';
     const apiPath = 'https://journeyplanner.networkwestmidlands.com/api';
-    const stateless = encodeURI(selectedService!.Service.Stateless.replaceAll(':', '_'));
-    const version = selectedService!.Service.Version;
+    const stateless = encodeURI(
+      timetableHeader.BaseRoute.LineName.replaceAll(':', '_').replaceAll('*', 'H')
+    );
+
+    const id = serviceId?.id || '85551'; // Need to find a way to get the correct Ito id
+    const version = timetableHeader.BaseRoute.VersionNumber;
     const inboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Inbound/${when}`;
     const outboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Outbound/${when}`;
     const routeMapPath = `${apiPath}/TimetableStopApi/getRouteMap/${stateless}/${version}/${direction}/${when}`;
-    const mapPath = `${REACT_APP_API_HOST}/Tfwm-Api/Line/${lineId}/Route/sequence/${direction}`;
+    const mapPath = `${REACT_APP_API_HOST}/Tfwm-Api/Line/${id}/Route/sequence/${direction}`;
 
     const inboundReq = axios.get(inboundPath, options);
     const outboundReq = axios.get(outboundPath, options);
@@ -132,7 +135,7 @@ const useTimetableAPI = (when: string, isInbound?: boolean, serviceId?: string) 
       .all([inboundReq, outboundReq, routeMapReq, mapReq])
       .then(axios.spread((...responses) => mounted.current && handleApiResponse(responses)))
       .catch(handleApiError);
-  }, [handleApiResponse, startApiTimeout, selectedService, isInbound, when, serviceId]);
+  }, [startApiTimeout, serviceId, timetableHeader, isInbound, when, handleApiResponse]);
 
   useEffect(() => {
     getAPIResults();

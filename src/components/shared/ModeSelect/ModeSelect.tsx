@@ -16,8 +16,8 @@ const ModeSelect = ({
   return (
     <>
       <p className="wmnds-h4 wmnds-m-t-none">{label}</p>
-      <div className={`wmnds-grid ${classes}`}>
-        <div className="wmnds-col-auto">
+      <div className={`wmnds-grid ${classes}`} style={{ flexWrap: 'nowrap' }}>
+        <div className="wmnds-col-1-3">
           <Button
             onClick={() => handleSelect('bus')}
             text="Bus"
@@ -26,7 +26,7 @@ const ModeSelect = ({
             isActive={selectedModes?.includes('bus')}
           />
         </div>
-        <div className="wmnds-col-auto">
+        <div className="wmnds-col-1-3">
           <Button
             onClick={() => handleSelect('rail')}
             text="Train"
@@ -35,7 +35,7 @@ const ModeSelect = ({
             isActive={selectedModes?.includes('rail')}
           />
         </div>
-        <div className="wmnds-col-auto">
+        <div className="wmnds-col-1-3">
           <Button
             onClick={() => handleSelect('metro')}
             text="Tram"

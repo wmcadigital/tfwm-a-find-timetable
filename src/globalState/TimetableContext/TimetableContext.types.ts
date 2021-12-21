@@ -2,9 +2,22 @@ import { IServiceResult } from 'globalState/TimetableContext/types/IServiceResul
 import { IStation } from 'globalState/TimetableContext/types/IStation';
 import { Mode } from 'globalState/GlobalContext/GlobalContext.types';
 
+export type ItoId = {
+  id: string;
+  atcoCode: string;
+  operatorCode: string;
+};
+
+export type StatelessId = {
+  stateless: string;
+  version: string;
+};
+
 export type State = {
   selectedMode: Mode | null;
   selectedService: IServiceResult | null;
+  serviceId: ItoId | null;
+  serviceStateless: StatelessId | null;
   busQuery: string;
   trainQuery: {
     from: string;
@@ -20,6 +33,14 @@ export type StateAction =
   | {
       type: 'UPDATE_SELECTED_MODE';
       payload: Mode;
+    }
+  | {
+      type: 'UPDATE_SERVICE_ID';
+      payload: ItoId;
+    }
+  | {
+      type: 'UPDATE_SERVICE_STATELESS';
+      payload: StatelessId;
     }
   | {
       type: 'UPDATE_SELECTED_SERVICE';
