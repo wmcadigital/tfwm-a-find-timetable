@@ -47,24 +47,11 @@ const useTimetableAPI = (when: string, timetableHeader: any, isInbound?: boolean
     const stopData = rawStopData.features.slice(1);
     const serviceData = JSON.parse(responses[5].data);
     const ser = serviceData.RouteSearchResponse.SearchMatches.RouteSearchMatch;
+    // get serviceID from serviceQuery
     const serviceMap = ser.find(
       (obj: { LineName: any }) => obj.LineName === timetableHeader.BaseRoute.ServiceNumber
     );
-    const compare = (arr1,arr2) => {
-      if(!arr1  || !arr2) return
-      let result;
-     arr1.forEach((e1,i)=>arr2.forEach(e2=>{
-            if(e1.length > 1 && e2.length){
-               result = compare(e1,e2);
-            }else if(e1 !== e2 ){
-               result = false
-            }else{
-               result = true
-            }
-       })
-     )
-     return result
-   };
+
     setResults({
       inbound: inbound.data,
       outbound: outbound.data,
@@ -117,14 +104,13 @@ const useTimetableAPI = (when: string, timetableHeader: any, isInbound?: boolean
     );
     const id = serviceId?.id || results.serviceMap.LineId; // Need to find a way to get the correct Ito id
     const version = timetableHeader.BaseRoute.VersionNumber;
-    console.log('response', results, REACT_APP_API_HOST, id, results);
     
     const inboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Inbound/${when}`;
     const outboundPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/Outbound/${when}`;
     const routeMapPath = `${apiPath}/TimetableStopApi/getRouteMap/${stateless}/${version}/${direction}/${when}`;
     const mapPath = `${apiPath}/TimetableStopApi/GetStopsOnRoute/${stateless}/${version}/${direction}/${when}`;
     const serviceNo = `https://api.wmnetwork.co.uk/Tfwm-Api/Line/Search/${timetableHeader.BaseRoute.ServiceNumber}`;
-    const geoPath = `${REACT_APP_API_HOST1}/1112/${timetableHeader.BaseRoute.OperatorCode}?code=LzDQft6CCJ/X175fQLNF6DFn6xPpDd4TaRlHwik54fY9ouMT2kPDKw==`;
+    const geoPath = `${REACT_APP_API_HOST1}/${id}/${timetableHeader.BaseRoute.OperatorCode}?code=LzDQft6CCJ/X175fQLNF6DFn6xPpDd4TaRlHwik54fY9ouMT2kPDKw==`;
     const inboundReq = axios.get(inboundPath, options);
     const outboundReq = axios.get(outboundPath, options);
     const routeMapReq = axios.get(routeMapPath, options);

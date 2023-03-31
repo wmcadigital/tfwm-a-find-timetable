@@ -37,11 +37,11 @@ const ModeSelect = ({
         </div>
         <div className="wmnds-col-1-3">
           <Button
-            onClick={() => handleSelect('metro')}
+            onClick={() => handleSelect('tram')}
             text="Tram"
             btnClass="wmnds-btn--mode wmnds-col-1"
             iconLeft="modes-isolated-metro"
-            isActive={selectedModes?.includes('metro')}
+            isActive={selectedModes?.includes('tram')}
           />
         </div>
       </div>

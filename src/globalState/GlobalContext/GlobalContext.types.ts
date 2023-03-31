@@ -1,4 +1,4 @@
-export type Mode = 'bus' | 'rail' | 'metro';
+export type Mode = 'bus' | 'rail' | 'tram';
 
 export type State = {};
 

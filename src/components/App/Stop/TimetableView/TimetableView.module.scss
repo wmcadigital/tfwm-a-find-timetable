@@ -1,0 +1,26 @@
+@import '~assets/wmnds/vars';
+@import '~assets/wmnds/mixins';
+
+.timetableView {
+  .timetableHeader {
+    align-items: flex-start;
+
+    button {
+      margin-top: 1rem;
+      white-space: nowrap;
+    }
+
+    @media (min-width: $breakpoint-md) {
+      flex-wrap: nowrap;
+
+      button {
+        margin-top: 0;
+      }
+    }
+
+    .routeDescription {
+      align-self: center;
+      flex-grow: 1;
+    }
+  }
+}

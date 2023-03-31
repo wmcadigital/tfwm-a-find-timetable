@@ -1,0 +1,8 @@
+@import '~assets/wmnds/vars';
+@import '~assets/wmnds/mixins';
+
+.timeLabel {
+  padding-right: 10px;
+  color: get-color(primary);
+  font-weight: 800;
+}

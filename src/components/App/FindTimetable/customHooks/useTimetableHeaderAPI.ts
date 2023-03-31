@@ -88,7 +88,7 @@ const useTimetableHeaderAPI = () => {
     const idPath = `${REACT_APP_API_HOST}/Tfwm-Api/Line/Search/${serviceNumber}`;
     const headerReq = axios.get(headerPath, options);
     const idReq = !serviceId ? axios.get(idPath, { ...options, headers }) : null;
-
+    console.log('datas', idReq, serviceId, serviceNumber);
     axios
       .all([headerReq, idReq])
       .then((res) => mounted.current && handleApiResponse(res, selectedService))

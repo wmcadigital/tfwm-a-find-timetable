@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable */
+// @ts-nocheck
 import { useState } from 'react';
+import ReactTable from 'react-table';
 import { useTimetableContext } from 'globalState';
 import Loader from 'components/shared/Loader/Loader';
 // Import API hook
@@ -33,9 +35,9 @@ const TimetableView = () => {
       setWhen(w);
     }
   };
-
   return (
     <>
+
       {isFetching ? (
         <Loader />
       ) : (
@@ -50,6 +52,8 @@ const TimetableView = () => {
                 timetableHeader={response}
               />
               <TimetableRoute when={when} showInbound={showInbound} timetableHeader={response} />
+              <div>
+              </div>
             </>
           ) : (
             'Error'

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Loader from 'components/shared/Loader/Loader';
 import Route from 'components/shared/Route/Route';
-import Button from 'components/shared/Button/Button';
-import Map from '../Map/Map';
+import TimetableButtons from './TimetableButtons';
+
 import useTimetableAPI from '../customHooks/useTimetableAPI';
 
 const TimetableRoute = ({
@@ -14,9 +14,9 @@ const TimetableRoute = ({
   showInbound: boolean;
   timetableHeader: any;
 }) => {
-  const [mapView, setMapView] = useState(false);
   const { loading, results } = useTimetableAPI(when, timetableHeader, showInbound);
   const { inbound, outbound } = results;
+
   return (
     <>
       {loading ? (
@@ -35,20 +35,10 @@ const TimetableRoute = ({
                     nearest stops or stations.
                   </p>
                 </div>
-                <div className="wmnds-col-auto">
-                  <Button
-                    onClick={() => setMapView(!mapView)}
-                    btnClass="wmnds-btn--secondary wmnds-col-1"
-                    text={mapView ? 'List view' : 'Map view'}
-                    iconRight={mapView ? 'general-list' : 'general-location-pin'}
-                  />
-                </div>
               </div>
-              {mapView ? (
-                <Map results={results} />
-              ) : (
-                <Route route={showInbound ? inbound : outbound} time={false} />
-              )}
+              <TimetableButtons />
+
+              <Route route={showInbound ? inbound : outbound} time />
             </div>
           ) : (
             'Error'

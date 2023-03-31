@@ -15,7 +15,7 @@ import TrainResult from './TrainResult/TrainResult';
 import ServiceModeSelect from './ServiceModeSelect/ServiceModeSelect';
 
 const ServiceSearch = () => {
-  const [{ selectedMode, busQuery, stations }, timetableDispatch] = useTimetableContext();
+  const [{ selectedMode, stations }, timetableDispatch] = useTimetableContext();
   const { loading, results, errorInfo, getAPIResults } = useServiceAPI();
   const [searchResults, setSearchResults] = useState(results);
 
@@ -38,7 +38,7 @@ const ServiceSearch = () => {
 
   useEffect(() => {
     setSearchResults(results);
-    if (selectedMode === 'metro' && results.length === 1) {
+    if (selectedMode === 'tram' && results.length === 1) {
       timetableDispatch({ type: 'UPDATE_SELECTED_SERVICE', payload: results[0] });
     }
   }, [results, timetableDispatch, selectedMode]);
@@ -56,7 +56,7 @@ const ServiceSearch = () => {
       retryCallback={getAPIResults}
     />
   );
-
+  const selectedModes = selectedMode === 'bus' || selectedMode === 'tram';
   return (
     <div>
       <h1>Find a timetable</h1>
@@ -94,7 +94,7 @@ const ServiceSearch = () => {
           </div>
         </div>
         <div className="wmnds-col-1 wmnds-col-lg-2-3">
-          {selectedMode === 'bus' && busQuery && (
+          {selectedModes && (
             <>
               {loading ? (
                 <Loader />
